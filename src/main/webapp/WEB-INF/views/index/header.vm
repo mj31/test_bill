@@ -1,0 +1,31 @@
+<div class="row border-bottom">
+    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
+                class="fa fa-bars"></i> </a>
+
+            <ul class="navbar-city-custom">
+
+                #*<li>城市切换：</li>
+                <li>
+                    <div class="btn-group roll-nav roll-right">
+                        <button class="dropdown" data-toggle="dropdown" aria-expanded="true">全国<span
+                                class="caret"></span>
+
+                        </button>
+                        <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                            <li class="J_tabShowActive"><a href="javascript:;">全国</a></li>
+                            <li class="J_tab"><a href="javascript:;">北京</a></li>
+                            <li class="J_tabClose"><a href="javascript:;">上海</a></li>
+                            <li class="J_tabClose"><a href="javascript:;">深圳</a></li>
+                        </ul>
+                    </div>
+                <li>*#
+                <li>系统问题反馈</li>
+                <li><i class="fa fa-phone"></i> 电话 010-59328658</li>
+                <li><i class="fa fa-envelope-o"></i> 邮箱 zr-jszc@ziroom.com</li>
+
+            </ul>
+
+        </div>
+    </nav>
+</div>

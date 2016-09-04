@@ -1,0 +1,70 @@
+body{margin: 0;font-family:"微软雅黑";}
+ul,li{list-style: none; padding: 0;}
+.navbar-city-custom {
+    float: left;
+    line-height: 60px;
+    margin-left: 40px;
+}
+
+.navbar-city-custom>li {
+    float: left;
+    margin-right: 10px;
+}
+
+.navbar-city-custom .roll-right.btn-group {
+    right: 0;
+    margin-right: 20px;
+}
+
+.navbar-city-custom .roll-right.btn-group button {
+    background: #fff;
+    height: 30px;
+    line-height: 30px;
+    margin: 15px 0;
+    border: none;
+    outline: none;
+}
+
+.navbar .navbar-city-custom  .dropdown-menu {
+    margin-top: -15px;
+}
+
+/** table居中，可左右滑动 **/
+table tr td,th {white-space:nowrap;text-align: center;}
+table {overflow-x: auto;}
+table tr.selected {background-color: #d0d0d0 !important;}
+.info-box .info-group {margin:10px 0 0;overflow: hidden;}
+.info-box .info-group .info-title { padding-right: 15px;}
+.info-box .info-group .info-content {text-align: left; padding-left: 15px; word-wrap: break-word; min-height: 18px;}
+
+/* 自如提醒图标 */
+.table .overtime:after{content:'超';background: orange;color: #fff;width:20px;height:20px;position: absolute;left:50%;margin-left: -10px; top:10px;}
+.table .overtime{position: relative;}
+.table .quick,.table .night{color: #fff;width:20px;height:20px;display: inline-block;margin-right: 5px;}
+.table .quick{background: #ff0000;}
+.table .night{background: #050596;}
+/* 星星打分 */
+.star0,.star1,.star2,.star3,.star4,.star5{width:110px;height:20px;background:url(../img/star.png) no-repeat;display: inline-block;margin-bottom: -3px;}
+.star0{background-position: 0 0;}
+.star1{background-position: 0 -21px;}
+.star2{background-position: 0 -43px;}
+.star3{background-position: 0 -66px;}
+.star4{background-position: 0 -88px;}
+.star5{background-position: 0 -110px;}
+
+/* 自如标记旗 */
+/* .flag1,.flag2,.flag3,.flag4,.flag5,.flag6{position: relative;} */
+.flag1:after,.flag2:after,.flag3:after,.flag4:after,.flag5:after,.flag6:after{width:12px;height:12px;content: '';padding-left: 20px;text-align: center;display: inline-block;margin-bottom: -2px;}
+.flag1:after{background:url(../img/flag1.png) no-repeat;}
+.flag2:after{background:url(../img/flag2.png) no-repeat;}
+.flag3:after{background:url(../img/flag3.png) no-repeat;}
+.flag4:after{background:url(../img/flag6.png) no-repeat;}
+.flag5:after{background:url(../img/flag4.png) no-repeat;}
+.flag6:after{background:url(../img/flag5.png) no-repeat;}
+/* 客户留言 */
+.c-message{position: relative;}
+.c-message:after{content:'';width:15px;height:14px;background:url(../img/message.png) no-repeat; position: absolute; left:23px;top:12px;}
+/* 打分标签 */
+.bad{background: #777;border:1px solid #777;}
+
+
