@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.mj.user.model.BillUser">
+
+	<resultMap id="RM_BillUser" type="com.mj.user.model.BillUser">
+        <result property="id" column="id"/>
+        <result property="loginName" column="login_name"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="phone" column="phone"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,login_name,password,name,is_delete,phone
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <![CDATA[
+        INSERT INTO bill_user (
+        	id ,
+        	login_name ,
+        	password ,
+        	name ,
+        	is_delete ,
+        	phone 
+        ) VALUES (
+        	#{id} ,
+        	#{loginName} ,
+        	#{password} ,
+        	#{name} ,
+        	#{isDelete} ,
+        	#{phone} 
+        )
+    ]]>
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+	
+	
+     <sql id="update_sql">
+         <set>
+                <if test="loginName != null and loginName != ''">
+	         	login_name = #{loginName} ,
+	         </if>
+                <if test="password != null and password != ''">
+	         	password = #{password} ,
+	         </if>
+                <if test="name != null and name != ''">
+	         	name = #{name} ,
+	         </if>
+                <if test="isDelete != null">
+	         	is_delete = #{isDelete} ,
+	         </if>
+                <if test="phone != null and phone != ''">
+	         	phone = #{phone} 
+	         </if>
+       </set>
+    </sql>
+    
+	<update id="update" >
+	        UPDATE  bill_user
+	    <include refid="update_sql" />
+	        WHERE 
+	                id = #{id} 
+	</update>
+
+    <delete id="delete">
+    <![CDATA[
+        DELETE FROM bill_user WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="RM_BillUser">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM bill_user 
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<sql id="findPage_where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+               <if test="id != null">
+		             AND id = #{id}
+	           </if>
+                <if test="loginName != null and loginName !=''">
+		             AND login_name = #{loginName}
+	            </if>
+                <if test="password != null and password !=''">
+		             AND password = #{password}
+	            </if>
+                <if test="name != null and name !=''">
+		             AND name = #{name}
+	            </if>
+               <if test="isDelete != null">
+		             AND is_delete = #{isDelete}
+	           </if>
+                <if test="phone != null and phone !=''">
+		             AND phone = #{phone}
+	            </if>
+		</where>
+	</sql>
+		
+    <select id="findPage_count" resultType="long">
+        SELECT count(*) FROM bill_user 
+		<include refid="findPage_where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findPage" resultMap="RM_BillUser">
+    	SELECT <include refid="columns" />
+	    FROM bill_user 
+		<include refid="findPage_where"/>
+		
+		<if test="sortColumns != null and sortColumns !=''">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+</mapper>
+
