@@ -46,14 +46,30 @@
 	<servlet-mapping>
 		<servlet-name>SpringMVC</servlet-name>
 		<!-- 此处可以可以配置成*.do，对应struts的后缀习惯 -->
-		<url-pattern>/</url-pattern>
+		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
-	<welcome-file-list>
-		<welcome-file>/index.jsp</welcome-file>
-	</welcome-file-list>
+	
 	<!-- 配置SESSION超时，单位是分钟 -->
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
+	<jsp-config>
+	 <taglib>
+		  <taglib-uri>c.tld</taglib-uri> 
+		  <taglib-location>/WEB-INF/tld/c.tld</taglib-location> 
+	  </taglib>
+	 <taglib>
+		  <taglib-uri>fmt.tld</taglib-uri> 
+		  <taglib-location>/WEB-INF/tld/fmt.tld</taglib-location> 
+	  </taglib>
+	 <taglib>
+		  <taglib-uri>fn.tld</taglib-uri> 
+		  <taglib-location>/WEB-INF/tld/fn.tld</taglib-location> 
+	  </taglib>
+	</jsp-config>
+	
+	<welcome-file-list>
+		<welcome-file>/index.jsp</welcome-file>
+	</welcome-file-list>
 
 </web-app>
