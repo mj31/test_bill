@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<%@ include file="/common/taglibs.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,12 +10,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bootstrap后台登录界面代码 - 站长素材</title>
 
-    <link href="http://localhost:8088/bill/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://localhost:8088/bill/css/signin.css" rel="stylesheet">
+    <link href="${ctx}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${ctx}/css/signin.css" rel="stylesheet">
 </head>
 <body>
 	<div class="signin">
-    <div class="signin-head"><img src="http://localhost:8088/bill/images/test/head_120.png" alt="" class="img-circle"></div>
+    <div class="signin-head"><img src="${ctx}/images/test/head_120.png" alt="" class="img-circle"></div>
     <form class="form-signin" role="form">
         <input type="text" class="form-control" placeholder="用户名" required autofocus />
         <input type="password" class="form-control" placeholder="密码" required />
