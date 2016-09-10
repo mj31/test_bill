@@ -1,82 +1,204 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mj.bill.dao.IUserDao" >
-  <resultMap id="BaseResultMap" type="com.mj.bill.pojo.User" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="age" property="age" jdbcType="INTEGER" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, user_name, password, age
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from user_t
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from user_t
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert">
-    insert into user_t (id, user_name, password, 
-      age)
-    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{age,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" >
-    insert into user_t
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="userName != null" >
-        user_name,
-      </if>
-      <if test="password != null" >
-        password,
-      </if>
-      <if test="age != null" >
-        age,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="userName != null" >
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="age != null" >
-        #{age,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective">
-    update user_t
-    <set >
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="age != null" >
-        age = #{age,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey">
-    update user_t
-    set user_name = #{userName,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      age = #{age,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.mj.bill.dao.IUserDao">
+
+	<resultMap id="RM_User" type="com.mj.bill.pojo.User">
+        <result property="id" column="id"/>
+        <result property="loginName" column="login_name"/>
+        <result property="password" column="password"/>
+        <result property="userName" column="user_name"/>
+        <result property="mobile" column="mobile"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="position" column="position"/>
+        <result property="workCode" column="work_code"/>
+        <result property="age" column="age"/>
+        <result property="status" column="status"/>
+        <result property="department" column="department"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,login_name,password,user_name,mobile,email,address,position,work_code,age,status,department
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <![CDATA[
+        INSERT INTO user (
+        	id ,
+        	login_name ,
+        	password ,
+        	user_name ,
+        	mobile ,
+        	email ,
+        	address ,
+        	position ,
+        	work_code ,
+        	age ,
+        	status ,
+        	department 
+        ) VALUES (
+        	#{id} ,
+        	#{loginName} ,
+        	#{password} ,
+        	#{userName} ,
+        	#{mobile} ,
+        	#{email} ,
+        	#{address} ,
+        	#{position} ,
+        	#{workCode} ,
+        	#{age} ,
+        	#{status} ,
+        	#{department} 
+        )
+    ]]>
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+	
+	
+     <sql id="update_sql">
+         <set>
+                <if test="loginName != null and loginName != ''">
+	         	login_name = #{loginName} ,
+	         </if>
+                <if test="password != null and password != ''">
+	         	password = #{password} ,
+	         </if>
+                <if test="userName != null and userName != ''">
+	         	user_name = #{userName} ,
+	         </if>
+                <if test="mobile != null and mobile != ''">
+	         	mobile = #{mobile} ,
+	         </if>
+                <if test="email != null and email != ''">
+	         	email = #{email} ,
+	         </if>
+                <if test="address != null and address != ''">
+	         	address = #{address} ,
+	         </if>
+                <if test="position != null and position != ''">
+	         	position = #{position} ,
+	         </if>
+                <if test="workCode != null and workCode != ''">
+	         	work_code = #{workCode} ,
+	         </if>
+                <if test="age != null">
+	         	age = #{age} ,
+	         </if>
+                <if test="status != null">
+	         	status = #{status} ,
+	         </if>
+                <if test="department != null and department != ''">
+	         	department = #{department} 
+	         </if>
+       </set>
+    </sql>
+    
+	<update id="update" >
+	        UPDATE  user
+	    <include refid="update_sql" />
+	        WHERE 
+	                id = #{id} 
+	</update>
+
+    <delete id="delete">
+    <![CDATA[
+        DELETE FROM user WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="RM_User">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM user 
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<sql id="findPage_where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+               <if test="id != null">
+		             AND id = #{id}
+	           </if>
+                <if test="loginName != null and loginName !=''">
+		             AND login_name = #{loginName}
+	            </if>
+                <if test="password != null and password !=''">
+		             AND password = #{password}
+	            </if>
+                <if test="userName != null and userName !=''">
+		             AND user_name = #{userName}
+	            </if>
+                <if test="mobile != null and mobile !=''">
+		             AND mobile = #{mobile}
+	            </if>
+                <if test="email != null and email !=''">
+		             AND email = #{email}
+	            </if>
+                <if test="address != null and address !=''">
+		             AND address = #{address}
+	            </if>
+                <if test="position != null and position !=''">
+		             AND position = #{position}
+	            </if>
+                <if test="workCode != null and workCode !=''">
+		             AND work_code = #{workCode}
+	            </if>
+               <if test="age != null">
+		             AND age = #{age}
+	           </if>
+               <if test="status != null">
+		             AND status = #{status}
+	           </if>
+                <if test="department != null and department !=''">
+		             AND department = #{department}
+	            </if>
+		</where>
+	</sql>
+		
+    <select id="findPage_count" resultType="long">
+        SELECT count(*) FROM user 
+		<include refid="findPage_where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findPage" resultMap="RM_User">
+    	SELECT <include refid="columns" />
+	    FROM user 
+		<include refid="findPage_where"/>
+		
+		<if test="sortColumns != null and sortColumns !=''">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="queryUserByLoginName" resultMap="RM_User" parameterType="String">
+    	SELECT <include refid="columns" />
+	    FROM user
+	    where login_name = #{loginName}  and status = 0
+    </select>
+	
+	
+	
 </mapper>
+

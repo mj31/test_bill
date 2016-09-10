@@ -17,10 +17,11 @@ public class UserServiceImpl implements IUserService {
 	public User getUserById(int userId) {
 		return this.userDao.selectByPrimaryKey(userId);
 	}
-	
-	/*@Override
-	public User getUserById(int userId) {
-		return this.userDao.selectByPrimaryKey(userId);
-	}*/
+
+	@Override
+	public User queryUserByLoginName(String loginName) {
+		return userDao.queryUserByLoginName(loginName);
+	}
+
 
 } 

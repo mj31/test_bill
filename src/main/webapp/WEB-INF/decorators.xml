@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/views/decorators/">
+    <excludes>
+        <pattern>/common/*</pattern>
+        <pattern>/css/*</pattern>
+        <pattern>/fonts/*</pattern>
+        <pattern>/images/*</pattern>
+        <pattern>/js/*</pattern>
+    </excludes>
+    <!-- 默认模板 -->
+    <decorator name="default" page="/common/commom.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+</decorators>
