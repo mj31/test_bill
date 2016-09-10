@@ -18,7 +18,7 @@
 <body>
 	<div class="signin">
     <div class="signin-head"><img src="${ctx}/images/test/head_120.png" alt="" class="img-circle"></div>
-    <form class="form-signin" action="${ctx}/index.do" role="form">
+    <form class="form-signin" action="${ctx}/loginin.do" role="form" method="post">
         <input type="text" class="form-control" placeholder="用户名" required autofocus  name="loginName" id="loginName"/>
         <input type="password" class="form-control" placeholder="密码" required name="password" id="password"/>
         <button class="btn btn-lg btn-warning btn-block" type="submit">登录</button>

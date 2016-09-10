@@ -24,7 +24,7 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping("/index")
+	@RequestMapping("/loginin")
 	public String login(HttpServletRequest request,HttpServletResponse response,Model model,User user)throws Exception{
 		String  file = "login/index" ;
 		HttpSession session = request.getSession();
@@ -35,11 +35,17 @@ public class UserController {
 			if(MD5Util.MD5Encode(user.getPassword(), "utf-8").equals(password)){
 				session.setAttribute("user", queryUser);
 				return file ;
+			}else{
+				response.sendRedirect(request.getContextPath()
+						+ "/login.do?flag="+false);
+				return null;
 			}
 		}else{
-			response.sendRedirect("index.do?flag=1");
+			response.sendRedirect(request.getContextPath()
+					+ "/login.do?flag="+false);
+			return null;
 		}
-		return file;
+		
 	}
 	
 	public static void main(String[] args) {

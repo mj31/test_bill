@@ -39,26 +39,13 @@ public class ControllerInterceptor implements HandlerInterceptor {
 				if (user != null) {
 					return true;
 				} else {
-					// 登陆页面无需过滤
-					if (servletRequest.getHeader("x-requested-with") != null
-							&& "XMLHttpRequest".equalsIgnoreCase(servletRequest
-									.getHeader("x-requested-with"))) {
-						// 向http头添加 状态 sessionstatus
-						servletResponse.setHeader("sessionstatus", "timeout");
-						servletResponse.setStatus(403);
-						// 向http头添加登录的url
-						servletResponse.addHeader("loginPath", "/login.html");
-//						chain.doFilter(request, response);
-//						log.debug("ajax request");
-						return true;
-					}
 					// 代表登陆按钮操作
-					if (path.indexOf("/index.do") > -1) {
+					if (path.indexOf("/loginin.do") > -1) {
 						return true;
 					} else {
 						servletResponse.sendRedirect(servletRequest
 								.getContextPath()
-								+ "/login.html?fail="
+								+ "/login.do?fail="
 								+ true);
 					}
 					return false;
