@@ -46,7 +46,7 @@ public class ControllerInterceptor implements HandlerInterceptor {
 						servletResponse.sendRedirect(servletRequest
 								.getContextPath()
 								+ "/login.do?fail="
-								+ true);
+								+ false);
 					}
 					return false;
 				}

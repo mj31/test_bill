@@ -24,18 +24,34 @@
     	 });
     	 
     	 $("#btn_delete").click(function(){
+    		 if($(".selected").length == 0){ 
+    			 bootbox.alert({  
+    		            buttons: {  
+    		               ok: {  
+    		                    label: '确定',  
+    		                    className: 'btn-myStyle'  
+    		                }  
+    		            },  
+    		            message: '请至少选择一条数据进行操作',  
+    		            
+    		        }); 
+    			 return ;
+    		 }
+    		 
+    		 var $ids = $(".selected .ids") ;
+    		 var arrayIds = new Array();
+    		 for(var i = 0 ; i< $ids.length ;i++){
+    			 arrayIds[i] = $ids[i].value ;
+    		 }
+    		 var ids = $(".selected").find("td:eq(1)").find("input").val()
     		bootbox.confirm("您确认删除选定的记录吗？", function (result) {
              if (result) {
-                 //最后去掉最后的逗号,
-                 ids = ids.substring(0, ids.length - 1);
-
                  //然后发送异步请求的信息到后台删除数据
-                 var postData = { Ids: ids };
-                 $.get("/Province/DeletebyIds", postData, function (json) {
+                 $.get("${ctx}/user/delete.do?ids="+arrayIds, function (json) {
                      var data = $.parseJSON(json);
                      if (data.Success) {
                          showTips("删除选定的记录成功");
-                         Refresh();//刷新页面数据
+                         Refresh();//刷新页面数据ssss
                      }
                      else {
                          showTips(data.ErrorMessage);
@@ -44,6 +60,13 @@
              }
           }); 
     	 })
+    	 
+    	 //查询 
+    	 $("#btn_query").click(function(){
+    		 $("#formSearch").submit();
+    	 })
+    	 
+    	 
     	 
     	 
     	});
@@ -54,7 +77,7 @@
     	 //初始化Table
     	 oTableInit.Init = function () {
     	  $('#table').bootstrapTable({
-    	   url: '${ctx}/operating/search.do',   //请求后台的URL（*）
+    	   url: '${ctx}/user/search.do',   //请求后台的URL（*）
     	   method: 'get',      //请求方式（*）
     	   toolbar: '#toolbar',    //工具按钮用哪个容器
     	   striped: true,      //是否显示行间隔色
@@ -63,7 +86,7 @@
     	   sortable: false,      //是否启用排序
     	   sortOrder: "asc",     //排序方式
     	   queryParams: oTableInit.queryParams,//传递参数（*）
-    	  /*  sidePagination: "server", */   //分页方式：client客户端分页，server服务端分页（*）
+    	   sidePagination: "client",   //分页方式：client客户端分页，server服务端分页（*）
     	   pageNumber:1,      //初始化加载第一页，默认第一页
     	   pageSize: 5,      //每页的记录行数（*）
     	   pageList: [10, 25, 50, 100],  //可供选择的每页的行数（*）
@@ -81,31 +104,86 @@
     	   columns: [{
     	    checkbox: true
     	   }, {
+    	    field: 'id',
+    	    title: '序号', 
+    	    align: "center",//水平
+            valign: "middle",//垂直;
+            width:5,
+            formatter:function(value,row,index){
+                //通过formatter可以自定义列显示的内容
+                //value：当前field的值，即id
+                //row：当前行的数据
+                return index+1+'<input type="hidden" class="ids"  value='+value+'>';
+              
+            }
+    	   },{
     	    field: 'loginName',
-    	    title: '登录名称'
+    	    title: '登录名称',
+    	    align: "center",//水平
+            valign: "middle"//垂直
+    	   }, {
+    	    field: 'workCode',
+    	    title: '工号',
+    	    align: "center",//水平
+            valign: "middle",//垂直
+            width:20
     	   }, { 
     	    field: 'userName',
-    	    title: '用户名'
+    	    title: '用户名',
+    	    align: "center",//水平
+            valign: "middle",//垂直
+            width:50
     	   }, {
-    	    field: 'loginName',
-    	    title: '部门级别'
+    	    field: 'mobile',
+    	    title: '手机号',
+    	    align: "center",//水平
+            valign: "middle",//垂直 
+            width: 50//宽度
     	   }, {
-    	    field: 'loginName',
-    	    title: '描述'
+    	    field: 'email',
+    	    title: '邮箱' ,
+    	    align: "center",//水平
+            valign: "middle",//垂直
+            width:50
+    	   }, {
+    	    field: 'address',
+    	    title: '家庭住址',
+    	    align: "center",//水平
+            valign: "middle"//垂直  
+    	   }, {
+    	    field: 'position',
+    	    title: '职位'  ,
+    	    align: "center",//水平
+            valign: "middle"//垂直
+    	   }, {
+    	    field: 'status',
+    	    title: '状态'  ,
+    	    align: "center",//水平
+            valign: "middle",//垂直 
+            width:20,
+            formatter:function(value,row,index){
+                if(value == 0){
+                	return '正常';
+                }else{
+                	return '禁用'; 
+                }
+            } 
+            
     	   }]
     	  });
     	 };
     	 
-    	 //得到查询的参数
+    	  //得到查询的参数
     	 oTableInit.queryParams = function (params) {
-    	  var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-    	   limit: params.limit, //页面大小
-    	   offset: params.offset, //页码
-    	   departmentname: $("#txt_search_departmentname").val(),
-    	   statu: $("#txt_search_statu").val()
-    	  };
-    	  return temp;
-    	 };
+	    	  var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+		    	   limit: params.limit, //页面大小
+		    	   offset: params.offset, //页码
+		    	   loginName: $("#loginName").val() ,
+		    	   userName: $("#userName").val(), 
+		    	   status: $("#status").val()
+	    	     };
+    	  	  return temp;
+    	 }; 
     	 return oTableInit;
     	};
     	 
@@ -128,22 +206,32 @@
     <div class="container-fluid all">
         <%@ include file="/common/left.jsp"%>
         <div class="panel panel-default">
-   <div class="panel-heading">查询条件</div>
+   <div class="panel-heading">用户管理</div>
    <div class="panel-body">
-    <form id="formSearch" class="form-horizontal">
-     <div class="form-group" style="margin-top:15px">
-      <label class="control-label col-sm-1" for="txt_search_departmentname">部门名称</label>
-      <div class="col-sm-3">
-       <input type="text" class="form-control" id="txt_search_departmentname">
-      </div>
-      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-      <div class="col-sm-3">
-       <input type="text" class="form-control" id="txt_search_statu">
-      </div>
-      <div class="col-sm-4" style="text-align:left;">
-       <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
-      </div>
-     </div>
+    <form id="formSearch" class="form-horizontal" action=${ctx}/user/list.do>
+	     <div class="form-group" style="margin-top:15px">
+		      <label class="control-label col-sm-1" for="txt_search_departmentname">登录名</label>
+		      <div class="col-sm-3" style="width:12%">
+		       		<input type="text" class="form-control" id="loginName" name="loginName" value="${user.loginName}">
+		      </div>
+		      <label class="control-label col-sm-1" for="txt_search_statu">用户名</label>
+		      <div class="col-sm-3" style="width:12%">
+		       		<input type="text" class="form-control" id="userName" name="userName" value="${user.userName}">
+		      </div>
+		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
+		      <div class="col-sm-3"  style="width:6%">
+		       		<div class="form-group">
+					    <select class="form-control" id="status" name="status"> 
+						      <option value="">全部</option> 
+						      <option value="0"  <c:if test="${user.status eq 1 }"> selected </c:if>>正常</option> 
+						      <option  value="1"  <c:if test="${user.status eq 1 }"> selected </c:if>>禁用</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
+					      </select>
+					  </div>
+		      </div>
+		      <div class="col-sm-4" style="text-align:left;">
+		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+		      </div>
+	     </div>
     </form>
    </div>
   </div>  

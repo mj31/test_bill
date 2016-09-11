@@ -51,6 +51,7 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/loginin.do"/>
             <bean class="com.mj.bill.common.ControllerInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

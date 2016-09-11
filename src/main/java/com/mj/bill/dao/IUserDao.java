@@ -1,5 +1,8 @@
 package com.mj.bill.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.mj.bill.pojo.User;
 
 public interface IUserDao {
@@ -16,4 +19,12 @@ public interface IUserDao {
     int updateByPrimaryKey(User record);
 
 	User queryUserByLoginName(String loginName);
+
+	List<User> queryUserByCondition(User user);
+
+	Integer queryUserByConditionTotal(User user);
+
+	Object updateUserByIds(Map ids);
+	
+	
 }

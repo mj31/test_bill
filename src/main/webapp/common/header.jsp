@@ -19,12 +19,16 @@
 <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="favicon.ico" />
+    <link rel="icon" href="${ctx}/favicon.ico" />
     <!--jquery库-->
     <script src="${ctx}/js/jquery.min.js"></script>
     <!--bootstrap库-->
     <link href="${ctx}/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx}/css/bootstrap-table.css" rel="stylesheet" />
     <script src="${ctx}/js/bootstrap/bootstrap.min.js"></script>
+    <script src="${ctx}/js/bootstrap-table.js"></script>
+    <script src="${ctx}/js/bootstrap-table-zh-CN.js"></script>
+    <script src="${ctx}/js/bootbox.js"></script>
     <!--[if lt IE 9]>
       <script src="js/bootstrap/html5shiv.min.js"></script>
       <script src="js/bootstrap/respond.min.js"></script>

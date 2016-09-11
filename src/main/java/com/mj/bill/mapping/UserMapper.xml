@@ -197,6 +197,33 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    FROM user
 	    where login_name = #{loginName}  and status = 0
     </select>
+    
+     <select id="queryUserByCondition" resultMap="RM_User">
+    	SELECT <include refid="columns" />
+	    FROM user 
+	    <include refid="findPage_where"/>
+	    order by status 
+     </select>
+     
+     <select id="queryUserByConditionTotal" resultType="int">
+    	SELECT count(1)
+	    FROM user 
+	    <include refid="findPage_where"/>
+     </select>
+    
+    
+  <!--   <select id="updateUserByIds" parameterType="list"> -->
+    <update id="updateUserByIds" >
+    	update user set status = 1
+	    where id in <![CDATA[(]]> ${ids} <![CDATA[)]]>
+	   <!--  <foreach collection="ids" index="index" item="id" open= "(" separator="," close=")">  
+            #{id}
+     </foreach > -->
+     </update>
+	    
+     <!-- </select>
+     -->
+    
 	
 	
 	
