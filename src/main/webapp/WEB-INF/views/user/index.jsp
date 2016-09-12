@@ -20,8 +20,11 @@
     	 
     	 
     	 $("#btn_add").click(function(){
-    		 $("#add").css('display','block');
+    		 $("#myModalLabel").text("新增");
+    	     $('#myModal').modal();
     	 });
+    	 
+    	 
     	 
     	 $("#btn_delete").click(function(){
     		 if($(".selected").length == 0){ 
@@ -254,57 +257,56 @@
         <table id="table"></table>
     </div>
     <!--------------------------添加/修改信息的弹出层---------------------------->
-<div id="add" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">
-                    <i class="icon-pencil"></i>
-                    <span id="lblAddTitle" style="font-weight:bold">添加信息</span>
-                </h4>
-            </div>
-            <form class="form-horizontal form-bordered form-row-strippe" id="ffAdd" action="" data-toggle="validator" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2">父ID</label>
-                                <div class="col-md-10">
-                                    <select id="PID" name="PID" type="text" class="form-control select2" placeholder="父ID..." ></select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2">名称</label>
-                                <div class="col-md-10">
-                                    <input id="Name" name="Name" type="text" class="form-control" placeholder="名称..." />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2">备注</label>
-                                <div class="col-md-10">
-                                    <textarea id="Note" name="Note" class="form-control" placeholder="备注..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="modal-footer bg-info">
-                    <input type="hidden" id="ID" name="ID" />
-                    <button type="submit" class="btn blue">确定</button>
-                    <button type="button" class="btn green" data-dismiss="modal">取消</button>
-                </div>
-            </form>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myModalLabel">新增</h4>
         </div>
+        <div class="modal-body">
+          <div class="workCode">
+             <label for="loginName">工号</label>
+             <input type="text" name="workCode" class="form-control" id="workCode" placeholder="工号">
+          </div>
+          <div class="form-group">
+             <label for="loginName">登录名</label>
+             <input type="text" name="loginName" class="form-control" id="loginName" placeholder="登录名">
+          </div>
+          <div class="form-group">
+             <label for="userName">用户名</label>
+             <input type="text" name="userName" class="form-control" id="userName" placeholder="用户名">
+          </div>
+          <div class="form-group">
+             <label for="mobile">手机号</label>
+             <input type="text" name="mobile" class="form-control" id="mobile" placeholder="手机号">
+          </div>
+          <div class="form-group">
+              <label for="email">邮箱</label>
+              <input type="text" name="email" class="form-control" id="email" placeholder="邮箱">
+          </div>
+          <div class="form-group">
+              <label for="address">家庭住址</label>
+              <input type="text" name="address" class="form-control" id="address" placeholder="家庭住址">
+          </div>
+          <div class="form-group">
+              <label for="position">职位</label>
+              <input type="text" name="position" class="form-control" id="position" placeholder="职位">
+          </div>
+        </div>
+        <div class="modal-footer">
+             <button type="button" class="btn btn-default" data-dismiss="modal">
+             	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+             	关闭
+             </button>
+             <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal">
+             	<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+             	保存
+             </button>
+        </div>
+      </div>
     </div>
-</div>
-    
-    <%@ include file="/common/footer.jsp"%>
-
+  </div>
+  <%@ include file="/common/footer.jsp"%>
 </body>
 </html>
