@@ -1,5 +1,7 @@
 package com.mj.bill.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -88,12 +90,22 @@ public class UserController {
 	 * @param response
 	 */
 	@RequestMapping("/user/delete")
-	public void delete(HttpServletRequest request,HttpServletResponse response,String[] ids){
-		System.out.println("===="+request.getParameter("ids"));
+	public void delete(HttpServletRequest request,HttpServletResponse response,String ids){
 		JSONObject json = new JSONObject();
 		try {
-			this.userService.updateUserByIds(ids);
-			json.put("status",0);
+			if(ids != null){
+				if(ids.contains(",")){
+					String[] id =  ids.split(",") ;
+					for(int i = 0 ; i < id.length ;i++){
+						this.userService.updateUserById(id[i]);
+					}
+				}else{
+					this.userService.updateUserById(ids);
+				}
+				json.put("status",0);
+			}else{
+				json.put("status",1);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

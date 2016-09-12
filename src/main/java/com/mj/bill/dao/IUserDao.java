@@ -24,7 +24,11 @@ public interface IUserDao {
 
 	Integer queryUserByConditionTotal(User user);
 
-	Object updateUserByIds(Map ids);
+	void updateUserByIds(List<String> ids);
+	
+	void updateUserById(String id);
+	
+	
 	
 	
 }

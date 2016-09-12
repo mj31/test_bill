@@ -30,6 +30,15 @@ public interface IUserService {
 	 */
 	Integer queryUserByConditionTotal(User user);
 
-
-	void updateUserByIds(String[] ids);
+	/**
+	 * 批量修改
+	 * @param ids
+	 */
+	void updateUserByIds(List<String> ids);
+	
+	/**
+	 * 更新
+	 * @param id
+	 */
+	void updateUserById(String id);
 }

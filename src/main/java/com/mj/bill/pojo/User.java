@@ -1,5 +1,8 @@
 package com.mj.bill.pojo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User{
  
  
@@ -74,6 +77,8 @@ public class User{
      * 字段: department  VARCHAR(100)  
      */	
 	private java.lang.String department;
+	
+	private List<String> ids = new ArrayList<String>();
  
 
 	public User(){
@@ -202,9 +207,15 @@ public class User{
 	public java.lang.String getDepartment() {
 		return this.department;
 	}
+
+	public List<String> getIds() {
+		return ids;
+	}
+
+	public void setIds(List<String> ids) {
+		this.ids = ids;
+	}
+
 	
-    
-    
- 
 }
 

@@ -1,8 +1,6 @@
 package com.mj.bill.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -38,11 +36,14 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public void updateUserByIds(String[] ids) {
-		Map map = new HashMap();
-		map.put("ids", ids) ;
-		userDao.updateUserByIds(map);
+	public void updateUserByIds(List<String> ids) {
+		userDao.updateUserByIds(ids);
 		
+	}
+
+	@Override
+	public void updateUserById(String id) {
+		userDao.updateUserById(id);
 	}
 
 

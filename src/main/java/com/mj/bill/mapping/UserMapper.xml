@@ -212,20 +212,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
      </select>
     
     
-  <!--   <select id="updateUserByIds" parameterType="list"> -->
-    <update id="updateUserByIds" >
-    	update user set status = 1
-	    where id in <![CDATA[(]]> ${ids} <![CDATA[)]]>
-	   <!--  <foreach collection="ids" index="index" item="id" open= "(" separator="," close=")">  
-            #{id}
-     </foreach > -->
-     </update>
+        
+      <update id="updateUserById" >
+	        UPDATE  user set status = 1  WHERE id = #{id} 
+	  </update>
 	    
-     <!-- </select>
-     -->
-    
-	
-	
-	
 </mapper>
 

@@ -43,18 +43,22 @@
     		 for(var i = 0 ; i< $ids.length ;i++){
     			 arrayIds[i] = $ids[i].value ;
     		 }
-    		 var ids = $(".selected").find("td:eq(1)").find("input").val()
     		bootbox.confirm("您确认删除选定的记录吗？", function (result) {
              if (result) {
                  //然后发送异步请求的信息到后台删除数据
                  $.get("${ctx}/user/delete.do?ids="+arrayIds, function (json) {
-                     var data = $.parseJSON(json);
-                     if (data.Success) {
-                         showTips("删除选定的记录成功");
-                         Refresh();//刷新页面数据ssss
-                     }
-                     else {
-                         showTips(data.ErrorMessage);
+                     if (json.status == 0) {
+                    	 $("#formSearch").submit();//刷新页面数据
+                     }else {
+                    	 bootbox.alert({  
+          		            buttons: {  
+          		               ok: {  
+          		                    label: '确定',  
+          		                    className: 'btn-myStyle'  
+          		                }  
+          		            },  
+          		            message: '操作失败',    
+          		        }); 
                      }
                  });
              }
@@ -188,7 +192,7 @@
     	};
     	 
     	 
-    	var ButtonInit = function () {
+    	 var ButtonInit = function () {
     	 var oInit = new Object();
     	 var postdata = {};
     	 
@@ -197,7 +201,7 @@
     	 };
     	 
     	 return oInit;
-    	};
+    	}; 
     
     </script>
 </head>
@@ -249,9 +253,6 @@
   </div>
         <table id="table"></table>
     </div>
-    
-    
-    <%@ include file="/common/footer.jsp"%>
     <!--------------------------添加/修改信息的弹出层---------------------------->
 <div id="add" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -302,5 +303,8 @@
         </div>
     </div>
 </div>
+    
+    <%@ include file="/common/footer.jsp"%>
+
 </body>
 </html>
