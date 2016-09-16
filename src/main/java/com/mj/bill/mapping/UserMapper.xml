@@ -138,13 +138,55 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		             AND id = #{id}
 	           </if>
                 <if test="loginName != null and loginName !=''">
-		             AND login_name = #{loginName}
+		             AND login_name  like concat(concat('%',#{loginName}),'%')
 	            </if>
                 <if test="password != null and password !=''">
 		             AND password = #{password}
 	            </if>
                 <if test="userName != null and userName !=''">
-		             AND user_name = #{userName}
+		             AND user_name like concat(concat('%',#{userName}),'%')
+	            </if>
+                <if test="mobile != null and mobile !=''">
+		             AND mobile = #{mobile}
+	            </if>
+                <if test="email != null and email !=''">
+		             AND email = #{email}
+	            </if>
+                <if test="address != null and address !=''">
+		             AND address = #{address}
+	            </if>
+                <if test="position != null and position !=''">
+		             AND position = #{position}
+	            </if>
+                <if test="workCode != null and workCode !=''">
+		             AND work_code = #{workCode}
+	            </if>
+               <if test="age != null">
+		             AND age = #{age}
+	           </if>
+               <if test="status != null">
+		             AND status = #{status}
+	           </if>
+                <if test="department != null and department !=''">
+		             AND department = #{department}
+	            </if>
+		</where>
+	</sql>
+	
+	<sql id="findPage_where_new">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+               <if test="id != null">
+		             AND id = #{id}
+	           </if>
+                <if test="loginName != null and loginName !=''">
+		             AND login_name  = #{loginName}
+	            </if>
+                <if test="password != null and password !=''">
+		             AND password = #{password}
+	            </if>
+                <if test="userName != null and userName !=''">
+		             AND user_name = #{userName} 
 	            </if>
                 <if test="mobile != null and mobile !=''">
 		             AND mobile = #{mobile}
@@ -175,7 +217,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		
     <select id="findPage_count" resultType="long">
         SELECT count(*) FROM user 
-		<include refid="findPage_where"/>    
+		<include refid="findPage_where_new"/>    
     </select>
     
     <!--
@@ -185,11 +227,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="findPage" resultMap="RM_User">
     	SELECT <include refid="columns" />
 	    FROM user 
-		<include refid="findPage_where"/>
-		
-		<if test="sortColumns != null and sortColumns !=''">
-			ORDER BY ${sortColumns}
-		</if>
+		<include refid="findPage_where_new"/>
     </select>
     
     <select id="queryUserByLoginName" resultMap="RM_User" parameterType="String">
@@ -210,8 +248,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    FROM user 
 	    <include refid="findPage_where"/>
      </select>
-    
-    
         
       <update id="updateUserById" >
 	        UPDATE  user set status = 1  WHERE id = #{id} 

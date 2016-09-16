@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.mj.bill.dao.IOperateDao">
+
+	<resultMap id="RM_OperateEvent" type="com.mj.bill.pojo.OperateEvent">
+        <result property="id" column="id"/>
+        <result property="operateNum" column="operate_num"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="poundsDiff" column="pounds_diff"/>
+        <result property="loadDate" column="load_date"/>
+        <result property="loadSkin" column="load_skin"/>
+        <result property="loadEmpty" column="load_empty"/>
+        <result property="uploadDate" column="upload_date"/>
+        <result property="uploadHair" column="upload_hair"/>
+        <result property="updateSkin" column="update_skin"/>
+        <result property="uploadEmpty" column="upload_empty"/>
+        <result property="companyId" column="company_id"/>
+        <result property="isOrNotTax" column="isOrNotTax"/>
+        <result property="carId" column="car_id"/>
+        <result property="factoryId" column="factory_id"/>
+        <result property="factoryPrice" column="factory_price"/>
+        <result property="activityPrice" column="activity_price"/>
+        <result property="customerPrice" column="customer_price"/>
+        <result property="carFee" column="car_fee"/>
+        <result property="factWeight" column="fact_weight"/>
+        <result property="eventRemark" column="event_remark"/>
+        <result property="customerRemark" column="customer_remark"/>
+	</resultMap>
+	
+	<resultMap id="RM_OperateEventVo" type="com.mj.bill.pojo.OperateEventVo">
+        <result property="id" column="id"/>
+        <result property="operateNum" column="operate_num"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="poundsDiff" column="pounds_diff"/>
+        <result property="loadDate" column="load_date"/>
+        <result property="loadSkin" column="load_skin"/>
+        <result property="loadEmpty" column="load_empty"/>
+        <result property="uploadDate" column="upload_date"/>
+        <result property="uploadHair" column="upload_hair"/>
+        <result property="updateSkin" column="update_skin"/>
+        <result property="uploadEmpty" column="upload_empty"/>
+        <result property="companyId" column="company_id"/>
+        <result property="isOrNotTax" column="isOrNotTax"/>
+        <result property="carId" column="car_id"/>
+        <result property="factoryId" column="factory_id"/>
+        <result property="factoryPrice" column="factory_price"/>
+        <result property="activityPrice" column="activity_price"/>
+        <result property="customerPrice" column="customer_price"/>
+        <result property="carFee" column="car_fee"/>
+        <result property="factWeight" column="fact_weight"/>
+        <result property="eventRemark" column="event_remark"/>
+        <result property="customerRemark" column="customer_remark"/>
+        
+        <result property="customerShortName" column="customerShortName"/>
+        <result property="customerAddress" column="customerAddress"/>
+        <result property="carNum" column="carNum"/>
+        <result property="compangShortName" column="compangShortName"/>
+        <result property="factoryShortName" column="factoryShortName"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,operate_num,customer_id,pounds_diff,load_date,load_skin,load_empty,upload_date,upload_hair,update_skin,upload_empty,company_id,isOrNotTax,car_id,factory_id,factory_price,activity_price,customer_price,car_fee,fact_weight,event_remark,customer_remark
+	    ]]>
+	</sql>
+	
+	<sql id="columns_new">
+	    <![CDATA[
+			ev.id,ev.operate_num,ev.customer_id,ev.pounds_diff,ev.load_date,ev.load_skin,ev.load_empty,ev.upload_date,
+			ev.upload_hair,ev.update_skin,ev.upload_empty,ev.company_id,ev.isOrNotTax,ev.car_id,ev.factory_id,
+			ev.factory_price,ev.activity_price,ev.customer_price,
+			ev.car_fee,ev.fact_weight,ev.event_remark,ev.customer_remark
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <![CDATA[
+        INSERT INTO operate_event (
+        	id ,
+        	operate_num ,
+        	customer_id ,
+        	pounds_diff ,
+        	load_date ,
+        	load_skin ,
+        	load_empty ,
+        	upload_date ,
+        	upload_hair ,
+        	update_skin ,
+        	upload_empty ,
+        	company_id ,
+        	isOrNotTax ,
+        	car_id ,
+        	factory_id ,
+        	factory_price ,
+        	activity_price ,
+        	customer_price ,
+        	car_fee ,
+        	fact_weight ,
+        	event_remark ,
+        	customer_remark 
+        ) VALUES (
+        	#{id} ,
+        	#{operateNum} ,
+        	#{customerId} ,
+        	#{poundsDiff} ,
+        	#{loadDate} ,
+        	#{loadSkin} ,
+        	#{loadEmpty} ,
+        	#{uploadDate} ,
+        	#{uploadHair} ,
+        	#{updateSkin} ,
+        	#{uploadEmpty} ,
+        	#{companyId} ,
+        	#{isOrNotTax} ,
+        	#{carId} ,
+        	#{factoryId} ,
+        	#{factoryPrice} ,
+        	#{activityPrice} ,
+        	#{customerPrice} ,
+        	#{carFee} ,
+        	#{factWeight} ,
+        	#{eventRemark} ,
+        	#{customerRemark} 
+        )
+    ]]>
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+	
+	
+     <sql id="update_sql">
+         <set>
+                <if test="operateNum != null">
+	         	operate_num = #{operateNum} ,
+	         </if>
+                <if test="customerId != null">
+	         	customer_id = #{customerId} ,
+	         </if>
+                <if test="poundsDiff != null and poundsDiff != ''">
+	         	pounds_diff = #{poundsDiff} ,
+	         </if>
+                <if test="loadDate != null">
+	         	load_date = #{loadDate} ,
+	         </if>
+                <if test="loadSkin != null">
+	         	load_skin = #{loadSkin} ,
+	         </if>
+                <if test="loadEmpty != null">
+	         	load_empty = #{loadEmpty} ,
+	         </if>
+                <if test="uploadDate != null">
+	         	upload_date = #{uploadDate} ,
+	         </if>
+                <if test="uploadHair != null">
+	         	upload_hair = #{uploadHair} ,
+	         </if>
+                <if test="updateSkin != null">
+	         	update_skin = #{updateSkin} ,
+	         </if>
+                <if test="uploadEmpty != null">
+	         	upload_empty = #{uploadEmpty} ,
+	         </if>
+                <if test="companyId != null">
+	         	company_id = #{companyId} ,
+	         </if>
+                <if test="isOrNotTax != null">
+	         	isOrNotTax = #{isOrNotTax} ,
+	         </if>
+                <if test="carId != null">
+	         	car_id = #{carId} ,
+	         </if>
+                <if test="factoryId != null">
+	         	factory_id = #{factoryId} ,
+	         </if>
+                <if test="factoryPrice != null">
+	         	factory_price = #{factoryPrice} ,
+	         </if>
+                <if test="activityPrice != null">
+	         	activity_price = #{activityPrice} ,
+	         </if>
+                <if test="customerPrice != null">
+	         	customer_price = #{customerPrice} ,
+	         </if>
+                <if test="carFee != null">
+	         	car_fee = #{carFee} ,
+	         </if>
+                <if test="factWeight != null">
+	         	fact_weight = #{factWeight} ,
+	         </if>
+                <if test="eventRemark != null and eventRemark != ''">
+	         	event_remark = #{eventRemark} ,
+	         </if>
+                <if test="customerRemark != null and customerRemark != ''">
+	         	customer_remark = #{customerRemark} 
+	         </if>
+       </set>
+    </sql>
+    
+	<update id="update" >
+	        UPDATE  operate_event
+	    <include refid="update_sql" />
+	        WHERE 
+	                id = #{id} 
+	</update>
+
+    <delete id="delete">
+    <![CDATA[
+        DELETE FROM operate_event WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="RM_OperateEvent">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM operate_event 
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<sql id="findPage_where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+               <if test="id != null">
+		             AND id = #{id}
+	           </if>
+               <if test="operateNum != null">
+		             AND operate_num = #{operateNum}
+	           </if>
+               <if test="customerId != null">
+		             AND customer_id = #{customerId}
+	           </if>
+                <if test="poundsDiff != null and poundsDiff !=''">
+		             AND pounds_diff = #{poundsDiff}
+	            </if>
+               <if test="loadDate != null">
+		             AND load_date = #{loadDate}
+	           </if>
+               <if test="loadSkin != null">
+		             AND load_skin = #{loadSkin}
+	           </if>
+               <if test="loadEmpty != null">
+		             AND load_empty = #{loadEmpty}
+	           </if>
+               <if test="uploadDate != null">
+		             AND upload_date = #{uploadDate}
+	           </if>
+               <if test="uploadHair != null">
+		             AND upload_hair = #{uploadHair}
+	           </if>
+               <if test="updateSkin != null">
+		             AND update_skin = #{updateSkin}
+	           </if>
+               <if test="uploadEmpty != null">
+		             AND upload_empty = #{uploadEmpty}
+	           </if>
+               <if test="companyId != null">
+		             AND company_id = #{companyId}
+	           </if>
+               <if test="isOrNotTax != null">
+		             AND isOrNotTax = #{isOrNotTax}
+	           </if>
+               <if test="carId != null">
+		             AND car_id = #{carId}
+	           </if>
+               <if test="factoryId != null">
+		             AND factory_id = #{factoryId}
+	           </if>
+               <if test="factoryPrice != null">
+		             AND factory_price = #{factoryPrice}
+	           </if>
+               <if test="activityPrice != null">
+		             AND activity_price = #{activityPrice}
+	           </if>
+               <if test="customerPrice != null">
+		             AND customer_price = #{customerPrice}
+	           </if>
+               <if test="carFee != null">
+		             AND car_fee = #{carFee}
+	           </if>
+               <if test="factWeight != null">
+		             AND fact_weight = #{factWeight}
+	           </if>
+                <if test="eventRemark != null and eventRemark !=''">
+		             AND event_remark = #{eventRemark}
+	            </if>
+                <if test="customerRemark != null and customerRemark !=''">
+		             AND customer_remark = #{customerRemark}
+	            </if>
+		</where>
+	</sql>
+		
+    <select id="findPage_count" resultType="long">
+        SELECT count(*) FROM operate_event 
+		<include refid="findPage_where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findPage" resultMap="RM_OperateEvent">
+    	SELECT <include refid="columns" />
+	    FROM operate_event 
+		<include refid="findPage_where"/>
+		
+		<if test="sortColumns != null and sortColumns !=''">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="queryOperateByCondition" resultMap="RM_OperateEventVo">
+    	SELECT <include refid="columns_new" />
+		    ,cus.short_name customerShortName ,cus.company_address customerAddress
+			,car.header_number carNum , com.short_name compangShortName , fac.short_name factoryShortName
+	    FROM operate_event ev
+	    	left join company com on ev.company_id = com.id 
+			left join company cus on ev.customer_id = cus.id
+      		left join company fac on ev.factory_id = fac.id
+			left join car_info car on ev.car_id = car.id
+	    <!-- <include refid="findPage_where_new"/> -->
+     </select>
+     
+     <select id="queryOperateByConditionTotal" resultType="int">
+    	SELECT count(1)
+	    FROM operate_event 
+	    <!-- <include refid="findPage_where_new"/> -->
+     </select>
+     
+     <select id="queryOperateNum" resultType="int" parameterType="string">
+    	SELECT max(ev.operate_num) FROM operate_event ev where ev.operate_num  like concat(concat(#{operateNum}),'%')
+     </select>
+     
+
+	
+</mapper>
+

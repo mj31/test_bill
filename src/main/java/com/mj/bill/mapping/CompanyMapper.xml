@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.mj.bill.dao.ICompanyDao">
+	<resultMap id="RM_Company" type="com.mj.bill.pojo.Company">
+        <result property="id" column="id"/>
+        <result property="companyAddress" column="company_address"/>
+        <result property="companyName" column="company_name"/>
+        <result property="flag" column="flag"/>
+        <result property="status" column="status"/>
+        <result property="shortName" column="short_name"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,company_address,company_name,flag,status,short_name
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <![CDATA[
+        INSERT INTO company (
+        	id ,
+        	company_address ,
+        	company_name ,
+        	flag ,
+        	status ,
+        	short_name
+        ) VALUES (
+        	#{id} ,
+        	#{companyAddress} ,
+        	#{companyName} ,
+        	#{flag} ,
+        	#{status} ,
+        	#{shortName}
+        )
+    ]]>
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+	
+	
+     <sql id="update_sql">
+         <set>
+                <if test="companyAddress != null and companyAddress != ''">
+	         	company_address = #{companyAddress} ,
+	         </if>
+                <if test="companyName != null and companyName != ''">
+	         	company_name = #{companyName} ,
+	         </if>
+	         <if test="shortName != null and shortName != ''">
+	         	short_name = #{shortName} ,
+	         </if>
+	         
+	         
+                <if test="flag != null">
+	         	flag = #{flag} ,
+	         </if>
+                <if test="status != null">
+	         	status = #{status} 
+	         </if>
+       </set>
+    </sql>
+    
+	<update id="update" >
+	        UPDATE  company
+	    <include refid="update_sql" />
+	        WHERE 
+	                id = #{id} 
+	</update>
+
+    <delete id="delete">
+    <![CDATA[
+        DELETE FROM company WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="RM_Company">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM company 
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<sql id="findPage_where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+               <if test="id != null">
+		             AND id = #{id}
+	           </if>
+                <if test="companyAddress != null and companyAddress !=''">
+		             AND company_address like concat(concat('%',#{companyAddress}),'%')
+	            </if>
+                <if test="companyName != null and companyName !=''">
+		             AND company_name like concat(concat('%',#{companyName}),'%')
+	            </if>
+	            <if test="shortName != null and shortName !=''">
+		             AND short_name like concat(concat('%',#{shortName}),'%')
+	            </if>
+               <if test="flag != null">
+		             AND flag = #{flag}
+	           </if>
+               <if test="status != null">
+		             AND status = #{status}
+	           </if>
+		</where>
+	</sql>
+		
+    <select id="findPage_count" resultType="long">
+        SELECT count(*) FROM company 
+		<include refid="findPage_where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findPage" resultMap="RM_Company">
+    	SELECT <include refid="columns" />
+	    FROM company 
+		<include refid="findPage_where"/>
+		
+		<if test="sortColumns != null and sortColumns !=''">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+     <select id="queryCompanyByCondition" resultMap="RM_Company">
+    	SELECT <include refid="columns" />
+	    FROM company 
+	    <include refid="findPage_where"/>
+	    order by status 
+     </select>
+     
+     <select id="queryCompanyByConditionTotal" resultType="int">
+    	SELECT count(1)
+	    FROM company 
+	    <include refid="findPage_where"/>
+     </select>
+     
+     <update id="updateCompanyById" >
+	        UPDATE  company set status = 1  WHERE id = #{id}
+	  </update>
+
+	
+</mapper>
+

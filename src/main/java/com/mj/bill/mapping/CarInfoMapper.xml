@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.mj.bill.dao.ICarInfoDao">
+
+	<resultMap id="RM_CarInfo" type="com.mj.bill.pojo.CarInfo">
+        <result property="id" column="id"/>
+        <result property="headerNumber" column="header_number"/>
+        <result property="trailerNumber" column="trailer_number"/>
+        <result property="carType" column="car_type"/>
+        <result property="weight" column="weight"/>
+        <result property="capacity" column="capacity"/>
+        <result property="carPhone" column="car_phone"/>
+        <result property="driverName" column="driver_name"/>
+        <result property="driverPhone" column="driver_phone"/>
+        <result property="followerName" column="follower_name"/>
+        <result property="followerPhone" column="follower_phone"/>
+        <result property="backupPhone" column="backup_phone"/>
+        <result property="expiredDate" column="expired_date"/>
+        <result property="remark" column="remark"/>
+        <result property="status" column="status"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,header_number,trailer_number,car_type,weight,capacity,car_phone,driver_name,driver_phone,follower_name,follower_phone,backup_phone,expired_date,remark,status
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <![CDATA[
+        INSERT INTO car_info (
+        	id ,
+        	header_number ,
+        	trailer_number ,
+        	car_type ,
+        	weight ,
+        	capacity ,
+        	car_phone ,
+        	driver_name ,
+        	driver_phone ,
+        	follower_name ,
+        	follower_phone ,
+        	backup_phone ,
+        	expired_date ,
+        	remark,
+        	status
+        ) VALUES (
+        	#{id} ,
+        	#{headerNumber} ,
+        	#{trailerNumber} ,
+        	#{carType} ,
+        	#{weight} ,
+        	#{capacity} ,
+        	#{carPhone} ,
+        	#{driverName} ,
+        	#{driverPhone} ,
+        	#{followerName} ,
+        	#{followerPhone} ,
+        	#{backupPhone} ,
+        	#{expiredDate} ,
+        	#{remark} ,
+        	#{status} 
+        )
+    ]]>
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+	
+	
+     <sql id="update_sql">
+         <set>
+                <if test="headerNumber != null and headerNumber != ''">
+	         	header_number = #{headerNumber} ,
+	         </if>
+                <if test="trailerNumber != null and trailerNumber != ''">
+	         	trailer_number = #{trailerNumber} ,
+	         </if>
+                <if test="carType != null">
+	         	car_type = #{carType} ,
+	         </if>
+	         <if test="status != null">
+	         	status = #{status} ,
+	         </if>
+                <if test="weight != null">
+	         	weight = #{weight} ,
+	         </if>
+                <if test="capacity != null">
+	         	capacity = #{capacity} ,
+	         </if>
+                <if test="carPhone != null and carPhone != ''">
+	         	car_phone = #{carPhone} ,
+	         </if>
+                <if test="driverName != null and driverName != ''">
+	         	driver_name = #{driverName} ,
+	         </if>
+                <if test="driverPhone != null and driverPhone != ''">
+	         	driver_phone = #{driverPhone} ,
+	         </if>
+                <if test="followerName != null and followerName != ''">
+	         	follower_name = #{followerName} ,
+	         </if>
+                <if test="followerPhone != null and followerPhone != ''">
+	         	follower_phone = #{followerPhone} ,
+	         </if>
+                <if test="backupPhone != null and backupPhone != ''">
+	         	backup_phone = #{backupPhone} ,
+	         </if>
+                <if test="expiredDate != null">
+	         	expired_date = #{expiredDate} ,
+	       </if>
+                <if test="remark != null and remark != ''">
+	         	remark = #{remark} 
+	         </if>
+       </set>
+    </sql>
+    
+	<update id="update" >
+	        UPDATE  car_info
+	    <include refid="update_sql" />
+	        WHERE 
+	                id = #{id} 
+	</update>
+
+    <delete id="delete">
+    <![CDATA[
+        DELETE FROM car_info WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="RM_CarInfo">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM car_info 
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<sql id="findPage_where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+               <if test="id != null">
+		             AND id = #{id}
+	           </if>
+                <if test="headerNumber != null and headerNumber !=''">
+		             AND header_number like concat(concat('%',#{headerNumber}),'%')
+	            </if>
+                <if test="trailerNumber != null and trailerNumber !=''">
+		             AND trailer_number = #{trailerNumber}
+	            </if>
+               <if test="carType != null">
+		             AND car_type = #{carType}
+	           </if>
+               <if test="weight != null">
+		             AND weight = #{weight}
+	           </if>
+	           <if test="status != null">
+		             AND status = #{status}
+	           </if>
+	           
+               <if test="capacity != null">
+		             AND capacity = #{capacity}
+	           </if>
+                <if test="carPhone != null and carPhone !=''">
+		             AND car_phone = #{carPhone}
+	            </if>
+                <if test="driverName != null and driverName !=''">
+		             AND driver_name  =#{driverName} 
+	            </if>
+                <if test="driverPhone != null and driverPhone !=''">
+		             AND driver_phone like concat(concat('%',#{driverPhone}),'%')
+	            </if>
+                <if test="followerName != null and followerName !=''">
+		             AND follower_name = #{followerName}
+	            </if>
+                <if test="followerPhone != null and followerPhone !=''">
+		             AND follower_phone like concat(concat('%',#{followerPhone}),'%')
+	            </if>
+                <if test="backupPhone != null and backupPhone !=''">
+		             AND backup_phone = #{backupPhone}
+	            </if>
+                <if test="remark != null and remark !=''">
+		             AND remark = #{remark}
+	            </if>
+		</where>
+	</sql>
+		
+    <select id="findPage_count" resultType="long">
+        SELECT count(*) FROM car_info 
+		<include refid="findPage_where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findPage" resultMap="RM_CarInfo">
+    	SELECT <include refid="columns" />
+	    FROM car_info 
+		<include refid="findPage_where"/>
+		
+		<if test="sortColumns != null and sortColumns !=''">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+     <select id="queryCarInfoByCondition" resultMap="RM_CarInfo">
+    	SELECT <include refid="columns" />
+	    FROM car_info 
+	    <include refid="findPage_where"/>
+	    order by status 
+     </select>
+     
+     <select id="queryCarInfoByConditionTotal" resultType="int">
+    	SELECT count(1)
+	    FROM car_info 
+	    <include refid="findPage_where"/>
+     </select>
+     
+     <update id="updateCarInfoById" >
+	        UPDATE  car_info set status = 1  WHERE id = #{id} 
+	  </update>
+     
+	
+</mapper>
+

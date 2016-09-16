@@ -37,8 +37,28 @@ public interface IUserService {
 	void updateUserByIds(List<String> ids);
 	
 	/**
-	 * 更新
+	 * 删除
 	 * @param id
 	 */
 	void updateUserById(String id);
+
+	/**
+	 * 保存用户
+	 * @param user
+	 */
+	void saveUser(User user);
+
+	/**
+	 * 根据条件查询
+	 * @param user
+	 * @return
+	 */
+	List<User> findPage(User user);
+
+	/**
+	 * 修改
+	 * @param user
+	 */
+	void updateUser(User user);
+
 }

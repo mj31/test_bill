@@ -27,6 +27,10 @@ public interface IUserDao {
 	void updateUserByIds(List<String> ids);
 	
 	void updateUserById(String id);
+
+	List<User> findPage(User user);
+
+	void update(User user);
 	
 	
 	

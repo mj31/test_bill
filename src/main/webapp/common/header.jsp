@@ -15,13 +15,13 @@
 <link href="${ctx}/css/signin.css" rel="stylesheet">
 
 <script src="${ctx}/js/jquery.min.js"></script>
+<script src="${ctx}/js/layer/laydate/laydate.js"></script>
 
 <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="${ctx}/favicon.ico" />
     <!--jquery库-->
-    <script src="${ctx}/js/jquery.min.js"></script>
     <!--bootstrap库-->
     <link href="${ctx}/css/bootstrap.min.css" rel="stylesheet" />
     <link href="${ctx}/css/bootstrap-table.css" rel="stylesheet" />
@@ -49,3 +49,4 @@
     <link href="${ctx}/css/default.css" rel="stylesheet" type="text/css" />
     <!--主要写的js代码-->
     <script src="${ctx}/js/default.js" type="text/javascript"></script>
+    

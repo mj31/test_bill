@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mj.bill.common.MD5Util;
@@ -63,7 +64,7 @@ public class UserController {
 	@RequestMapping("/user/list")
 	public String toIndex(HttpServletRequest request,Model model,User user){
 		model.addAttribute("user", user);
-		return "user/index";
+		return "user/user_index";
 	}
 	
 	/**
@@ -72,6 +73,7 @@ public class UserController {
 	 * @param response
 	 */
 	@RequestMapping("/user/search")
+	@ResponseBody
 	public void search(HttpServletRequest request,HttpServletResponse response,User user){
 		 List<User> userList = this.userService.queryUserByCondition(user);
 		 Integer total = this.userService.queryUserByConditionTotal(user);
@@ -85,11 +87,12 @@ public class UserController {
 	}
 	
 	/**
-	 * 用户列表页查询
+	 * 删除
 	 * @param request
 	 * @param response
 	 */
 	@RequestMapping("/user/delete")
+	@ResponseBody
 	public void delete(HttpServletRequest request,HttpServletResponse response,String ids){
 		JSONObject json = new JSONObject();
 		try {
@@ -102,6 +105,83 @@ public class UserController {
 				}else{
 					this.userService.updateUserById(ids);
 				}
+				json.put("status",0);
+			}else{
+				json.put("status",1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("status",1);
+		}
+	     ResponseUtils.responseJson(response, json.toString());
+	}
+	
+	/**
+	 * 保存用户
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/user/save")
+	@ResponseBody
+	public void save(HttpServletRequest request,HttpServletResponse response,User user){
+		JSONObject json = new JSONObject();
+		try {
+			
+			if(user != null){
+				user.setStatus(0);
+				user.setPassword("e10adc3949ba59abbe56e057f20f883e");
+				this.userService.saveUser(user);
+				json.put("status",0);
+			}else{
+				json.put("status",0);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("status",1);
+		}
+	     ResponseUtils.responseJson(response, json.toString());
+	}
+	
+	/**
+	 * 用户列表页查询
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/user/checkLoginName")
+	@ResponseBody
+	public void checkLoginNames(HttpServletRequest request,HttpServletResponse response,User user){
+		JSONObject json = new JSONObject();
+		try {
+				List<User> userList = this.userService.findPage(user);
+				if(userList.size() > 0){
+					json.put("status",1);
+				}else{
+					json.put("status",0);
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("status",1);
+		}
+	     ResponseUtils.responseJson(response, json.toString());
+	}
+	
+	
+	/**
+	 * 修改用户
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/user/update")
+	@ResponseBody
+	public void update(HttpServletRequest request,HttpServletResponse response,User user){
+		JSONObject json = new JSONObject();
+		try {
+			
+			if(user != null){
+				this.userService.updateUser(user);
 				json.put("status",0);
 			}else{
 				json.put("status",1);

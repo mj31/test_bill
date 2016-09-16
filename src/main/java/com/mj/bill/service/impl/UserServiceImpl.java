@@ -46,5 +46,21 @@ public class UserServiceImpl implements IUserService {
 		userDao.updateUserById(id);
 	}
 
+	@Override
+	public void saveUser(User user) {
+		userDao.insert(user);
+	}
+
+	@Override
+	public List<User> findPage(User user) {
+		List<User> list = userDao.findPage(user);
+		return list;
+	}
+
+	@Override
+	public void updateUser(User user) {
+		userDao.update(user);
+	}
+
 
 } 
