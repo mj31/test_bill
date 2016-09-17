@@ -41,5 +41,19 @@ public class OperateServiceImpl implements IOperateService {
 		}
 	}
 
+	@Override
+	public void saveOperateEvent(OperateEventVo operateEvent) {
+		operateDao.insert(operateEvent);
+		
+	}
+	
+	@Override
+	public void updateOperateEvent(OperateEventVo operateEvent) {
+		operateDao.update(operateEvent);
+		
+	}
+	
+	
+
 
 } 

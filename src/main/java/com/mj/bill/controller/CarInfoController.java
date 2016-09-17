@@ -128,7 +128,7 @@ public class CarInfoController {
 				this.carInfoService.saveCarInfo(carInfo);
 				json.put("status",0);
 			}else{
-				json.put("status",0);
+				json.put("status",1);
 			}
 			
 		} catch (Exception e) {

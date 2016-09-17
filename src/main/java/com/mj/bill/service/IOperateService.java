@@ -24,5 +24,17 @@ public interface IOperateService {
 	 * 运单编号的查询
 	 */
 	Integer queryOperateNum();
+	
+	/**
+	 * 添加运作事件
+	 * @param operateEvent
+	 */
+	void saveOperateEvent(OperateEventVo operateEvent);
+	
+	/**
+	 * 更新运作事件
+	 * @param operateEvent
+	 */
+	void updateOperateEvent(OperateEventVo operateEvent);
 
 }

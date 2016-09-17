@@ -134,7 +134,7 @@ public class UserController {
 				this.userService.saveUser(user);
 				json.put("status",0);
 			}else{
-				json.put("status",0);
+				json.put("status",1);
 			}
 			
 		} catch (Exception e) {

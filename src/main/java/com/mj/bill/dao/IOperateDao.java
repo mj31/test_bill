@@ -2,6 +2,7 @@ package com.mj.bill.dao;
 
 import java.util.List;
 
+import com.mj.bill.pojo.CarInfo;
 import com.mj.bill.pojo.OperateEventVo;
 
 public interface IOperateDao {
@@ -21,5 +22,18 @@ public interface IOperateDao {
 	Integer queryOperateByConditionTotal(OperateEventVo operateEvent);
 
 	Integer queryOperateNum(String operateNum);
+	
+	/**
+	 * 保存
+	 * @param operateEvent
+	 * @return
+	 */
+	int insert(OperateEventVo operateEvent);
+	
+	/**
+	 * 更新
+	 * @param operateEvent
+	 */
+	void update(OperateEventVo operateEvent);
 
 }

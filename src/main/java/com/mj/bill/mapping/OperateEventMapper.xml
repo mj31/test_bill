@@ -331,15 +331,40 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			left join company cus on ev.customer_id = cus.id
       		left join company fac on ev.factory_id = fac.id
 			left join car_info car on ev.car_id = car.id
-	    <!-- <include refid="findPage_where_new"/> -->
+			where 1=1
+			  <if test="customerId != null">
+		             AND ev.customer_id = #{customerId}
+	           </if>
+	           <if test="carId != null">
+		             AND ev.car_id = #{carId}
+	           </if>
+	            <if test="factoryId != null">
+		             AND ev.factory_id = #{factoryId}
+	           </if>
+	           order by ev.operate_num desc
+	      
      </select>
      
      <select id="queryOperateByConditionTotal" resultType="int">
     	SELECT count(1)
-	    FROM operate_event 
+	    FROM operate_event ev
+	    	left join company com on ev.company_id = com.id 
+			left join company cus on ev.customer_id = cus.id
+      		left join company fac on ev.factory_id = fac.id
+			left join car_info car on ev.car_id = car.id
+	    	where 1=1
+			  <if test="customerId != null">
+		             AND ev.customer_id = #{customerId}
+	           </if>
+	           <if test="carId != null">
+		             AND ev.car_id = #{carId}
+	           </if>
+	            <if test="factoryId != null">
+		             AND ev.factory_id = #{factoryId}
+	           </if> 
 	    <!-- <include refid="findPage_where_new"/> -->
      </select>
-     
+      			
      <select id="queryOperateNum" resultType="int" parameterType="string">
     	SELECT max(ev.operate_num) FROM operate_event ev where ev.operate_num  like concat(concat(#{operateNum}),'%')
      </select>

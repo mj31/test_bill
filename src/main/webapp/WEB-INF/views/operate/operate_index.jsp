@@ -10,8 +10,13 @@
     <script type="text/javascript">
     $(function () {
     	
-    	var expiredDate = {
-    		    elem:'#expiredDate',
+
+        $('.selectpicker').selectpicker({
+            'selectedText': 'cat'
+        });
+        
+    	var loadDate = {
+    		    elem:'#loadDate',
     		    format:'YYYY-MM-DD',
     		    istime:false,
     		    isclear:true,
@@ -22,7 +27,7 @@
     		    zIndex:99999999
     		}
 
-    		laydate(expiredDate); 
+    		laydate(loadDate); 
     	
     	 //1.初始化Table
     	 var oTable = new TableInit();
@@ -34,7 +39,7 @@
     	 
     	 // 添加弹出层 
     	 $("#btn_add").click(function(){
-    		 $("#lblAddTitle").text("添加公司信息");
+    		 $("#lblAddTitle").text("添加运作事件");
     		 $("#addForm #loginName").attr("readonly",false);
     		 formNull();
     		 $("#saveUser").text("保存") ; 
@@ -43,11 +48,11 @@
     	 
     	 //修改弹出层 
     	 $("#btn_edit").click(function(){
-    		 $("#lblAddTitle").text("修改公司信息");  
+    		 $("#lblAddTitle").text("修改运作事件");   
     		 $("#saveUser").text("修改") ; 
     		 formNull();
     		 //校验选了一条数据 
-    		 if($(".selected").length != 1){ 
+    		 if($(".selected").length-6 != 1){ 
     			 bootbox.alert({  
     		            buttons: {  
     		               ok: {  
@@ -62,20 +67,36 @@
     		 }
     		 
     		 //获取数据
-    		 $("#addForm #headerNumber").val($(".selected").find("td:eq(2)").text());
-	   		 $("#addForm #trailerNumber").val($(".selected").find("td:eq(3)").text());
-	   		 $("#addForm #weight").val($(".selected").find("td:eq(5)").text());
-	   		 $("#addForm #capacity").val($(".selected").find("td:eq(6)").text());
-	   		 $("#addForm #carPhone").val($(".selected").find("td:eq(7)").text());
-	   		 $("#addForm #driverName").val($(".selected").find("td:eq(8)").text());
-	   		 $("#addForm #driverPhone").val($(".selected").find("td:eq(9)").text());
-	   		 $("#addForm #followerName").val($(".selected").find("td:eq(10)").text()); 
-	   		 
-	   		 $("#addForm #followerPhone").val($(".selected").find("td:eq(11)").text()); 
-	   		 $("#addForm #backupPhone").val($(".selected").find("td:eq(12)").text()); 
-	   		 $("#addForm #expiredDate").val($(".selected").find("td:eq(13)").text()); 
-	   		 $("#addForm #remark").val($(".selected").find("td:eq(14)").text()); 
+    	/* 	 $("#addForm #customerId").val($(".selected").attr("customerId"));
+    		 $("#addForm #carId").val($(".selected").attr("carId"));
+    		 $("#addForm #companyId").val($(".selected").attr("companyId"));
+    		 $("#addForm #factoryId").val($(".selected").attr("factoryId"));
+    		 $("#addForm #isOrNotTax").val($(".selected").attr("isOrNotTax")); */
     		 
+    		 var customerId = $(".selected .ids").attr("customerId") ;
+    		 var carId = $(".selected .ids").attr("carId") ;
+    		 var companyId = $(".selected .ids").attr("companyId") ;
+    		 var factoryId = $(".selected .ids").attr("factoryId") ;
+    		 var isOrNotTax = $(".selected .ids").attr("isOrNotTax") ;
+    		 
+    		  
+    		 $("#addForm #customerId").find("option[value="+customerId+"]").attr("selected",true);
+    		 $("#addForm #carId").find("option[value="+carId+"]").attr("selected",true);
+    		 $("#addForm #factoryId").find("option[value="+factoryId+"]").attr("selected",true);
+    		  
+    		 
+    		 $("#addForm #companyId").find("option[value="+companyId+"]").attr("selected",true);
+    		 $("#addForm #isOrNotTax").find("option[value="+isOrNotTax+"]").attr("selected",true);
+    		 
+	   		 $("#addForm #poundsDiff").val($(".selected").find("td:eq(3)").text());
+	   		 $("#addForm #loadDate").val($(".selected").find("td:eq(5)").text());
+	   		 
+	   		 $("#addForm #factoryPrice").val($(".selected").find("td:eq(8)").text());
+	   		 $("#addForm #activityPrice").val($(".selected").find("td:eq(9)").text());
+	   		 
+	   		 $("#addForm #customerPrice").val($(".selected").find("td:eq(11)").text());
+	   		 $("#addForm #carFee").val($(".selected").find("td:eq(13)").text());
+	   		 $("#addForm #eventRemark").val($(".selected").find("td:eq(27)").text()); 
 	   		
 	   		 $('#add').modal();
 	   		 
@@ -106,7 +127,7 @@
     		bootbox.confirm("您确认删除选定的记录吗？", function (result) {
              if (result) {
                  //然后发送异步请求的信息到后台删除数据
-                 $.get("${ctx}/car/delete.do?ids="+arrayIds, function (json) {
+                 $.get("${ctx}/operate/delete.do?ids="+arrayIds, function (json) {
                      if (json.status == 0) {
                     	 $("#formSearch").submit();//刷新页面数据
                      }else {
@@ -138,46 +159,78 @@
     	 $("#saveUser").click(function(){
 
 	 	   		var saveUserValue = $("#saveUser").text() ;
-	 	   		var headerNumber =  $("#addForm #headerNumber").val();
-	 	   	    var trailerNumber = $("#addForm #trailerNumber").val();
-	 	   		var weight= $("#addForm #weight").val();
-	 	   		var capacity= $("#addForm #capacity").val();
-	 	 		var carPhone= $("#addForm #carPhone").val();
-	 	 		var driverName=  $("#addForm #driverName").val();
-			 	var driverPhone= $("#addForm #driverPhone").val();
-			 	var followerName= $("#addForm #followerName").val(); 
-			 	var followerPhone= $("#addForm #followerPhone").val(); 
-			 	var backupPhone= $("#addForm #backupPhone").val(); 
-			 	var expiredDate= $("#addForm #expiredDate").val();
-			 	var remark= $("#addForm #remark").val(); 
-			 	//车头类型  0代表气头 1代表油头
-			 	var carType = $("#carType").find("option:selected").val();
+	 	   		
+			 	var customerId = $("#customerId").find("option:selected").val();
+			 	var poundsDiff= $("#addForm #poundsDiff").val();
+			 	var loadDate= $("#addForm #loadDate").val(); 
+			 	var carId = $("#carId").find("option:selected").val();
+			 	var companyId = $("#companyId").find("option:selected").val();
+			 	var factoryId = $("#factoryId").find("option:selected").val();
+			 	var factoryPrice= $("#addForm #factoryPrice").val(); 
+			 	var activityPrice= $("#addForm #activityPrice").val(); 
+			 	var customerPrice= $("#addForm #customerPrice").val(); 
+			 	var carFee= $("#addForm #carFee").val();
+			 	var isOrNotTax = $("#isOrNotTax").find("option:selected").val();
+	 	 		var eventRemark=  $("#addForm #eventRemark").val();
 			 	
 			 	//行车证荷载量进行校验
 			 	var reg = /^(([1-9]+)|([0-9]+\.[0-9]{0,2}))$/;
-			 	if(weight != null  && weight != ""){
-			        if(!reg.test(weight)){
-			        	bootbox.alert("行车证荷载量必须是数字且保留2位小数"); 
+			 	if(poundsDiff != null  && poundsDiff != ""){
+			        if(!reg.test(poundsDiff)){
+			        	bootbox.alert("磅差必须是数字且保留2位小数");  
 			        	return  ;
 			        }else{
-			        	weight = Number(weight*100) ;
+			        	poundsDiff = Number(poundsDiff*100) ;
 			        }
 			 	}
 			 	
-			 	if(capacity != null  && capacity != ''){
-			        if(!reg.test(capacity)){
-			        	bootbox.alert("槽车容量必须是数字且保留2位小数"); 
+			 	if(factoryPrice != null  && factoryPrice != ''){
+			        if(!reg.test(factoryPrice)){
+			        	bootbox.alert("出厂价必须是数字且保留2位小数");  
 			        	return  ;
 			        }else{
-			        	capacity = Number(capacity*100) ;
+			        	factoryPrice = Number(factoryPrice*100) ;
 			        }
+			 	}
+			 	
+			 	if(activityPrice != null  && activityPrice != ''){
+			        if(!reg.test(activityPrice)){
+			        	bootbox.alert("优惠价必须是数字且保留2位小数");   
+			        	return  ;
+			        }else{
+			        	activityPrice = Number(activityPrice*100) ;
+			        }
+			 	}
+			 	
+			 	if(customerPrice != null  && customerPrice != ''){
+			        if(!reg.test(customerPrice)){
+			        	bootbox.alert("运到价必须是数字且保留2位小数");   
+			        	return  ;
+			        }else{
+			        	customerPrice = Number(customerPrice*100) ;
+			        }
+			 	}
+			 	
+			 	if(carFee != null  && carFee != ''){
+			        if(!reg.test(carFee)){
+			        	bootbox.alert("运费必须是数字且保留2位小数");    
+			        	return  ;
+			        }else{
+			        	carFee = Number(carFee*100) ;
+			        }
+			 	}
+			 	
+			 	if(loadDate == '-'){
+			 		loadDate = '' ;
 			 	}
 			 	
 	 	   		 if(saveUserValue == '保存'){
 	                    $.ajax({
-			      		        url : "${ctx}/car/save.do",
+			      		        url : "${ctx}/operate/save.do",
 			      		        type: "post",
-			      		        data:{"carType":carType,"headerNumber":headerNumber,"trailerNumber":trailerNumber,"weight":weight,"capacity":capacity,"carPhone":carPhone,"driverName":driverName,"driverPhone":driverPhone,"followerName":followerName,"followerPhone":followerPhone,"backupPhone":backupPhone, "strExpiredDate":expiredDate,"remark":remark},
+			      		        data:{"customerId":customerId,"poundsDiff":poundsDiff,"strLoadDate":loadDate,
+			      		        		"carId":carId,"companyId":companyId,"factoryId":factoryId,"factoryPrice":factoryPrice,"activityPrice":activityPrice
+			      		        		,"customerPrice":customerPrice,"carFee":carFee,"isOrNotTax":isOrNotTax, "eventRemark":eventRemark},
 			      		        dataType : "json",
 			      		        success: function(result){
 		     		                     if(result.status == 0){
@@ -185,17 +238,21 @@
 		     		                     }else{
 		     		                    	 bootbox.alert("保存失败 "); 
 		     		                     }
-		      		               }
+		      		               },
+		      		            error:function(){
+		  	  		            	 bootbox.alert("保存失败 ");
+		      		        	   }
 	      		          	});
  	   		 }
  	   		 
  	   		if(saveUserValue == '修改'){
  	   			var id = $(".selected .ids").val() ;
 	 	   		$.ajax({
-	      		        url : "${ctx}/car/update.do",
+	      		        url : "${ctx}/operate/update.do",
 	      		        type: "post",
-	      		        data:{"id":id,"carType":carType,"headerNumber":headerNumber,"trailerNumber":trailerNumber,"weight":weight,"capacity":capacity,"carPhone":carPhone,"driverName":driverName
-		      		        	,"driverPhone":driverPhone,"followerName":followerName,"followerPhone":followerPhone,"backupPhone":backupPhone, "strExpiredDate":expiredDate,"remark":remark},
+	      		        data:{"id":id,"customerId":customerId,"poundsDiff":poundsDiff,"strLoadDate":loadDate,
+      		        		"carId":carId,"companyId":companyId,"factoryId":factoryId,"factoryPrice":factoryPrice,"activityPrice":activityPrice
+      		        		,"customerPrice":customerPrice,"carFee":carFee,"isOrNotTax":isOrNotTax, "eventRemark":eventRemark},
 	      		        dataType : "json",
 	      		        success: function(result){
 	 		                     if(result.status == 0){
@@ -206,6 +263,9 @@
 	 		                    	 bootbox.alert("保存失败 "); 
 	 		                     }
 	  		               }
+      		           ,error:function(){
+	  		            	 bootbox.alert("保存失败 ");
+      		        	   }
 	  		          });
  	   		}
     	 });
@@ -220,7 +280,7 @@
     	 oTableInit.Init = function () {
     	  $('#table').bootstrapTable({
     	   url: '${ctx}/operate/search.do',   //请求后台的URL（*） 
-    	   method: 'post',      //请求方式（*）
+    	   method: 'get',      //请求方式（*）
     	   toolbar: '#toolbar',    //工具按钮用哪个容器
     	   striped: true,      //是否显示行间隔色
     	   cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -255,7 +315,7 @@
                 //通过formatter可以自定义列显示的内容
                 //value：当前field的值，即id
                 //row：当前行的数据
-                return index+1+'<input type="hidden" class="ids"  value='+value+'>';
+                return index+1+'<input type="hidden" class="ids" customerId='+row.customerId+' carId = '+row.carId+' companyId = '+row.companyId+' factoryId = '+row.factoryId+' isOrNotTax ='+row.isOrNotTax+' value='+value+'>';
               
             }
     	   },{
@@ -267,7 +327,14 @@
     	    field: 'poundsDiff',
     	    title: '磅差', 
     	    align: "center",//水平
-            valign: "middle"//垂直
+            valign: "middle",//垂直
+           	formatter:function(value,row,index){
+            		if(value != null && value != ''){
+            			return value/100 ;
+            		}else{
+             			return '' ;
+             		}
+               }
     	   }, {
     	    field: 'customerShortName',
     	    title: '客户',
@@ -577,15 +644,17 @@
     	   ]
     	  });
     	 };
-    	 
+    	 var formSearchCustomerId = $("#formSearch #customerId").find("option:selected").val() ;
+    	 var formSearchFactoryId = $("#formSearch #factoryId").find("option:selected").val() ;
+    	 var formSearchCarId = $("#formSearch #carId").find("option:selected").val() ;
     	  //得到查询的参数  Number(capacity*100) 
     	 oTableInit.queryParams = function (params) {
 	    	  var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
 		    	   limit: params.limit, //页面大小
 		    	   offset: params.offset, //页码
-		    	   headerNumber: $("#formSearch #headerNumber").val(), 
-		    	   driverPhone: $("#formSearch #driverPhone").val(), 
-		    	   status: $("#formSearch #status").val()
+		    	   customerId: formSearchCustomerId ,
+		    	   factoryId: formSearchFactoryId ,
+		    	   carId: formSearchCarId
 	    	     };
     	  	  return temp;
     	 }; 
@@ -606,26 +675,14 @@
     	
     	//表单滞空 
     	function formNull(){
-    		$("#addForm #headerNumber").val("");
- 	   	    $("#addForm #trailerNumber").val("");
- 	   		$("#addForm #weight").val("");
- 	   		$("#addForm #capacity").val("");
- 	 		$("#addForm #carPhone").val("");
- 	 		$("#addForm #driverName").val("");
-		 	$("#addForm #driverPhone").val("");
-		 	$("#addForm #followerName").val(""); 
-		 	$("#addForm #followerPhone").val(""); 
-		 	$("#addForm #backupPhone").val(""); 
-		 	$("#addForm #expiredDate").val("");
-		 	$("#addForm #remark").val(""); 
+		 	$("#addForm #poundsDiff").val("");
+		 	$("#addForm #loadDate").val(""); 
+		 	$("#addForm #factoryPrice").val(""); 
+		 	$("#addForm #activityPrice").val(""); 
+		 	$("#addForm #customerPrice").val(""); 
+		 	$("#addForm #carFee").val("");
+ 	 		$("#addForm #eventRemark").val("");
     	} 
-    	
-    	
-    	function checkMoneyFormat(val){
-            var reg = /^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/;
-            var isMoneyFormatRight = reg.test(val);
-            return isMoneyFormatRight;
-        }
     	
     </script>
 </head>
@@ -636,16 +693,42 @@
         <div class="panel panel-default">
    <div class="panel-heading">运作详情</div>
    <div class="panel-body">
-    <form id="formSearch" class="form-horizontal" action="${ctx}/operate/list.do" method="post">
+    <form id="formSearch" class="form-horizontal" action="${ctx}/operate/index.do">
 	     <div class="form-group" style="margin-top:15px">
-		      <label class="control-label col-sm-1" for="txt_search_departmentname">主车号</label>
+		      <label class="control-label col-sm-1" for="txt_search_departmentname">客户</label>
 		      <div class="col-sm-3" style="width:10%">
-		       		<input type="text" class="form-control" id="headerNumber" name="headerNumber" value="${carInfo.headerNumber}">
+		      		 	<select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">
+		      		 				   <option value=''>----请选择----</option>
+                               	<c:forEach items="${companyList}" var="customer">
+                               		<c:if test="${customer.flag eq 1}">
+						     			<option value="${customer.id}" <c:if test="${operateEvent.customerId eq customer.id}">selected</c:if>>${customer.shortName}</option> 
+                               		</c:if>
+                               	</c:forEach> 
+					 	 </select>
+		       		<%-- <input type="text" class="form-control" id="headerNumber" name="headerNumber" value="${carInfo.headerNumber}"> --%>
 		      </div>
-		      <label class="control-label col-sm-1" for="txt_search_statu">驾驶员电话</label>
+		      <label class="control-label col-sm-1" for="txt_search_statu">出厂地</label>
 		      <div class="col-sm-3" style="width:10%">
-		       		<input type="text" class="form-control" id="driverPhone" name="driverPhone" value="${carInfo.driverPhone}">
+		       			<select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId"> 
+		       								 <option value=''>----请选择----</option>
+							      <c:forEach items="${companyList}" var="factory">
+                                  		  <c:if test="${factory.flag eq 0}">
+									         <option value="${factory.id}"  <c:if test="${operateEvent.factoryId eq factory.id}">selected</c:if>>${factory.shortName}</option> 
+                                  		  </c:if>
+                                  </c:forEach>
+					    </select>
 		      </div>
+		      <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
+		      <div class="col-sm-3" style="width:10%">
+		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="carId" name="carId"> 
+		       								  <option value=''>----请选择----</option>
+                                    	<c:forEach items="${carInfoList}" var="carInfo">
+											   <option value="${carInfo.id}"  <c:if test="${operateEvent.carId eq carInfo.id}">selected</c:if>>${carInfo.headerNumber}</option> 
+                                    	</c:forEach>
+					 	</select>
+		      </div>
+		      
+		      
 		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
 		      <div class="col-sm-3"  style="width:6%">
 		       		<div class="form-group">
@@ -685,117 +768,156 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title">
                     <i class="icon-pencil"></i>
-                    <span id="lblAddTitle" style="font-weight:bold">添加车辆信息信息</span>
+                    <span id="lblAddTitle" style="font-weight:bold">添加运作事件</span>
                 </h4>
             </div>
             <form class="form-horizontal form-bordered form-row-strippe"  id="addForm" data-toggle="validator" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                    
+                    	<div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">主车号</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <!-- <select id="PID" name="PID" type="text" class="form-control select2" placeholder="父ID..." ></select> -->
-                                    <input id="headerNumber"  name="headerNumber" type="text" class="form-control" placeholder="主车号" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">挂车号</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <input id="trailerNumber" name="trailerNumber" type="text" class="form-control" placeholder="挂车号" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">车头类型</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">客户</label> 
                                 <div class="col-md-10" style="width:50%"> 
-                                    <select class="form-control" id="carType" name="carType"> 
-									      <option value="0" >气头</option> 
-									      <option  value="1">油头</option>
+                                    <select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">
+                                    	<c:forEach items="${companyList}" var="customer">
+                                    		<c:if test="${customer.flag eq 1}">
+											     <option value="${customer.id}" >${customer.shortName}</option> 
+                                    		</c:if>
+                                    	</c:forEach> 
 					      			</select>
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">目的地</label>
+                                <div class="col-md-10" style="width:50%">
+                                    <input id="customerAddress" name="customerAddress" readonly type="text" class="form-control" placeholder="目的地" />
+                                </div>
+                            </div>
+                        </div> -->
+                    
+                    
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">行车证荷载量</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">磅差</label>
                                 <div class="col-md-10" style="width:50%">
-                                    <input id="weight" name="weight"  type="text" class="form-control" placeholder="行车证荷载量" />
-                                </div>
-                            </div>
-                        </div>
-                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">槽车容量</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <input id="capacity" name="capacity" type="text" class="form-control" placeholder="槽车容量" />
-                                </div>
-                            </div>
-                        </div>
-                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">随车电话</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <input id="carPhone" name="carPhone" type="text" class="form-control" placeholder="随车电话" />
-                                </div>
-                            </div>
-                        </div>
-                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">驾驶员名字</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <input id="driverName" name="driverName" type="text" class="form-control" placeholder="驾驶员名字" />
-                                </div>
-                            </div>
-                        </div>
-                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">驾驶员电话</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <input id="driverPhone" name="driverPhone" type="text" class="form-control" placeholder="驾驶员电话" />
+                                    <input id="poundsDiff"  name="poundsDiff" type="text" class="form-control" placeholder="磅差" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">押运员名字</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">装车时间</label>
                                 <div class="col-md-10" style="width:50%">
-                                    <input id="followerName" name="followerName" type="text" class="form-control" placeholder="押运员名字" />
+                                    <input id="loadDate" name="loadDate" type="text" class="form-control" placeholder="装车时间" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">承运车号</label> 
+                                <div class="col-md-10" style="width:50%"> 
+                                    <select class="selectpicker bla bla bli"  data-live-search="true"  id="carId" name="carId"> 
+                                    	<c:forEach items="${carInfoList}" var="carInfo">
+											   <option value="${carInfo.id}" >${carInfo.headerNumber}</option> 
+                                    	</c:forEach> 
+					      			</select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- <label for="bs3Select" class="col-lg-2 control-label">Test bootstrap 3 form</label>
+		                <div class="col-lg-10">
+		                    <select id="bs3Select" class="selectpicker show-tick form-control" multiple data-live-search="true">
+		                        <option>cow</option>
+		                        <option>bull</option>
+		                    </select>
+		                </div> -->
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">承运单位</label> 
+                                <div class="col-md-10" style="width:50%"> 
+                                    <select class="form-control" id="companyId" name="companyId"> 
+									     <c:forEach items="${companyList}" var="company">
+                                    		<c:if test="${company.flag eq 2}">
+											     <option value="${company.id}" >${company.shortName}</option> 
+                                    		</c:if>
+                                    	</c:forEach> 
+					      			</select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">出厂地</label> 
+                                <div class="col-md-10" style="width:50%"> 
+                                    <select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId"> 
+									      <c:forEach items="${companyList}" var="factory">
+                                    		  <c:if test="${factory.flag eq 0}">
+											      <option value="${factory.id}" >${factory.shortName}</option> 
+                                    		  </c:if>
+                                    	  </c:forEach>
+					      			</select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">出厂价</label>
+                                <div class="col-md-10" style="width:50%">
+                                    <input id="factoryPrice" name="factoryPrice"  type="text" class="form-control" placeholder="出厂价" />
                                 </div>
                             </div>
                         </div>
                          <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">押运员电话</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">优惠价</label>
                                 <div class="col-md-10" style="width:50%">
-                                    <input id="followerPhone" name="followerPhone" type="text" class="form-control" placeholder="押运员电话" />
+                                    <input id="activityPrice" name="activityPrice" type="text" class="form-control" placeholder="优惠价" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">备用电话</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">运到价</label>
                                 <div class="col-md-10" style="width:50%">
-                                    <input id="backupPhone" name="backupPhone" type="text" class="form-control" placeholder="备用电话" />
+                                    <input id="customerPrice" name="customerPrice" type="text" class="form-control" placeholder="运到价" />
                                 </div>
                             </div>
                         </div>
                          <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">车辆到期时间</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">运费</label>
                                 <div class="col-md-10" style="width:50%">
-                                    <input id="expiredDate" name="expiredDate" type="text" readonly class="form-control" placeholder="车辆到期时间" />
-                                </div>  
+                                    <input id="carFee" name="carFee" type="text" class="form-control" placeholder="运费" />
+                                </div>
                             </div>
                         </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">是否含税</label> 
+                                <div class="col-md-10" style="width:50%"> 
+                                    <select class="form-control" id="isOrNotTax" name="isOrNotTax"> 
+									      <option value="0" >是</option> 
+									      <option  value="1">否</option>
+					      			</select>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label col-md-2" style="margin-left:40px">备注</label>
                                 <div class="col-md-10" style="width:50%">
-                                    <textarea id="remark" name="remark"  class="form-control"/></textarea>
+                                    <textarea id="eventRemark" name="eventRemark"  class="form-control"/></textarea>
                                 </div>
                             </div>
                         </div>

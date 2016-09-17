@@ -4,9 +4,9 @@
 	<ul class="nav">
 		<%-- <li><a href="${ctx}/login.do">主页面</a></li> --%>
 		<li><a href="${ctx}/operate/index.do">运作详情</a></li>
-		<li><a href="message.html">汇款结算信息</a></li>
-		<li><a href="ui.html">工厂对账单信息</a></li>
-		<li><a href="animate.html">客户对账单</a></li>
+		<li><a href="${ctx}/bank/index.do">交易流水信息</a></li>
+		<li><a href="${ctx}/factory/index.do">工厂对账单信息</a></li>
+		<li><a href="${ctx}/customer/index.do">客户对账单</a></li>
 		<li class="has-sub"><a href="javascript:void(0);"><span>系统管理</span><i
 				class="fa fa-caret-right fa-fw pull-right"></i></a>
 			<ul class="sub-menu">
