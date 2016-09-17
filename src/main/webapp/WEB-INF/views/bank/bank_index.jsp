@@ -388,9 +388,9 @@
    <button id="btn_edit" type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
    </button>
-   <!-- <button id="btn_delete" type="button" class="btn btn-default">
+   <button id="btn_delete" type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>禁用
-   </button> -->
+   </button>
   </div>
         <table id="table"></table>
     </div>

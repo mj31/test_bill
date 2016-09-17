@@ -31,4 +31,6 @@ public interface IBankDao {
 	List<Bank> findPage(Bank bank);
 
 	void update(Bank bank);
+	
+	BankVo getByOperateId(Long operateId) ;
 }

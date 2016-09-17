@@ -24,6 +24,7 @@ import com.mj.bill.pojo.BankVo;
 import com.mj.bill.pojo.Company;
 import com.mj.bill.pojo.OperateEventVo;
 import com.mj.bill.pojo.User;
+import com.mj.bill.service.IBankService;
 import com.mj.bill.service.ICompanyService;
 
 @Controller
@@ -58,7 +59,6 @@ public class BankController {
 	public void search(HttpServletRequest request,HttpServletResponse response,BankVo bank){
 		 List<BankVo> bankList = this.bankService.queryBankByCondition(bank);
 		 Integer total = this.bankService.queryBankByConditionTotal(bank);
-		 
 		 if(!CollectionUtils.isEmpty(bankList)){
 			 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			 Calendar c = Calendar.getInstance();

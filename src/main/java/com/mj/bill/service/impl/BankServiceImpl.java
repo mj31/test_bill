@@ -6,9 +6,10 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.mj.bill.controller.IBankService;
 import com.mj.bill.dao.IBankDao;
+import com.mj.bill.pojo.Bank;
 import com.mj.bill.pojo.BankVo;
+import com.mj.bill.service.IBankService;
 
 @Service("bankService")
 public class BankServiceImpl implements IBankService {
@@ -58,6 +59,11 @@ public class BankServiceImpl implements IBankService {
 	public void updateBank(BankVo bank) {
 		bankDao.update(bank);
 		
+	}
+
+	@Override
+	public BankVo getByOperateId(Long operateId) {
+		return bankDao.getByOperateId(operateId) ;
 	}
 
 } 

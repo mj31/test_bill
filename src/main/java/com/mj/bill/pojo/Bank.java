@@ -104,6 +104,11 @@ public class Bank{
      * 字段: update_date  BIGINT(19)  
      */	
 	private java.lang.Long updateDate;
+	
+	/**
+	 * 运作事件id
+	 */
+	private Long operateId ;
  
 
 	public Bank(){
@@ -282,9 +287,15 @@ public class Bank{
 	public java.lang.Long getUpdateDate() {
 		return this.updateDate;
 	}
+
+	public Long getOperateId() {
+		return operateId;
+	}
+
+	public void setOperateId(Long operateId) {
+		this.operateId = operateId;
+	}
 	
-    
-    
  
 }
 

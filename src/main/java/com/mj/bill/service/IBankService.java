@@ -1,7 +1,8 @@
-package com.mj.bill.controller;
+package com.mj.bill.service;
 
 import java.util.List;
 
+import com.mj.bill.pojo.Bank;
 import com.mj.bill.pojo.BankVo;
 
 public interface IBankService {
@@ -31,5 +32,7 @@ public interface IBankService {
 	 * @param bank
 	 */
 	void updateBank(BankVo bank);
+	
+	BankVo getByOperateId(Long operateId) ;
 
 }

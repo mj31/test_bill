@@ -25,6 +25,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="updateUserId" column="update_user_id"/>
         <result property="updateUserName" column="update_user_name"/>
         <result property="updateDate" column="update_date"/>
+        <result property="operateId" column="operate_id"/>
+        
 	</resultMap>
 	
 	<resultMap id="RM_BankAccountVo" type="com.mj.bill.pojo.BankVo">
@@ -46,12 +48,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="updateUserName" column="update_user_name"/>
         <result property="updateDate" column="update_date"/>
         <result property="strExchangeDate" column="strExchangeDate"/>
+        <result property="operateId" column="operate_id"/>
 	</resultMap>
 	
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-		id,serial_number,exchange_date,exchange_money,his_account,his_account_name,his_account_id,exchange_flag,service_type,remark,status,create_user_id,create_date,create_user_name,update_user_id,update_user_name,update_date
+		id,operate_id,serial_number,exchange_date,exchange_money,his_account,his_account_name,his_account_id,exchange_flag,service_type,remark,status,create_user_id,create_date,create_user_name,update_user_id,update_user_name,update_date
 	    ]]>
 	</sql>
 
@@ -75,7 +78,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         	create_user_name ,
         	update_user_id ,
         	update_user_name ,
-        	update_date 
+        	update_date ,
+        	operate_id
         ) VALUES (
         	#{id} ,
         	#{serialNumber} ,
@@ -93,7 +97,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         	#{createUserName} ,
         	#{updateUserId} ,
         	#{updateUserName} ,
-        	#{updateDate} 
+        	#{updateDate} ,
+        	#{operateId}
+        	
         )
     ]]>
 		<!--	
@@ -114,6 +120,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                 <if test="exchangeDate != null">
 	         	exchange_date = #{exchangeDate} ,
 	         </if>
+	         <if test="operateId != null">
+	         	operate_id = #{operateId} ,
+	         </if>
+	         
+	         
                 <if test="exchangeMoney != null">
 	         	exchange_money = #{exchangeMoney} ,
 	         </if>
@@ -173,7 +184,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     ]]>
     </delete>
     
-    <select id="getById" resultMap="RM_BankAccount">
+    <select id="getById" resultMap="RM_BankAccountVo">
 		SELECT <include refid="columns" />
 	    <![CDATA[
 		    FROM bank_account 
@@ -188,6 +199,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                <if test="id != null">
 		             AND id = #{id}
 	           </if>
+	           <if test="operateId != null">
+	         		AND operate_id = #{operateId} 
+	         </if>
                <if test="serialNumber != null">
 		             AND serial_number = #{serialNumber}
 	           </if>
@@ -270,7 +284,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    FROM bank_account 
 	    <include refid="findPage_where"/>
      </select>
-
-	
+     
+     <select id="getByOperateId" resultMap="RM_BankAccountVo">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM bank_account 
+	        WHERE 
+		        operate_id = #{operateId} 
+	    ]]>
+	</select>
 </mapper>
 

@@ -61,6 +61,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="carNum" column="carNum"/>
         <result property="compangShortName" column="compangShortName"/>
         <result property="factoryShortName" column="factoryShortName"/>
+        
+        <result property="strExchangeDate" column="strExchangeDate"/>
+        <result property="exchangeMoney" column="exchangeMoney"/>
+        <result property="hisAccount" column="hisAccount"/>
+        <result property="hisAccountName" column="hisAccountName"/>
+        
 	</resultMap>
 	
 	<!-- 用于select查询公用抽取的列 -->
@@ -326,11 +332,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	SELECT <include refid="columns_new" />
 		    ,cus.short_name customerShortName ,cus.company_address customerAddress
 			,car.header_number carNum , com.short_name compangShortName , fac.short_name factoryShortName
+			,bank.exchange_date strExchangeDate,bank.exchange_money exchangeMoney,bank.his_account_name hisAccountName,bank.his_account hisAccount
 	    FROM operate_event ev
 	    	left join company com on ev.company_id = com.id 
 			left join company cus on ev.customer_id = cus.id
       		left join company fac on ev.factory_id = fac.id
 			left join car_info car on ev.car_id = car.id
+			left join bank_account bank on ev.id = bank.operate_id
 			where 1=1
 			  <if test="customerId != null">
 		             AND ev.customer_id = #{customerId}
@@ -341,8 +349,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	            <if test="factoryId != null">
 		             AND ev.factory_id = #{factoryId}
 	           </if>
+	           <if test="hisAccountName != null and hisAccountName !=''">
+		             AND bank.his_account_name like  concat(concat('%',#{hisAccountName}),'%')
+	            </if>
 	           order by ev.operate_num desc
-	      
      </select>
      
      <select id="queryOperateByConditionTotal" resultType="int">
@@ -352,6 +362,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			left join company cus on ev.customer_id = cus.id
       		left join company fac on ev.factory_id = fac.id
 			left join car_info car on ev.car_id = car.id
+			left join bank_account bank on ev.id = bank.operate_id
 	    	where 1=1
 			  <if test="customerId != null">
 		             AND ev.customer_id = #{customerId}
@@ -362,6 +373,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	            <if test="factoryId != null">
 		             AND ev.factory_id = #{factoryId}
 	           </if> 
+	           <if test="hisAccountName != null and hisAccountName !=''">
+		             AND bank.his_account_name like  concat(concat('%',#{hisAccountName}),'%')
+	            </if>
 	    <!-- <include refid="findPage_where_new"/> -->
      </select>
       			
