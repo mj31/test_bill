@@ -451,7 +451,17 @@
                  	    align: "center",//水平
                          valign: "middle",//垂直
                      	formatter:function(value,row,index){
-                        		return '没处理';
+                     		var factWeightNew = 0 ;
+                       		if(value != null && value != ''){
+                       			factWeightNew  =  value  ;
+                       		}
+                       		
+                       		var customerPriceNew = 0 ;
+                       		var customerPrice = row.customerPrice ;
+                       		if(customerPrice != null && customerPrice != ''){
+                       			customerPriceNew =  customerPrice  ;
+                       		}
+                       		return Number(factWeightNew/100)*Number(customerPriceNew/100) ;
                            }
                  	 },
                  	{

@@ -50,7 +50,9 @@
     <link href="${ctx}/css/default.css" rel="stylesheet" type="text/css" />
     <!--主要写的js代码-->
     <script src="${ctx}/js/default.js" type="text/javascript"></script>
-    \js\bootstrap.select\bootstrap-select.min.css
     <link href="${ctx}/js/bootstrap.select/bootstrap-select.min.css" rel="stylesheet" />
     <script src="${ctx}/js/bootstrap.select/bootstrap-select.min.js"></script>
+    
+
+    
     

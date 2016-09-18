@@ -594,7 +594,7 @@
   	               	    align: "center",//水平
   	                    valign: "middle",//垂直
   	                   	formatter:function(value,row,index){
- 	                       		return '不知道怎么算' ; 
+ 	                       		return index ; 
  	                          }
                  	 },
                 	 {

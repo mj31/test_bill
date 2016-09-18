@@ -1,7 +1,5 @@
 package com.mj.bill.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -9,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +26,17 @@ public class UserController {
 	
 	@RequestMapping("/login")
 	public String index(HttpServletRequest request,Model model){
+		HttpSession session = request.getSession();
+		User user = (User)session.getAttribute("user");
+		model.addAttribute("user", user);
+		return "login/login";
+	}
+	
+	
+	@RequestMapping("/loginOut")
+	public String toIndex(HttpServletRequest request,Model model){
+		HttpSession session = request.getSession();
+		session.removeAttribute("user");
 		return "login/login";
 	}
 	
@@ -62,8 +72,8 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/user/list")
-	public String toIndex(HttpServletRequest request,Model model,User user){
-		model.addAttribute("user", user);
+	public String toIndex(HttpServletRequest request,Model model,User newUser){
+		model.addAttribute("newUser", newUser);
 		return "user/user_index";
 	}
 	
@@ -181,6 +191,10 @@ public class UserController {
 		try {
 			
 			if(user != null){
+				String password = user.getPassword();
+				if(StringUtils.isNotBlank(password)){
+					user.setPassword(MD5Util.MD5Encode(password, "utf-8")) ;
+				}
 				this.userService.updateUser(user);
 				json.put("status",0);
 			}else{
@@ -193,6 +207,7 @@ public class UserController {
 		}
 	     ResponseUtils.responseJson(response, json.toString());
 	}
+	
 	
 	
 	

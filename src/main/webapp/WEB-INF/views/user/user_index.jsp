@@ -359,19 +359,19 @@
 	     <div class="form-group" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">登录名</label>
 		      <div class="col-sm-3" style="width:12%">
-		       		<input type="text" class="form-control" id="loginName" name="loginName" value="${user.loginName}">
+		       		<input type="text" class="form-control" id="loginName" name="loginName" value="${newUser.loginName}">
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">用户名</label>
 		      <div class="col-sm-3" style="width:12%">
-		       		<input type="text" class="form-control" id="userName" name="userName" value="${user.userName}">
+		       		<input type="text" class="form-control" id="userName" name="userName" value="${newUser.userName}">
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
 		      <div class="col-sm-3"  style="width:6%">
 		       		<div class="form-group">
 					    <select class="form-control" id="status" name="status"> 
 						      <option value="">全部</option> 
-						      <option value="0"  <c:if test="${user.status eq 0 }"> selected </c:if>>正常</option> 
-						      <option  value="1"  <c:if test="${user.status eq 1 }"> selected </c:if>>禁用</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
+						      <option value="0"  <c:if test="${newUser.status eq 0 }"> selected </c:if>>正常</option> 
+						      <option  value="1"  <c:if test="${newUser.status eq 1 }"> selected </c:if>>禁用</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
 					      </select>
 					  </div>
 		      </div>

@@ -150,13 +150,39 @@
                       		}
                         }
               	 },
+             	 {
+                	    field: 'factoryPrice',
+                	    title: '出厂价',
+                	    align: "center",//水平
+                     	valign: "middle",//垂直
+                    	formatter:function(value,row,index){
+                       		if(value != null && value != ''){
+                       			return value/100 ;
+                       		}else{
+                       			return '' ;
+                       		}
+                          }
+                 },
                	 {
-                	    field: 'factWeight',
+                	    field: 'loadEmpty',
                 	    title: '结算金额',    
                 	    align: "center",//水平
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
-                       		return '没处理';
+                    		var loadEmpty = 0 ;
+                    		if(value != null && value != ''){
+                    			loadEmpty =  value/100 ;
+                     		}
+                    		
+                    		var factoryPrice = 0 ;
+                    		var factoryPrice = row.factoryPrice ;
+                    		if(factoryPrice != null && factoryPrice != ''){
+                    			factoryPrice = factoryPrice/100 ;
+                       		}
+                    		
+                    		return Number(loadEmpty*factoryPrice) ;
+                       		
+                    		
                           }
                 	 },
                 	{
