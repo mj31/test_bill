@@ -105,7 +105,7 @@
     	 
     	 //===============删除开始=========================
     	 $("#btn_delete").click(function(){
-    		 if($(".selected").length == 0){ 
+    		 if($(".selected").length-6 == 0){ 
     			 bootbox.alert({  
     		            buttons: {  
     		               ok: {  
@@ -371,8 +371,7 @@
               			return '' ;
               		}
                  }
-       	    },
-       		{
+       	    },{
           	    field: 'activityPrice',
           	    title: '优惠价', 
           	    align: "center",//水平
@@ -385,17 +384,17 @@
                   		}
                     }
           	   },
-           	   {
+           	{
               	    field: 'customerAddress',
               	    title: '目的地',  
               	    align: "center",//水平
                    valign: "middle"//垂直
-              	},
-           		{
+              },
+           	  {
               	    field: 'customerPrice',
               	    title: '运到价',  
               	    align: "center",//水平
-                   valign: "middle",//垂直
+                    valign: "middle",//垂直
                   	formatter:function(value,row,index){
                      		if(value != null && value != ''){
                      			return value/100 ;
@@ -535,7 +534,7 @@
                        		if(loadEmpty != null && loadEmpty != ''){
                        			loadEmptyNew =  loadEmpty  ;
                        		}
-                       		return Number(uploadEmptyNew/100) - Number(loadEmptyNew/100) ;
+                       		return (Number(uploadEmptyNew/100) - Number(loadEmptyNew/100)).toFixed(2) ;
                           }
                 	 },
            	         {
@@ -623,7 +622,7 @@
                             	if(factoryPrice != null && factoryPrice != 0){
                             		factoryPriceNew = Number(factoryPrice/100) ;
                             	}
-                            	return Number(qicha*factoryPriceNew);
+                            	return Number(qicha*factoryPriceNew).toFixed(2);
                            }
                  	 },
            	         {
@@ -728,8 +727,9 @@
 					 	</select>
 		      </div>
 		      
-		      
-		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
+		      <label class="control-label col-sm-1" for="txt_search_statu"></label>
+		    <%--
+		     <label class="control-label col-sm-1" for="txt_search_statu">状态</label>   
 		      <div class="col-sm-3"  style="width:6%">
 		       		<div class="form-group">
 					    <select class="form-control" id="status" name="status"> 
@@ -738,7 +738,7 @@
 						      <option value="1"  <c:if test="${company.status eq 1 }"> selected </c:if>>禁用</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
 					      </select>
 					  </div>
-		      </div>
+		      </div> --%>
 		      <div class="col-sm-2" style="text-align:left;">
 		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
 		      </div>
@@ -754,9 +754,9 @@
    <button id="btn_edit" type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
    </button>
-   <button id="btn_delete" type="button" class="btn btn-default">
+ <!--   <button id="btn_delete" type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>禁用
-   </button>
+   </button> -->
   </div>
         <table id="table"></table>
     </div>

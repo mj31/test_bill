@@ -107,7 +107,7 @@ public class BankController {
 				bank.setCreateUserId(Long.parseLong(user.getId().toString()));
 				bank.setCreateUserName(user.getUserName());
 				bank.setCreateDate(new Date().getTime());
-				
+				bank.setStatus(0);
 				this.bankService.saveBank(bank);
 				json.put("status",0);
 			}else{
@@ -150,6 +150,37 @@ public class BankController {
 				bank.setUpdateDate(new Date().getTime());
 				
 				this.bankService.updateBank(bank);
+				json.put("status",0);
+			}else{
+				json.put("status",1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("status",1);
+		}
+	     ResponseUtils.responseJson(response, json.toString());
+	}
+	
+	/**
+	 * 删除
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/delete")
+	@ResponseBody
+	public void delete(HttpServletRequest request,HttpServletResponse response,String ids){
+		JSONObject json = new JSONObject();
+		try {
+			if(ids != null){
+				if(ids.contains(",")){
+					String[] id =  ids.split(",") ;
+					for(int i = 0 ; i < id.length ;i++){
+						this.bankService.deleteById(id[i]);
+					}
+				}else{
+					this.bankService.deleteById(ids);
+				}
 				json.put("status",0);
 			}else{
 				json.put("status",1);

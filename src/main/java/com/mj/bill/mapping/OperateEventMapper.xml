@@ -30,6 +30,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="factWeight" column="fact_weight"/>
         <result property="eventRemark" column="event_remark"/>
         <result property="customerRemark" column="customer_remark"/>
+        
 	</resultMap>
 	
 	<resultMap id="RM_OperateEventVo" type="com.mj.bill.pojo.OperateEventVo">
@@ -55,7 +56,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="factWeight" column="fact_weight"/>
         <result property="eventRemark" column="event_remark"/>
         <result property="customerRemark" column="customer_remark"/>
-        
         <result property="customerShortName" column="customerShortName"/>
         <result property="customerAddress" column="customerAddress"/>
         <result property="carNum" column="carNum"/>

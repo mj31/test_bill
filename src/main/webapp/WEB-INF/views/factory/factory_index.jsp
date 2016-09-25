@@ -125,6 +125,19 @@
 		       	    align: "center",//水平
 		            valign: "middle"//垂直
        	   },
+      		{
+         	    field: 'activityPrice',
+         	    title: '优惠价/吨', 
+         	    align: "center",//水平
+                valign: "middle",//垂直
+             	formatter:function(value,row,index){
+                		if(value != null && value != ''){
+                			return value/100 ;
+                		}else{
+                 			return '' ;
+                 		}
+                   }
+          },
        	   {
           	    field: 'factoryPrice',
           	    title: '单价/吨',
@@ -197,14 +210,14 @@
     	   ]
     	  });
     	 };
-    	 var formSearchCarId = $("#formSearch #carId").find("option:selected").val() ;
+    	 var factoryId = $("#formSearch #factoryId").find("option:selected").val() ;
     	  //得到查询的参数  Number(capacity*100) 
     	 oTableInit.queryParams = function (params) {
 	    	  var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
 		    	   limit: params.limit, //页面大小
 		    	   offset: params.offset, //页码
-		    	   hisAccountName: $("#formSearch #hisAccountName").val(), 
-		    	   carId: formSearchCarId
+		    	 /*   hisAccountName: $("#formSearch #hisAccountName").val(),  */
+		    	   factoryId: factoryId
 	    	     };
     	  	  return temp;
     	 }; 
@@ -234,23 +247,22 @@
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/factory/index.do">
 	     <div class="form-group" style="margin-top:15px">
-		      <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
+		      <label class="control-label col-sm-1" for="txt_search_statu">工厂名称</label>
 		      <div class="col-sm-3" style="width:10%">
-		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="carId" name="carId"> 
+		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="factoryId" name="factoryId"> 
 		       								  <option value=''>----请选择----</option>
-                                    	<c:forEach items="${carInfoList}" var="carInfo">
-											   <option value="${carInfo.id}"  <c:if test="${operateEvent.carId eq carInfo.id}">selected</c:if>>${carInfo.headerNumber}</option> 
+                                    	<c:forEach items="${factoryList}" var="factory">
+											   <option value="${factory.id}"  <c:if test="${factory.id eq operateEvent.factoryId}">selected</c:if>>${factory.shortName}</option> 
                                     	</c:forEach>
 					 	</select>
 		      </div>
-		      
-		      
-		      <label class="control-label col-sm-2" for="txt_search_statu">转账单位</label>
+		      <label class="control-label col-sm-1" for="txt_search_statu"></label>
+		      <%-- <label class="control-label col-sm-2" for="txt_search_statu">转账单位</label>
 		      <div class="col-sm-3"  style="width:15%">
 		       		<div class="form-group">
 					   <input type="text" class="form-control" id="hisAccountName" name="hisAccountName" value="${operateEvent.hisAccountName}">
 					  </div>
-		      </div>
+		      </div> --%>
 		      <div class="col-sm-2" style="text-align:left;">
 		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
 		      </div>

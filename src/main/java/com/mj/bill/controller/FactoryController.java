@@ -50,53 +50,66 @@ public class FactoryController {
 		public String toIndex(HttpServletRequest request,Model model,OperateEventVo operateEvent){
 			model.addAttribute("operateEvent", operateEvent);
 			//获取car_info表数据 可用的数据=======================
-			CarInfo carInfo = new CarInfo();
+			/*CarInfo carInfo = new CarInfo();
 			carInfo.setStatus(0);
 			List<CarInfo> carInfoList = carInfoService.queryCarInfoByCondition(carInfo);
-			model.addAttribute("carInfoList", carInfoList);
+			model.addAttribute("carInfoList", carInfoList);*/
+			
 			//获取car_info表数据 可用的数据=======================
 			
+			Company company = new Company();
+			company.setFlag(0);
+			company.setStatus(0);
+			List<Company> factoryList = this.companyService.queryCompanyByCondition(company);
+			model.addAttribute("factoryList",factoryList);
 			return "factory/factory_index";
 		}
 		
 		@RequestMapping(value="/search")
 		public void search(HttpServletRequest request,HttpServletResponse response,OperateEventVo operateEvent){
-			 List<OperateEventVo> operateList = this.operateService.queryOperateByCondition(operateEvent);
-			 Integer total = this.operateService.queryOperateByConditionTotal(operateEvent);
-			 
-			 if(!CollectionUtils.isEmpty(operateList)){
-				 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-				 Calendar c = Calendar.getInstance();
-				 for(int i = 0 ; i < operateList.size() ; i++){
-					//装车时间
-					 if(operateList.get(i).getLoadDate() != null){
-						 long loadDate = operateList.get(i).getLoadDate();
-						 if(loadDate != 0){
-							 c.setTimeInMillis(loadDate);
-							 operateList.get(i).setStrLoadDate(format.format(c.getTime()));
-						 }else{
-							 operateList.get(i).setStrLoadDate("-");
-						 }
-					 }
-					//转账时间  strExchangeDate
-					 if(operateList.get(i).getStrExchangeDate() != null){
-						 long strExchangeDate = Long.parseLong(operateList.get(i).getStrExchangeDate()) ;
-						 if(strExchangeDate != 0){
-							 c.setTimeInMillis(strExchangeDate);
-							 operateList.get(i).setStrExchangeDate(format.format(c.getTime()));
-						 }else{
-							 operateList.get(i).setStrExchangeDate("-");
-						 }
-						 
-					 }
-				 }
-				 
-			 }
-			 
-			 JSONObject json = new JSONObject();
-			 json.put("data",operateList);
-			 json.put("total",total);
-			 json.put("page",1);
+			
+			JSONObject json = new JSONObject();
+			
+			if(operateEvent.getFactoryId() != null){
+				List<OperateEventVo> operateList = this.operateService.queryOperateByCondition(operateEvent);
+				Integer total = this.operateService.queryOperateByConditionTotal(operateEvent);
+				
+				if(!CollectionUtils.isEmpty(operateList)){
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					Calendar c = Calendar.getInstance();
+					for(int i = 0 ; i < operateList.size() ; i++){
+						//装车时间
+						if(operateList.get(i).getLoadDate() != null){
+							long loadDate = operateList.get(i).getLoadDate();
+							if(loadDate != 0){
+								c.setTimeInMillis(loadDate);
+								operateList.get(i).setStrLoadDate(format.format(c.getTime()));
+							}else{
+								operateList.get(i).setStrLoadDate("-");
+							}
+						}
+						//转账时间  strExchangeDate
+						if(operateList.get(i).getStrExchangeDate() != null){
+							long strExchangeDate = Long.parseLong(operateList.get(i).getStrExchangeDate()) ;
+							if(strExchangeDate != 0){
+								c.setTimeInMillis(strExchangeDate);
+								operateList.get(i).setStrExchangeDate(format.format(c.getTime()));
+							}else{
+								operateList.get(i).setStrExchangeDate("-");
+							}
+							
+						}
+					}
+				}
+				json.put("data",operateList);
+				json.put("total",total);
+				json.put("page",1);
+			}else{
+				json.put("data",null);
+				json.put("total",0);
+				json.put("page",1);
+			}
+			
 		     ResponseUtils.responseJson(response, json.toString());
 		}
 		

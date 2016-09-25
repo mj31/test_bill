@@ -293,5 +293,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		        operate_id = #{operateId} 
 	    ]]>
 	</select>
+	
+	
+	<update id="deleteById" >
+	        UPDATE  bank_account set status = 1  WHERE id = #{id} 
+	  </update>
 </mapper>
 

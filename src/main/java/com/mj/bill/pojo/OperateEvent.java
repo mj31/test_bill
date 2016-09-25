@@ -134,7 +134,7 @@ public class OperateEvent{
      * 字段: customer_remark  VARCHAR(255)  
      */	
 	private java.lang.String customerRemark;
- 
+	
 
 	public OperateEvent(){
 	}
@@ -362,9 +362,6 @@ public class OperateEvent{
 	public java.lang.String getCustomerRemark() {
 		return this.customerRemark;
 	}
-	
-    
-    
- 
+
 }
 

@@ -429,7 +429,7 @@
                        		if(loadEmpty != null && loadEmpty != ''){
                        			loadEmptyNew =  loadEmpty  ;
                        		}
-                       		return Number(uploadEmptyNew/100) - Number(loadEmptyNew/100) ;
+                       		return (Number(uploadEmptyNew/100) - Number(loadEmptyNew/100)).toFixed(2) ;
                           }
                 	 },
             	     {
@@ -461,7 +461,7 @@
                        		if(customerPrice != null && customerPrice != ''){
                        			customerPriceNew =  customerPrice  ;
                        		}
-                       		return Number(factWeightNew/100)*Number(customerPriceNew/100) ;
+                       		return (factWeightNew/100)*Number(customerPriceNew/100) ;
                            }
                  	 },
                  	{

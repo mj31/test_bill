@@ -52,4 +52,5 @@ public interface ICompanyService {
 	 * @param user
 	 */
 	void updateCompany(Company company);
+
 }

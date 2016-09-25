@@ -440,8 +440,8 @@
 		       		<div class="form-group">
 					    <select class="form-control" id="status" name="status"> 
 						      <option value="">全部</option> 
-						      <option value="0"  <c:if test="${company.status eq 0 }"> selected </c:if>>正常</option> 
-						      <option value="1"  <c:if test="${company.status eq 1 }"> selected </c:if>>禁用</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
+						      <option value="0"  <c:if test="${carInfo.status eq 0 }"> selected </c:if>>正常</option> 
+						      <option value="1"  <c:if test="${carInfo.status eq 1 }"> selected </c:if>>禁用</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
 					      </select>
 					  </div>
 		      </div>

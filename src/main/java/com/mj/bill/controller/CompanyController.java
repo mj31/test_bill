@@ -1,5 +1,6 @@
 package com.mj.bill.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -131,5 +132,33 @@ public class CompanyController {
 		}
 	     ResponseUtils.responseJson(response, json.toString());
 	}
+	
+	
+	/**
+	 * 左边菜单
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/queryFactory")
+	@ResponseBody
+	public void queryFactory(HttpServletRequest request,HttpServletResponse response){
+		JSONObject json = new JSONObject();
+		try {
+			Company company = new Company();
+			company.setFlag(0);
+			company.setStatus(0);
+			List<Company> factoryList = this.companyService.queryCompanyByCondition(company);
+			
+			json.put("status",0);
+			json.put("factoryList",factoryList);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("status",1);
+		}
+	     ResponseUtils.responseJson(response, json.toString());
+	}
+	
+	
 	
 }

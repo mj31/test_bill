@@ -77,6 +77,11 @@
 	   		 var exchangeFlag = $(".selected .ids").attr("exchangeFlag") ;
 	   		 $("#addForm #exchangeFlag").find("option[value="+exchangeFlag+"]").attr("selected",true);
 	   		 
+	   		 var hisAccountId = $(".selected .ids").attr("hisAccountId");
+	   		 var hisAccountName = $(".selected").find("td:eq(6)").text() ;
+	   		 
+	   		 $("#addForm  #hisAccountId").append('<option value='+hisAccountId+' selected="true">'+hisAccountName+'</option>');
+	   		 
 	   		 $('#add').modal();
 	   		 
     	 });
@@ -106,7 +111,7 @@
     		bootbox.confirm("您确认删除选定的记录吗？", function (result) {
              if (result) {
                  //然后发送异步请求的信息到后台删除数据
-                 $.get("${ctx}/car/delete.do?ids="+arrayIds, function (json) {
+                 $.get("${ctx}/bank/delete.do?ids="+arrayIds, function (json) {
                      if (json.status == 0) {
                     	 $("#formSearch").submit();//刷新页面数据
                      }else {
@@ -302,6 +307,19 @@
     	    title: '备注', 
     	    align: "center",//水平
             valign: "middle"//垂直
+    	   }, {
+    	    field: 'status',
+    	    title: '状态', 
+    	    align: "center",//水平
+            valign: "middle",//垂直
+            formatter:function(value,row,index){
+           		   if(value == 0){
+           			   return '正常' ; 
+           		   }else{
+           			   return '删除' ; 
+           		   }
+                 
+               }
     	   }]
     	  });
     	 };

@@ -34,5 +34,11 @@ public interface IBankService {
 	void updateBank(BankVo bank);
 	
 	BankVo getByOperateId(Long operateId) ;
+	
+	/**
+	 * 删除
+	 * @param string
+	 */
+	void deleteById(String string);
 
 }

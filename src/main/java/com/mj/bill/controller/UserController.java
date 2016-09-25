@@ -46,11 +46,13 @@ public class UserController {
 		String  file = "login/index" ;
 		HttpSession session = request.getSession();
 		User queryUser = this.userService.queryUserByLoginName(user.getLoginName());
+		
 		if(queryUser != null){
 			String password = queryUser.getPassword();
 			//检验密码是否正确
 			if(MD5Util.MD5Encode(user.getPassword(), "utf-8").equals(password)){
 				session.setAttribute("user", queryUser);
+				model.addAttribute("user", queryUser);
 				return file ;
 			}else{
 				response.sendRedirect(request.getContextPath()
@@ -73,7 +75,12 @@ public class UserController {
 	 */
 	@RequestMapping("/user/list")
 	public String toIndex(HttpServletRequest request,Model model,User newUser){
+		HttpSession session = request.getSession();
 		model.addAttribute("newUser", newUser);
+		//目的是让top显示用户信息
+		User user = (User)session.getAttribute("user");
+		model.addAttribute("user", user);
+		System.out.println();
 		return "user/user_index";
 	}
 	
@@ -140,7 +147,7 @@ public class UserController {
 			
 			if(user != null){
 				user.setStatus(0);
-				user.setPassword("e10adc3949ba59abbe56e057f20f883e");
+				user.setPassword(MD5Util.MD5Encode("123456", "utf-8"));
 				this.userService.saveUser(user);
 				json.put("status",0);
 			}else{
