@@ -10,11 +10,11 @@
     <script type="text/javascript">
     $(function () {
     	
+    	
+    	 $('.querySelect').selectpicker({
+	            'selectedText': 'cat'
+	      });
 
-        $('.selectpicker').selectpicker({
-            'selectedText': 'cat'
-        });
-        
     	var loadDate = {
     		    elem:'#loadDate',
     		    format:'YYYY-MM-DD',
@@ -43,6 +43,9 @@
     		 $("#addForm #loginName").attr("readonly",false);
     		 formNull();
     		 $("#saveUser").text("保存") ; 
+    		 $('.selectpicker').selectpicker({
+    	            'selectedText': 'cat'
+    	      });
     	     $('#add').modal();
     	 });
     	 
@@ -52,7 +55,7 @@
     		 $("#saveUser").text("修改") ; 
     		 formNull();
     		 //校验选了一条数据 
-    		 if($(".selected").length-6 != 1){ 
+    		 if($(".updataOrDeleteClasss").length != 1){ 
     			 bootbox.alert({  
     		            buttons: {  
     		               ok: {  
@@ -98,6 +101,10 @@
 	   		 $("#addForm #carFee").val($(".selected").find("td:eq(13)").text());
 	   		 $("#addForm #eventRemark").val($(".selected").find("td:eq(27)").text()); 
 	   		
+	   		 $('.selectpicker').selectpicker({
+	            'selectedText': 'cat'
+	         });
+	   		 
 	   		 $('#add').modal();
 	   		 
     	 });
@@ -105,7 +112,7 @@
     	 
     	 //===============删除开始=========================
     	 $("#btn_delete").click(function(){
-    		 if($(".selected").length-6 == 0){ 
+    		 if($(".updataOrDeleteClasss").length == 0){ 
     			 bootbox.alert({  
     		            buttons: {  
     		               ok: {  
@@ -119,7 +126,7 @@
     			 return ;
     		 }
     		 
-    		 var $ids = $(".selected .ids") ;
+    		 var $ids = $(".updataOrDeleteClasss .ids") ;
     		 var arrayIds = new Array();
     		 for(var i = 0 ; i< $ids.length ;i++){
     			 arrayIds[i] = $ids[i].value ;
@@ -160,17 +167,17 @@
 
 	 	   		var saveUserValue = $("#saveUser").text() ;
 	 	   		
-			 	var customerId = $("#customerId").find("option:selected").val();
+			 	var customerId = $("#addForm #customerId").find("option:selected").val();
 			 	var poundsDiff= $("#addForm #poundsDiff").val();
 			 	var loadDate= $("#addForm #loadDate").val(); 
-			 	var carId = $("#carId").find("option:selected").val();
-			 	var companyId = $("#companyId").find("option:selected").val();
-			 	var factoryId = $("#factoryId").find("option:selected").val();
+			 	var carId = $("#addForm #carId").find("option:selected").val();
+			 	var companyId = $("#addForm #companyId").find("option:selected").val();
+			 	var factoryId = $("#addForm #factoryId").find("option:selected").val();
 			 	var factoryPrice= $("#addForm #factoryPrice").val(); 
 			 	var activityPrice= $("#addForm #activityPrice").val(); 
 			 	var customerPrice= $("#addForm #customerPrice").val(); 
 			 	var carFee= $("#addForm #carFee").val();
-			 	var isOrNotTax = $("#isOrNotTax").find("option:selected").val();
+			 	var isOrNotTax = $("#addForm #isOrNotTax").find("option:selected").val();
 	 	 		var eventRemark=  $("#addForm #eventRemark").val();
 			 	
 			 	//行车证荷载量进行校验
@@ -246,7 +253,7 @@
  	   		 }
  	   		 
  	   		if(saveUserValue == '修改'){
- 	   			var id = $(".selected .ids").val() ;
+ 	   			var id = $(".updataOrDeleteClasss .ids").val() ;
 	 	   		$.ajax({
 	      		        url : "${ctx}/operate/update.do",
 	      		        type: "post",
@@ -696,7 +703,7 @@
 	     <div class="form-group" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">客户</label>
 		      <div class="col-sm-3" style="width:10%">
-		      		 	<select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">
+		      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
 		      		 				   <option value=''>----请选择----</option>
                                	<c:forEach items="${companyList}" var="customer">
                                		<c:if test="${customer.flag eq 1}">
@@ -708,7 +715,7 @@
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">出厂地</label>
 		      <div class="col-sm-3" style="width:10%">
-		       			<select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId"> 
+		       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="factoryId" name="factoryId"> 
 		       								 <option value=''>----请选择----</option>
 							      <c:forEach items="${companyList}" var="factory">
                                   		  <c:if test="${factory.flag eq 0}">
@@ -719,7 +726,7 @@
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
 		      <div class="col-sm-3" style="width:10%">
-		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="carId" name="carId"> 
+		       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true"  id="carId" name="carId"> 
 		       								  <option value=''>----请选择----</option>
                                     	<c:forEach items="${carInfoList}" var="carInfo">
 											   <option value="${carInfo.id}"  <c:if test="${operateEvent.carId eq carInfo.id}">selected</c:if>>${carInfo.headerNumber}</option> 

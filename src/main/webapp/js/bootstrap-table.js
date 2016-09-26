@@ -2042,7 +2042,7 @@
         this.$selectAll.add(this.$selectAll_).prop('checked', checkAll);
 
         this.$selectItem.each(function () {
-            $(this).closest('tr')[$(this).prop('checked') ? 'addClass' : 'removeClass']('selected');
+            $(this).closest('tr')[$(this).prop('checked') ? 'addClass' : 'removeClass']('selected updataOrDeleteClasss');
         });
     };
 

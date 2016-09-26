@@ -831,8 +831,8 @@
     },
     en : {
       OK      : "OK",
-      CANCEL  : "Cancel",
-      CONFIRM : "OK"
+      CANCEL  : "取消",
+      CONFIRM : "确定"
     },
     es : {
       OK      : "OK",

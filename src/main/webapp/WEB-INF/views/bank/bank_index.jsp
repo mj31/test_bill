@@ -24,10 +24,7 @@
 
     		laydate(exchangeDate); 
     	 
-    	 $('.selectpicker').selectpicker({
-             'selectedText': 'cat'
-         });
-    	
+    	 
     	 //1.初始化Table
     	 var oTable = new TableInit();
     	 oTable.Init();
@@ -41,6 +38,9 @@
     		 $("#lblAddTitle").text("添加交易流水信息");
     		 formNull();
     		 $("#saveUser").text("保存") ; 
+    		 $('.selectpicker').selectpicker({
+	             'selectedText': 'cat'
+	         });
     	     $('#add').modal();
     	 });
     	 
@@ -50,7 +50,7 @@
     		 $("#saveUser").text("修改") ; 
     		 formNull();
     		 //校验选了一条数据 
-    		 if($(".selected").length-1 != 1){ 
+    		 if($(".selected").length != 1){ 
     			 bootbox.alert({  
     		            buttons: {  
     		               ok: {  
@@ -81,6 +81,10 @@
 	   		 var hisAccountName = $(".selected").find("td:eq(6)").text() ;
 	   		 
 	   		 $("#addForm  #hisAccountId").append('<option value='+hisAccountId+' selected="true">'+hisAccountName+'</option>');
+	   		 
+	   		$('.selectpicker').selectpicker({
+	             'selectedText': 'cat'
+	         });
 	   		 
 	   		 $('#add').modal();
 	   		 
