@@ -337,7 +337,7 @@
             valign: "middle",//垂直
            	formatter:function(value,row,index){
             		if(value != null && value != ''){
-            			return value/100 ;
+            			return (value/100).toFixed(2) ;
             		}else{
              			return '' ;
              		}
@@ -373,7 +373,7 @@
             valign: "middle",//垂直
            	formatter:function(value,row,index){
               		if(value != null && value != ''){
-              			return value/100 ;
+              			return (value/100).toFixed(2) ;
               		}else{
               			return '' ;
               		}
@@ -385,7 +385,7 @@
                valign: "middle",//垂直
               	formatter:function(value,row,index){
                  		if(value != null && value != ''){
-                 			return value/100 ;
+                 			return (value/100).toFixed(2) ;
                  		}else{
                   			return '' ;
                   		}
@@ -404,7 +404,7 @@
                     valign: "middle",//垂直
                   	formatter:function(value,row,index){
                      		if(value != null && value != ''){
-                     			return value/100 ;
+                     			return (value/100).toFixed(2) ;
                      		}else{
                       			return '' ;
                       		}
@@ -423,7 +423,7 @@
                     valign: "middle",//垂直
                   	formatter:function(value,row,index){
                      		if(value != null && value != ''){
-                     			return value/100 ;
+                     			return (value/100).toFixed(2) ;
                      		}else{
                       			return '' ;
                       		}
@@ -457,7 +457,7 @@
                  		if(value != null && value == 0){
                  			var carFee = row.carFee ;
                  			if(carFee != null && carFee != 0){
-                 				return carFee*0.02/100 ;
+                 				return (carFee*0.02/100).toFixed(2) ;
                  			}else{
                  				return  "" ;
                  			}
@@ -497,7 +497,7 @@
                     	if(factoryPrice != null && factoryPrice != 0){
                     		factoryPriceNew = factoryPrice ;
                     	}
-                    	return  Number(customerPriceNew/100) - Number(factoryPriceNew/100)-Number(carFeeNew/100)-Number(tax/100)
+                    	return  (Number(customerPriceNew/100) - Number(factoryPriceNew/100)-Number(carFeeNew/100)-Number(tax/100)).toFixed(2);
                     }
                 },
            		{
@@ -507,7 +507,7 @@
                     valign: "middle",//垂直
                   	formatter:function(value,row,index){
                      		if(value != null && value != ''){
-                     			return value/100 ;
+                     			return (value/100).toFixed(2) ;
                      		}else{
                       			return '' ;
                       		}
@@ -520,7 +520,7 @@
                      valign: "middle",//垂直
                    	formatter:function(value,row,index){
                       		if(value != null && value != ''){
-                      			return value/100 ;
+                      			return (value/100).toFixed(2) ;
                       		}else{
                        			return '' ;
                        		}
@@ -559,7 +559,7 @@
                       		if(factoryPrice != null && factoryPrice != ''){
                       			factoryPriceNew =  factoryPrice  ;
                       		}
-                      		return Number(loadEmptyNew/100)*Number(factoryPriceNew/100) ;
+                      		return (Number(loadEmptyNew/100)*Number(factoryPriceNew/100)).toFixed(2) ;
                          }
                	 },
             	 {
@@ -569,7 +569,7 @@
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
                        		if(value != null && value != ''){
-                       			return value/100 ;
+                       			return (value/100).toFixed(2) ;
                        		}else{
                         			return '' ;
                         		}
@@ -591,7 +591,7 @@
 	                       		if(customerPrice != null && customerPrice != ''){
 	                       			customerPriceNew =  customerPrice  ;
 	                       		}
-	                       		return Number(factWeightNew/100)*Number(customerPriceNew/100) ;
+	                       		return (Number(factWeightNew/100)*Number(customerPriceNew/100)).toFixed(2) ;
 	                          }
                 	 },
            	         {
@@ -600,7 +600,32 @@
   	               	    align: "center",//水平
   	                    valign: "middle",//垂直
   	                   	formatter:function(value,row,index){
- 	                       		return index ; 
+								var tax = 0 ;
+		                    	
+		                    	var carFeeNew = 0 ;
+		                    	//税差 
+		                 		if(row.isOrNotTax != null && row.isOrNotTax == 0){
+		                 			var carFee = row.carFee ;
+		                 			if(carFee != null && carFee != 0){
+		                 				tax = carFee*0.02 ;
+		                 				carFeeNew = carFee ;
+		                 			}
+		                 		}
+		                    	
+		                    	//运到价
+		                    	var customerPriceNew = 0 ;
+		                    	var customerPrice = row.customerPrice ;
+		                    	if(customerPrice != null && customerPrice != 0){
+		                    		customerPriceNew = customerPrice ;
+		                    	}
+		                    	
+		                    	//出厂价
+		                    	var factoryPriceNew = 0 ;
+		                    	var factoryPrice = row.factoryPrice ;
+		                    	if(factoryPrice != null && factoryPrice != 0){
+		                    		factoryPriceNew = factoryPrice ;
+		                    	}
+		                    	return  ((Number(customerPriceNew/100) - Number(factoryPriceNew/100)-Number(carFeeNew/100)-Number(tax/100))*Number(row.factWeight/100)).toFixed(2);
  	                          }
                  	 },
                 	 {
@@ -638,7 +663,7 @@
    	               	    align: "center",//水平
    	                    valign: "middle",//垂直
    	                   	formatter:function(value,row,index){
-  	                       		return '没算' ;  
+  	                       		return Number((value/100)*(row.carFee/100)).toFixed(2);  
   	                          }
                   	 },
           	         {

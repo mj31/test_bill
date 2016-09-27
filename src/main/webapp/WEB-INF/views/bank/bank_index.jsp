@@ -283,11 +283,11 @@
            	formatter:function(value,row,index){
            		var exchangeFlag = row.exchangeFlag ;
            		   if(exchangeFlag == 0){
-           			   return Number(value/100) ;
+           			   return Number(value/100).toFixed(2) ;
            		   }
            		   
            		   if(exchangeFlag == 1){
-           			   return '-'+Number(value/100) ;
+           			   return '-'+Number(value/100).toFixed(2) ;
            		   }
                  
                }

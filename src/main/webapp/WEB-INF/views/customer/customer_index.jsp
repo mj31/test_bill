@@ -350,7 +350,7 @@
                      			loadSkinNew = loadSkin/100 ;
                      		}
                      		
-                     		return Number(loadEmpty) + Number(loadSkinNew) ;
+                     		return (Number(loadEmpty) + Number(loadSkinNew)).toFixed(2) ;
                      		
                      		
                         }
@@ -361,7 +361,7 @@
                     valign: "middle",//垂直
                   	formatter:function(value,row,index){
                      		if(value != null && value != ''){
-                     			return value/100 ;
+                     			return (value/100).toFixed(2) ;
                      		}else{
                       			return '' ;
                       		}
@@ -373,7 +373,7 @@
                     valign: "middle",//垂直
                   	formatter:function(value,row,index){
                      		if(value != null && value != ''){
-                     			return value/100 ;
+                     			return (value/100).toFixed(2) ;
                      		}else{
                       			return '' ;
                       		}
@@ -385,7 +385,7 @@
                     valign: "middle",//垂直
                   	formatter:function(value,row,index){
                      		if(value != null && value != ''){
-                     			return value/100 ;
+                     			return (value/100).toFixed(2) ;
                      		}else{
                       			return '' ;
                       		}
@@ -397,7 +397,7 @@
                     valign: "middle",//垂直
                   	formatter:function(value,row,index){
                      		if(value != null && value != ''){
-                     			return value/100 ;
+                     			return (value/100).toFixed(2) ;
                      		}else{
                       			return '' ;
                       		}
@@ -409,7 +409,7 @@
                     valign: "middle",//垂直
                   	formatter:function(value,row,index){
                      		if(value != null && value != ''){
-                     			return value/100 ;
+                     			return (value/100).toFixed(2) ;
                      		}else{
                       			return '' ;
                       		}
@@ -439,7 +439,7 @@
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
                        		if(value != null && value != ''){
-                       			return value/100 ;
+                       			return (value/100).toFixed(2) ;
                        		}else{
                         			return '' ;
                         		}
@@ -461,7 +461,7 @@
                        		if(customerPrice != null && customerPrice != ''){
                        			customerPriceNew =  customerPrice  ;
                        		}
-                       		return (factWeightNew/100)*Number(customerPriceNew/100) ;
+                       		return (Number(factWeightNew/100)*Number(customerPriceNew/100)).toFixed(2) ;
                            }
                  	 },
                  	{

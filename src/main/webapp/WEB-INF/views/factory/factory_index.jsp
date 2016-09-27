@@ -97,7 +97,7 @@
 	            valign: "middle",//垂直
             	formatter:function(value,row,index){
                 		if(value != null && value != ''){
-                			return value/100 ;
+                			return (value/100).toFixed(2) ;
                 		}else{
                 			return '' ;
                 		}
@@ -132,7 +132,7 @@
                 valign: "middle",//垂直
              	formatter:function(value,row,index){
                 		if(value != null && value != ''){
-                			return value/100 ;
+                			return (value/100).toFixed(2) ;
                 		}else{
                  			return '' ;
                  		}
@@ -145,7 +145,7 @@
                valign: "middle",//垂直
               	formatter:function(value,row,index){
                  		if(value != null && value != ''){
-                 			return value/100 ;
+                 			return (value/100).toFixed(2) ;
                  		}else{
                  			return '' ;
                  		}
@@ -157,7 +157,7 @@
                     valign: "middle",//垂直
                   	formatter:function(value,row,index){
                      		if(value != null && value != ''){
-                     			return value/100 ;
+                     			return (value/100).toFixed(2) ;
                      		}else{
                       			return '' ;
                       		}
@@ -170,7 +170,7 @@
                      	valign: "middle",//垂直
                     	formatter:function(value,row,index){
                        		if(value != null && value != ''){
-                       			return value/100 ;
+                       			return (value/100).toFixed(2) ;
                        		}else{
                        			return '' ;
                        		}
@@ -193,7 +193,7 @@
                     			factoryPrice = factoryPrice/100 ;
                        		}
                     		
-                    		return Number(loadEmpty*factoryPrice) ;
+                    		return Number(loadEmpty*factoryPrice).toFixed(2) ;
                        		
                     		
                           }
