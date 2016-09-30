@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
    <%@ include file="/common/header.jsp"%>
     <title>永润系统</title>
 </head>
