@@ -73,38 +73,24 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
      <sql id="update_sql">
          <set>
                 <if test="loginName != null and loginName != ''">
-	         	login_name = #{loginName} ,
-	         </if>
+	         		login_name = #{loginName} ,
+	           </if>
                 <if test="password != null and password != ''">
-	         	password = #{password} ,
-	         </if>
-                <if test="userName != null and userName != ''">
+	         	   password = #{password} ,
+	            </if>
 	         	user_name = #{userName} ,
-	         </if>
-                <if test="mobile != null and mobile != ''">
 	         	mobile = #{mobile} ,
-	         </if>
-                <if test="email != null and email != ''">
 	         	email = #{email} ,
-	         </if>
-                <if test="address != null and address != ''">
 	         	address = #{address} ,
-	         </if>
-                <if test="position != null and position != ''">
 	         	position = #{position} ,
-	         </if>
-                <if test="workCode != null and workCode != ''">
 	         	work_code = #{workCode} ,
-	         </if>
                 <if test="age != null">
-	         	age = #{age} ,
-	         </if>
+	         		age = #{age} ,
+	            </if>
                 <if test="status != null">
-	         	status = #{status} ,
-	         </if>
-                <if test="department != null and department != ''">
+	         		status = #{status} ,
+	            </if>
 	         	department = #{department} 
-	         </if>
        </set>
     </sql>
     

@@ -148,69 +148,29 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
      <sql id="update_sql">
          <set>
-                <if test="operateNum != null">
+              <if test="operateNum != null">
 	         	operate_num = #{operateNum} ,
 	         </if>
-                <if test="customerId != null">
 	         	customer_id = #{customerId} ,
-	         </if>
-                <if test="poundsDiff != null and poundsDiff != ''">
 	         	pounds_diff = #{poundsDiff} ,
-	         </if>
-                <if test="loadDate != null">
 	         	load_date = #{loadDate} ,
-	         </if>
-                <if test="loadSkin != null">
 	         	load_skin = #{loadSkin} ,
-	         </if>
-                <if test="loadEmpty != null">
 	         	load_empty = #{loadEmpty} ,
-	         </if>
-                <if test="uploadDate != null">
 	         	upload_date = #{uploadDate} ,
-	         </if>
-                <if test="uploadHair != null">
 	         	upload_hair = #{uploadHair} ,
-	         </if>
-                <if test="updateSkin != null">
 	         	update_skin = #{updateSkin} ,
-	         </if>
-                <if test="uploadEmpty != null">
 	         	upload_empty = #{uploadEmpty} ,
-	         </if>
-                <if test="companyId != null">
 	         	company_id = #{companyId} ,
-	         </if>
-                <if test="isOrNotTax != null">
 	         	isOrNotTax = #{isOrNotTax} ,
-	         </if>
-                <if test="carId != null">
 	         	car_id = #{carId} ,
-	         </if>
-                <if test="factoryId != null">
 	         	factory_id = #{factoryId} ,
-	         </if>
-                <if test="factoryPrice != null">
 	         	factory_price = #{factoryPrice} ,
-	         </if>
-                <if test="activityPrice != null">
 	         	activity_price = #{activityPrice} ,
-	         </if>
-                <if test="customerPrice != null">
 	         	customer_price = #{customerPrice} ,
-	         </if>
-                <if test="carFee != null">
 	         	car_fee = #{carFee} ,
-	         </if>
-                <if test="factWeight != null">
 	         	fact_weight = #{factWeight} ,
-	         </if>
-                <if test="eventRemark != null and eventRemark != ''">
 	         	event_remark = #{eventRemark} ,
-	         </if>
-                <if test="customerRemark != null and customerRemark != ''">
 	         	customer_remark = #{customerRemark} 
-	         </if>
        </set>
     </sql>
     

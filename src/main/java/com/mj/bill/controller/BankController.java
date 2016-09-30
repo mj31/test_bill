@@ -192,5 +192,12 @@ public class BankController {
 		}
 	     ResponseUtils.responseJson(response, json.toString());
 	}
+	
+	public static void main(String[] args)throws Exception {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			String strExchangeDate = "2016-12-01" ;
+			Date newDate = format.parse(strExchangeDate) ;
+			System.out.println(newDate.getTime());
+	}
 
 }

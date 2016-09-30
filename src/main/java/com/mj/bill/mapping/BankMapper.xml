@@ -114,59 +114,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
      <sql id="update_sql">
          <set>
-                <if test="serialNumber != null">
 	         	serial_number = #{serialNumber} ,
-	         </if>
-                <if test="exchangeDate != null">
 	         	exchange_date = #{exchangeDate} ,
-	         </if>
-	         <if test="operateId != null">
 	         	operate_id = #{operateId} ,
-	         </if>
-	         
-	         
-                <if test="exchangeMoney != null">
 	         	exchange_money = #{exchangeMoney} ,
-	         </if>
-                <if test="hisAccount != null">
 	         	his_account = #{hisAccount} ,
-	         </if>
-                <if test="hisAccountName != null and hisAccountName != ''">
 	         	his_account_name = #{hisAccountName} ,
-	         </if>
-                <if test="hisAccountId != null">
 	         	his_account_id = #{hisAccountId} ,
-	         </if>
-                <if test="exchangeFlag != null">
 	         	exchange_flag = #{exchangeFlag} ,
-	         </if>
-                <if test="serviceType != null and serviceType != ''">
 	         	service_type = #{serviceType} ,
-	         </if>
-                <if test="remark != null and remark != ''">
 	         	remark = #{remark} ,
-	         </if>
-                <if test="status != null">
-	         	status = #{status} ,
-	         </if>
-                <if test="createUserId != null">
-	         	create_user_id = #{createUserId} ,
-	         </if>
-                <if test="createDate != null">
-	         	create_date = #{createDate} ,
-	         </if>
-                <if test="createUserName != null and createUserName != ''">
-	         	create_user_name = #{createUserName} ,
-	         </if>
-                <if test="updateUserId != null">
 	         	update_user_id = #{updateUserId} ,
-	         </if>
-                <if test="updateUserName != null and updateUserName != ''">
 	         	update_user_name = #{updateUserName} ,
-	         </if>
-                <if test="updateDate != null">
 	         	update_date = #{updateDate} 
-	         </if>
        </set>
     </sql>
     

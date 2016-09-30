@@ -53,25 +53,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
      <sql id="update_sql">
          <set>
-                <if test="companyAddress != null and companyAddress != ''">
 	         	company_address = #{companyAddress} ,
-	         </if>
-                <if test="companyName != null and companyName != ''">
 	         	company_name = #{companyName} ,
-	         </if>
-	         <if test="shortName != null and shortName != ''">
 	         	short_name = #{shortName} ,
-	         </if>
-	         
-	         
-                <if test="flag != null">
+              <if test="flag != null">
 	         	flag = #{flag} ,
-	         </if>
-                <if test="status != null">
+	          </if>
+              <if test="status != null">
 	         	status = #{status} 
-	         </if>
-       </set>
-    </sql>
+	          </if>
+        </set>
+     </sql>
     
 	<update id="update" >
 	        UPDATE  company

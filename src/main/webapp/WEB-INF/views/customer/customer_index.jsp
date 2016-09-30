@@ -614,7 +614,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title">
                     <i class="icon-pencil"></i>
-                    <span id="lblAddTitle" style="font-weight:bold">添加运作事件</span>
+                    <span id="lblAddTitle" style="font-weight:bold">修改客户对账单</span>
                 </h4>
             </div>
             <form class="form-horizontal form-bordered form-row-strippe"  id="addForm" data-toggle="validator" enctype="multipart/form-data">

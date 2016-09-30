@@ -78,52 +78,23 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		-->
 	</insert>
 	
-	
-     <sql id="update_sql">
+    <sql id="update_sql">
          <set>
-                <if test="headerNumber != null and headerNumber != ''">
 	         	header_number = #{headerNumber} ,
-	         </if>
-                <if test="trailerNumber != null and trailerNumber != ''">
 	         	trailer_number = #{trailerNumber} ,
-	         </if>
-                <if test="carType != null">
 	         	car_type = #{carType} ,
-	         </if>
-	         <if test="status != null">
 	         	status = #{status} ,
-	         </if>
-                <if test="weight != null">
 	         	weight = #{weight} ,
-	         </if>
-                <if test="capacity != null">
 	         	capacity = #{capacity} ,
-	         </if>
-                <if test="carPhone != null and carPhone != ''">
 	         	car_phone = #{carPhone} ,
-	         </if>
-                <if test="driverName != null and driverName != ''">
 	         	driver_name = #{driverName} ,
-	         </if>
-                <if test="driverPhone != null and driverPhone != ''">
 	         	driver_phone = #{driverPhone} ,
-	         </if>
-                <if test="followerName != null and followerName != ''">
 	         	follower_name = #{followerName} ,
-	         </if>
-                <if test="followerPhone != null and followerPhone != ''">
 	         	follower_phone = #{followerPhone} ,
-	         </if>
-                <if test="backupPhone != null and backupPhone != ''">
 	         	backup_phone = #{backupPhone} ,
-	         </if>
-                <if test="expiredDate != null">
 	         	expired_date = #{expiredDate} ,
-	       </if>
-                <if test="remark != null and remark != ''">
 	         	remark = #{remark} 
-	         </if>
-       </set>
+        </set>
     </sql>
     
 	<update id="update" >
