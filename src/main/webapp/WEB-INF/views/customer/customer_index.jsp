@@ -560,7 +560,7 @@
 		       		<%-- <input type="text" class="form-control" id="headerNumber" name="headerNumber" value="${carInfo.headerNumber}"> --%>
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">出厂地</label>
-		      <div class="col-sm-3" style="width:10%">
+		      <div class="col-sm-3" style="width:11%">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId"> 
 		       								 <option value=''>----请选择----</option>
 							      <c:forEach items="${companyList}" var="factory">
