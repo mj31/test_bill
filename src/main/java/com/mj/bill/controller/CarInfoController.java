@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -27,7 +28,7 @@ import com.mj.bill.service.ICarInfoService;
 @RequestMapping("/car")
 public class CarInfoController {
 	
-	Logger logger = Logger.getLogger(CarInfoController.class);
+	private final static Logger logger = LoggerFactory.getLogger(CarInfoController.class); 
 	
 	@Resource
 	private ICarInfoService carInfoService;
@@ -65,7 +66,6 @@ public class CarInfoController {
 			 
 		 }
 		 
-		 logger.info("======查询======");
 		 JSONObject json = new JSONObject();
 		 json.put("data",carInfoList);
 		 json.put("total",total);
@@ -99,6 +99,7 @@ public class CarInfoController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("===车辆信息修改==="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());
@@ -133,6 +134,7 @@ public class CarInfoController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("=====保存车辆信息====="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());
@@ -167,6 +169,7 @@ public class CarInfoController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("修改车辆信息===="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());

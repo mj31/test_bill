@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -28,6 +30,7 @@ import com.mj.bill.service.IOperateService;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
+	    private final static Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
 		@Resource
 		private IOperateService operateService;
@@ -95,6 +98,7 @@ public class CustomerController {
 				
 			} catch (Exception e) {
 				e.printStackTrace();
+				logger.info("修改客户对账单信息"+e);
 				json.put("status",1);
 			}
 		     ResponseUtils.responseJson(response, json.toString());
@@ -128,6 +132,7 @@ public class CustomerController {
 					json.put("status",0);
 			} catch (Exception e) {
 				e.printStackTrace();
+				logger.info("弹出客户对账单信息"+e);
 				json.put("status",1);
 			}
 		     ResponseUtils.responseJson(response, json.toString());

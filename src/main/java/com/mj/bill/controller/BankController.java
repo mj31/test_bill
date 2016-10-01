@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -30,6 +32,8 @@ import com.mj.bill.service.ICompanyService;
 @Controller
 @RequestMapping("/bank")
 public class BankController {
+	
+	private final static Logger logger = LoggerFactory.getLogger(BankController.class); 
 	
 	@Resource
 	private IBankService bankService;
@@ -82,7 +86,7 @@ public class BankController {
 	}
 	
 	/**
-	 * 保存运作信息
+	 * 保存流水信息
 	 * @param request
 	 * @param response
 	 */
@@ -116,6 +120,7 @@ public class BankController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("保存流水打印错误信息==="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());
@@ -157,6 +162,7 @@ public class BankController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("============修改打印数据====="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());
@@ -188,6 +194,7 @@ public class BankController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("删除打印数据===="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());

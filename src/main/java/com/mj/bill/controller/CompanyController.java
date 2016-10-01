@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,8 @@ import com.mj.bill.service.ICompanyService;
 @Controller
 @RequestMapping("/company")
 public class CompanyController {
+	
+	private final static Logger logger = LoggerFactory.getLogger(CompanyController.class);
 	
 	@Resource
 	private ICompanyService companyService;
@@ -76,6 +80,7 @@ public class CompanyController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("删除公司信息===="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());
@@ -102,6 +107,7 @@ public class CompanyController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("保存公司信息===="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());
@@ -128,6 +134,7 @@ public class CompanyController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("修改公司信息===="+e); 
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());

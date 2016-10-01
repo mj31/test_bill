@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -28,7 +30,9 @@ import com.mj.bill.service.IOperateService;
 @Controller
 @RequestMapping("/factory")
 public class FactoryController {
-
+		
+	    private final static Logger logger = LoggerFactory.getLogger(FactoryController.class);
+		
 		@Resource
 		private IOperateService operateService;
 		

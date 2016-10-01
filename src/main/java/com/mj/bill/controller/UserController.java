@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,9 @@ import com.mj.bill.service.IUserService;
 
 @Controller
 public class UserController {
+	
+	private final static Logger logger = LoggerFactory.getLogger(UserController.class); 
+	
 	@Resource
 	private IUserService userService;
 	
@@ -129,6 +134,7 @@ public class UserController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("修改用户信息==="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());
@@ -156,6 +162,7 @@ public class UserController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("保存用户信息==="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());
@@ -180,6 +187,7 @@ public class UserController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("检查用户存不存在==="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());
@@ -210,6 +218,7 @@ public class UserController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("修改用户信息==="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());

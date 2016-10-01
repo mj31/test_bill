@@ -55,7 +55,6 @@ public class OperateController {
 	 */
 	@RequestMapping("/index")
 	public String toIndex(HttpServletRequest request,Model model,OperateEventVo operateEvent){
-		logger.info("==========查询=====");
 		model.addAttribute("operateEvent", operateEvent);
 		
 		Company company= new Company();
@@ -103,6 +102,7 @@ public class OperateController {
 			}
 			
 		} catch (Exception e) {
+			logger.info("保存运作详情打印数据====="+e);
 			e.printStackTrace();
 			json.put("status",1);
 		}
@@ -138,6 +138,7 @@ public class OperateController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("更新打印数据====="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());
@@ -172,6 +173,7 @@ public class OperateController {
 				json.put("status",0);
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.info("弹出层查询===="+e);
 			json.put("status",1);
 		}
 	     ResponseUtils.responseJson(response, json.toString());
