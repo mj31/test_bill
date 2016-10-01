@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
-    <contextName>com.mj.bill</contextName>
+    <contextName>bill</contextName>
 
-    <property name="log.base" value="d://logs" />
+    <property name="log.base" value="../logs" />
 
     <!-- 控制台输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -58,18 +58,10 @@
         </layout>
     </appender>
 
-
-    <logger name="com.mj" level="INFO">
-        <appender-ref ref="bizAppender"/>
-    </logger>
-
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-    </root>
-
-    <root level="info">
         <appender-ref ref="allAppender"/>
+        <appender-ref ref="bizAppender"/>
     </root>
-
 
 </configuration>

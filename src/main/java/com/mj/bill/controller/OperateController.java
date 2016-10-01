@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -21,6 +23,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.mj.bill.common.ResponseUtils;
 import com.mj.bill.pojo.CarInfo;
 import com.mj.bill.pojo.Company;
+import com.mj.bill.pojo.OperateEvent;
 import com.mj.bill.pojo.OperateEventVo;
 import com.mj.bill.service.ICarInfoService;
 import com.mj.bill.service.ICompanyService;
@@ -29,6 +32,7 @@ import com.mj.bill.service.IOperateService;
 @Controller
 @RequestMapping("/operate")
 public class OperateController {
+	private final static Logger logger = LoggerFactory.getLogger(OperateController.class); 
 	
 	@Resource
 	private IOperateService operateService;
@@ -47,13 +51,14 @@ public class OperateController {
 	 * 显示运作详情页面
 	 * @param request
 	 * @param model
-	 * @return
+	 * @returns
 	 */
 	@RequestMapping("/index")
 	public String toIndex(HttpServletRequest request,Model model,OperateEventVo operateEvent){
+		logger.info("==========查询=====");
 		model.addAttribute("operateEvent", operateEvent);
-		//获取company表数据 可用的数据=======================
-		Company company = new Company();
+		
+		Company company= new Company();
 		company.setStatus(0);
 		List<Company> companyList = companyService.queryCompanyByCondition(company) ;
 		model.addAttribute("companyList", companyList);
@@ -66,47 +71,6 @@ public class OperateController {
 		//获取car_info表数据 可用的数据=======================
 		
 		return "operate/operate_index";
-	}
-	
-	@RequestMapping(value="/search")
-	public void search(HttpServletRequest request,HttpServletResponse response,OperateEventVo operateEvent){
-		 List<OperateEventVo> operateList = this.operateService.queryOperateByCondition(operateEvent);
-		 Integer total = this.operateService.queryOperateByConditionTotal(operateEvent);
-		 
-		 if(!CollectionUtils.isEmpty(operateList)){
-			 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			 Calendar c = Calendar.getInstance();
-			 for(int i = 0 ; i < operateList.size() ; i++){
-				//装车时间
-				 if(operateList.get(i).getLoadDate() != null){
-					 long loadDate = operateList.get(i).getLoadDate();
-					 if(loadDate != 0){
-						 c.setTimeInMillis(loadDate);
-						 operateList.get(i).setStrLoadDate(format.format(c.getTime()));
-					 }else{
-						 operateList.get(i).setStrLoadDate("-");
-					 }
-				 }
-				//卸车时间
-				 if(operateList.get(i).getUploadDate() != null){
-					 long upLoadDate = operateList.get(i).getUploadDate() ;
-					 if(upLoadDate != 0){
-						 c.setTimeInMillis(upLoadDate);
-						 operateList.get(i).setStrUploadDate(format.format(c.getTime()));
-					 }else{
-						 operateList.get(i).setStrUploadDate("-");
-					 }
-					 
-				 }
-			 }
-			 
-		 }
-		 
-		 JSONObject json = new JSONObject();
-		 json.put("data",operateList);
-		 json.put("total",total);
-		 json.put("page",1);
-	     ResponseUtils.responseJson(response, json.toString());
 	}
 	
 	/**
@@ -166,12 +130,46 @@ public class OperateController {
 				}else{
 					operateEvent.setLoadDate(0L);
 				}
-				this.operateService.updateOperateEvent(operateEvent);
+				this.operateService.updateOperateByEvent(operateEvent);
 				json.put("status",0);
 			}else{
 				json.put("status",1);
 			}
 			
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("status",1);
+		}
+	     ResponseUtils.responseJson(response, json.toString());
+	}
+	
+	
+	/**
+	 * 修改弹出
+	 * @param request
+	 * @param response
+	 * @param operateEvent
+	 */
+	@RequestMapping("/updateSearch")
+	@ResponseBody
+	public void updateSearch(HttpServletRequest request,HttpServletResponse response,Integer id){
+		JSONObject json = new JSONObject();
+		try {
+				OperateEventVo operateEvent =	this.operateService.getById(id);
+			    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				Calendar c = Calendar.getInstance();
+		    	 //装车时间
+				 if(operateEvent != null){
+					 Long loadDate = operateEvent.getLoadDate();
+					 if(loadDate != null && loadDate != 0){
+						 c.setTimeInMillis(loadDate);
+						 operateEvent.setStrLoadDate(format.format(c.getTime()));
+					 }else{
+						 operateEvent.setStrLoadDate("-");
+					 }
+				 }
+			    json.put("operateEvent", operateEvent) ;
+				json.put("status",0);
 		} catch (Exception e) {
 			e.printStackTrace();
 			json.put("status",1);

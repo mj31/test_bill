@@ -247,7 +247,7 @@
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/factory/index.do">
 	     <div class="form-group" style="margin-top:15px">
-		      <label class="control-label col-sm-1" for="txt_search_statu">工厂名称</label>
+		      <label class="control-label col-sm-1" for="txt_search_statu">上游工厂名称</label> 
 		      <div class="col-sm-3" style="width:10%">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="factoryId" name="factoryId"> 
 		       								  <option value=''>----请选择----</option>

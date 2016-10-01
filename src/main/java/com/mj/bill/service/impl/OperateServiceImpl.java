@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.mj.bill.dao.IOperateDao;
+import com.mj.bill.pojo.OperateEvent;
 import com.mj.bill.pojo.OperateEventVo;
 import com.mj.bill.service.IOperateService;
 
@@ -50,6 +51,22 @@ public class OperateServiceImpl implements IOperateService {
 	@Override
 	public void updateOperateEvent(OperateEventVo operateEvent) {
 		operateDao.update(operateEvent);
+		
+	}
+
+	@Override
+	public void updateOperateByEvent(OperateEventVo operateEvent) {
+		operateDao.updateOperateByEvent(operateEvent);
+	}
+
+	@Override
+	public void updateOperateByCustomer(OperateEventVo operateEvent) {
+		operateDao.updateOperateByCustomer(operateEvent);
+	}
+
+	@Override
+	public OperateEventVo getById(Integer id) {
+		return operateDao.getById(id);
 		
 	}
 	

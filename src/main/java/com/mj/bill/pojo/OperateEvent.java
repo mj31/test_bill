@@ -25,7 +25,7 @@ public class OperateEvent{
      * 描述:磅差/100     
      * 字段: pounds_diff  VARCHAR(10)  
      */	
-	private java.lang.String poundsDiff;
+	private java.lang.Long poundsDiff;
  
 	 /**
      * 描述:装车时间     
@@ -175,16 +175,14 @@ public class OperateEvent{
 	
     
     
-	public void setPoundsDiff(java.lang.String poundsDiff) {
+	public java.lang.Long getPoundsDiff() {
+		return poundsDiff;
+	}
+
+	public void setPoundsDiff(java.lang.Long poundsDiff) {
 		this.poundsDiff = poundsDiff;
 	}
-	
-	public java.lang.String getPoundsDiff() {
-		return this.poundsDiff;
-	}
-	
-    
-    
+
 	public void setLoadDate(java.lang.Long loadDate) {
 		this.loadDate = loadDate;
 	}

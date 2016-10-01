@@ -67,48 +67,6 @@ public class CustomerController {
 			return "customer/customer_index";
 		}
 		
-		@RequestMapping(value="/search")
-		public void search(HttpServletRequest request,HttpServletResponse response,OperateEventVo operateEvent){
-			 List<OperateEventVo> operateList = this.operateService.queryOperateByCondition(operateEvent);
-			 Integer total = this.operateService.queryOperateByConditionTotal(operateEvent);
-			 
-			 if(!CollectionUtils.isEmpty(operateList)){
-				 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-				 Calendar c = Calendar.getInstance();
-				 for(int i = 0 ; i < operateList.size() ; i++){
-					//装车时间
-					 if(operateList.get(i).getLoadDate() != null){
-						 long loadDate = operateList.get(i).getLoadDate();
-						 if(loadDate != 0){
-							 c.setTimeInMillis(loadDate);
-							 operateList.get(i).setStrLoadDate(format.format(c.getTime()));
-						 }else{
-							 operateList.get(i).setStrLoadDate("-");
-						 }
-					 }
-					//卸车时间
-					 if(operateList.get(i).getUploadDate() != null){
-						 long upLoadDate = operateList.get(i).getUploadDate() ;
-						 if(upLoadDate != 0){
-							 c.setTimeInMillis(upLoadDate);
-							 operateList.get(i).setStrUploadDate(format.format(c.getTime()));
-						 }else{
-							 operateList.get(i).setStrUploadDate("-");
-						 }
-						 
-					 }
-				 }
-				 
-			 }
-			 
-			 JSONObject json = new JSONObject();
-			 json.put("data",operateList);
-			 json.put("total",total);
-			 json.put("page",1);
-		     ResponseUtils.responseJson(response, json.toString());
-		}
-		
-		
 		/**
 		 * 修改运作信息
 		 * @param request
@@ -129,12 +87,45 @@ public class CustomerController {
 					}else{
 						operateEvent.setUploadDate(0L);
 					}
-					this.operateService.updateOperateEvent(operateEvent);
+					this.operateService.updateOperateByCustomer(operateEvent);
 					json.put("status",0);
 				}else{
 					json.put("status",1);
 				}
 				
+			} catch (Exception e) {
+				e.printStackTrace();
+				json.put("status",1);
+			}
+		     ResponseUtils.responseJson(response, json.toString());
+		}
+		
+		/**
+		 * 修改弹出
+		 * @param request
+		 * @param response
+		 * @param operateEvent
+		 */
+		@RequestMapping("/updateSearch")
+		@ResponseBody
+		public void updateSearch(HttpServletRequest request,HttpServletResponse response,Integer id){
+			JSONObject json = new JSONObject();
+			try {
+					OperateEventVo operateEvent =	this.operateService.getById(id);
+				    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					Calendar c = Calendar.getInstance();
+			    	 //装车时间
+					 if(operateEvent != null){
+						 Long upLoadDate = operateEvent.getUploadDate();
+						 if(upLoadDate != null && upLoadDate != 0){
+							 c.setTimeInMillis(upLoadDate);
+							 operateEvent.setStrUploadDate(format.format(c.getTime()));
+						 }else{
+							 operateEvent.setStrUploadDate("-");
+						 }
+					 }
+				    json.put("operateEvent", operateEvent) ;
+					json.put("status",0);
 			} catch (Exception e) {
 				e.printStackTrace();
 				json.put("status",1);

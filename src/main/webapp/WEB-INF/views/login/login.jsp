@@ -23,15 +23,15 @@
         <input type="text" class="form-control" placeholder="用户名" required autofocus  name="loginName" id="loginName"/>
         <input type="password" class="form-control" placeholder="密码" required name="password" id="password"/>
         <button class="btn btn-lg btn-warning btn-block" type="submit">登录</button>
-        <label class="checkbox">
+       <!--  <label class="checkbox">
             <input type="checkbox" value="remember-me"> 记住我
-        </label>
+        </label> -->
     </form>
 </div>
 
-<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+<!-- <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
     <p>适用浏览器：360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗. 不支持IE8及以下浏览器。</p>
-    <!-- <p>来源：<a href="http://sc.chinaz.com/" target="_blank">站长素材</a></p> -->
-</div>
+    <p>来源：<a href="http://sc.chinaz.com/" target="_blank">站长素材</a></p>
+</div> -->
 </body>
 </html>

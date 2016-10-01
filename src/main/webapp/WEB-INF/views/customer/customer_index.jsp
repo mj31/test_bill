@@ -44,7 +44,7 @@
     		 $("#saveUser").text("修改") ; 
     		 formNull();
     		 //校验选了一条数据 
-    		 if($(".selected").length-3 != 1){ 
+    		 if($(".updataOrDeleteClasss").length != 1){ 
     			 bootbox.alert({  
     		            buttons: {  
     		               ok: {  
@@ -56,77 +56,49 @@
     		            
     		        }); 
     			 return ;
+    		 }else{
+    			 var id = $(".updataOrDeleteClasss .ids").val() ;
+    			 $.ajax({
+	      		        url : "${ctx}/customer/updateSearch.do",
+	      		        type: "post",
+	      		        data:{"id":id},
+	      		        dataType : "json",
+	      		        success: function(result){
+  		                     if(result.status == 0){
+  		                    	 var operateEvent = result.operateEvent ;
+	  		                     $("#addForm #operateNum").val(operateEvent.operateNum);
+	  		         	   		 $("#addForm #uploadDate").val(operateEvent.strUploadDate);
+	  		         	   		 
+	  		         	   		 if(operateEvent.loadEmpty != null && operateEvent.loadEmpty != ""){
+	  		         	   			  $("#addForm #loadEmpty").val((operateEvent.loadEmpty)/100);
+	  		         	   		 }else{
+	  		         	   			  $("#addForm #loadEmpty").val("");
+	  		         	   		 }
+	  		         	   		 
+		  		         	   	 if(operateEvent.uploadEmpty != null && operateEvent.uploadEmpty != ""){
+		  		         	   		  $("#addForm #uploadEmpty").val((operateEvent.uploadEmpty)/100); 
+	 		         	   		 }else{
+	 		         	   			  $("#addForm #uploadEmpty").val(""); 
+	 		         	   		 }
+	  		         	   		 
+		  		         	   	 if(operateEvent.factWeight != null && operateEvent.factWeight != ""){
+		  		         	   	 	  $("#addForm #factWeight").val((operateEvent.factWeight)/100);
+	 		         	   		 }else{
+	 		         	   		      $("#addForm #factWeight").val("");
+	 		         	   		 }
+	  		         	   		
+	  		         	   		 $("#addForm #customerRemark").val(operateEvent.customerRemark); 
+	  		         	   		 $('#add').modal();
+  		                     }else{
+  		                    	 bootbox.alert("获取失败"); 
+  		                     }
+   		               },
+   		            error:function(){
+	  		            	 bootbox.alert("获取失败 ");
+   		        	   }
+		          	});
     		 }
-    		 
-    		 
-			    		 
-	   		 $("#addForm #operateNum").val($(".selected").find("td:eq(2)").text());
-	   		 $("#addForm #uploadDate").val($(".selected").find("td:eq(9)").text());
-	   		 
-	   		 $("#addForm #loadSkin").val($(".selected").find("td:eq(11)").text());
-	   		 $("#addForm #loadEmpty").val($(".selected").find("td:eq(12)").text());
-	   		 
-	   		 $("#addForm #uploadHair").val($(".selected").find("td:eq(13)").text());
-	   		 $("#addForm #updateSkin").val($(".selected").find("td:eq(14)").text());
-	   		 $("#addForm #uploadEmpty").val($(".selected").find("td:eq(15)").text()); 
-	   		
-	   		 $("#addForm #factWeight").val($(".selected").find("td:eq(17)").text());
-	   		 $("#addForm #customerRemark").val($(".selected").find("td:eq(21)").text()); 
-	   		 
-	   		bootbox.confirm('确认修改的运单编号是：'+$(".selected").find("td:eq(2)").text(), function (result) {
-			             if (result) {
-			            	 $('#add').modal();
-			             }
-	   			})
     	 });
-    	 
-    	 
-    	 //===============删除开始=========================
-    	 $("#btn_delete").click(function(){
-    		 if($(".selected").length == 0){ 
-    			 bootbox.alert({  
-    		            buttons: {  
-    		               ok: {  
-    		                    label: '确定',  
-    		                    className: 'btn-myStyle'  
-    		                }  
-    		            },  
-    		            message: '请至少选择一条数据进行操作',  
-    		            
-    		        }); 
-    			 return ;
-    		 }
-    		 
-    		 var $ids = $(".selected .ids") ;
-    		 var arrayIds = new Array();
-    		 for(var i = 0 ; i< $ids.length ;i++){
-    			 arrayIds[i] = $ids[i].value ;
-    		 }
-    		bootbox.confirm("您确认删除选定的记录吗？", function (result) {
-             if (result) {
-                 //然后发送异步请求的信息到后台删除数据
-                 $.get("${ctx}/operate/delete.do?ids="+arrayIds, function (json) {
-                     if (json.status == 0) {
-                    	 $("#formSearch").submit();//刷新页面数据
-                     }else {
-                    	 bootbox.alert({  
-          		            buttons: {  
-          		               ok: {  
-          		                    label: '确定',  
-          		                    className: 'btn-myStyle'  
-          		                }  
-          		            },  
-          		            message: '操作失败',    
-          		        }); 
-                     }
-                 });
-             }
-          }); 
-    	 })
-    	 
-    	 //===============删除结束=========================
-    	 
-    	 
     	 
     	 //查询 
     	 $("#btn_query").click(function(){
@@ -139,29 +111,13 @@
 	 	   		var saveUserValue = $("#saveUser").text() ;
 	 	   		
 			 	var uploadDate = $("#addForm #uploadDate").val();
-			 	
-			 	var loadSkin= $("#addForm #loadSkin").val();
 			 	var loadEmpty= $("#addForm #loadEmpty").val();
-			 	
-			 	var uploadHair = $("#addForm #uploadHair").val();
-			 	var updateSkin = $("#addForm #updateSkin").val();
 			 	var uploadEmpty = $("#addForm #uploadEmpty").val(); 
-			 	
 			 	var factWeight= $("#addForm #factWeight").val();
-			 	
 			 	var customerRemark= $("#addForm #customerRemark").val();
 	 	 		
-	 	 		
 			 	
-			 	var reg = /^(([1-9]+)|([0-9]+\.[0-9]{0,2}))$/;
-			 	if(loadSkin != null  && loadSkin != ""){
-			        if(!reg.test(loadSkin)){
-			        	bootbox.alert("装车皮重必须是数字且保留2位小数");   
-			        	return  ;
-			        }else{
-			        	loadSkin = Number(loadSkin*100) ;
-			        }
-			 	}
+			 	var reg = /^[0-9]+(.[0-9]{1,2})?$/;
 			 	
 			 	if(loadEmpty != null  && loadEmpty != ''){
 			        if(!reg.test(loadEmpty)){
@@ -169,24 +125,6 @@
 			        	return  ;
 			        }else{
 			        	loadEmpty = Number(loadEmpty*100) ;
-			        }
-			 	}
-			 	
-			 	if(uploadHair != null  && uploadHair != ''){
-			        if(!reg.test(uploadHair)){
-			        	bootbox.alert("卸车毛重必须是数字且保留2位小数");    
-			        	return  ;
-			        }else{
-			        	uploadHair = Number(uploadHair*100) ;
-			        }
-			 	}
-			 	
-			 	if(updateSkin != null  && updateSkin != ''){
-			        if(!reg.test(updateSkin)){
-			        	bootbox.alert("卸车皮重必须是数字且保留2位小数");    
-			        	return  ;
-			        }else{
-			        	updateSkin = Number(updateSkin*100) ;
 			        }
 			 	}
 			 	
@@ -214,19 +152,16 @@
 			 	
  	   		 
  	   		if(saveUserValue == '修改'){
- 	   			var id = $(".selected .ids").val() ;
+ 	   			var id = $(".updataOrDeleteClasss .ids").val() ;
 	 	   		$.ajax({
 	      		        url : "${ctx}/customer/update.do",
 	      		        type: "post",
 	      		        data:{"id":id,"loadEmpty":loadEmpty,"strUploadDate":uploadDate
-	      		        	 , "loadSkin":loadSkin, "uploadHair":uploadHair
-      		        		 , "updateSkin":updateSkin, "uploadEmpty":uploadEmpty, "customerRemark":customerRemark
+	      		        	 , "uploadEmpty":uploadEmpty, "customerRemark":customerRemark
       		        		 , "factWeight":factWeight},
 	      		        dataType : "json",
 	      		        success: function(result){
 	 		                     if(result.status == 0){
-	 		                    	/*  bootbox.alert("保存成功 ");
-	 		                    	 setInterval(5000); */
 	 		                    	 $("#formSearch").submit();
 	 		                     }else{
 	 		                    	 bootbox.alert("保存失败 "); 
@@ -247,7 +182,7 @@
     	 //初始化Table
     	 oTableInit.Init = function () {
     	  $('#table').bootstrapTable({
-    	   url: '${ctx}/customer/search.do',   //请求后台的URL（*） 
+    	   url: '${ctx}/settle/search.do',   //请求后台的URL（*） 
     	   method: 'get',      //请求方式（*）
     	   toolbar: '#toolbar',    //工具按钮用哪个容器
     	   striped: true,      //是否显示行间隔色
@@ -293,7 +228,7 @@
 		            valign: "middle"//垂直
     	   }, {
 		    	    field: 'customerShortName',
-		    	    title: '客户',
+		    	    title: '下游客户', 
 		    	    align: "center",//水平
 		            valign: "middle"//垂直
     	   },
@@ -311,88 +246,24 @@
        	   },
        	   {
 		       	    field: 'factoryShortName',
-		       	    title: '出厂地', 
+		       	    title: '上游工厂',  
 		       	    align: "center",//水平
 		            valign: "middle"//垂直
        	   },
        	   {
               	    field: 'customerAddress',
-              	    title: '目的地',  
+              	    title: '卸车地',   
               	    align: "center",//水平
                     valign: "middle"//垂直
               	},
-             	 {
-               	    field: 'compangShortName',
-               	    title: '承运单位',   
-               	    align: "center",//水平
-                    valign: "middle"//垂直
-               	},
              	 {
                	    field: 'strUploadDate',
                	    title: '卸车时间',    
                	    align: "center",//水平
                     valign: "middle"//垂直
-                },
-           		{
-              	    field: 'loadEmpty',
-              	    title: '装车毛重',    
-              	    align: "center",//水平
-                    valign: "middle",//垂直
-                  	formatter:function(value,row,index){
-                  			var  loadEmpty = 0 ;
-                     		if(value != null && value != ''){
-                     			loadEmpty = value/100 ;
-                     		}
-                     		
-                     		var loadSkinNew = 0 ;
-                     		var loadSkin = row.loadSkin ;
-                     		if(loadSkin != null && loadSkin != ''){
-                     			loadSkinNew = loadSkin/100 ;
-                     		}
-                     		
-                     		return (Number(loadEmpty) + Number(loadSkinNew)).toFixed(2) ;
-                     		
-                     		
-                        }
-              	 },{
-              	    field: 'loadSkin',
-              	    title: '装车皮重',    
-              	    align: "center",//水平
-                    valign: "middle",//垂直
-                  	formatter:function(value,row,index){
-                     		if(value != null && value != ''){
-                     			return (value/100).toFixed(2) ;
-                     		}else{
-                      			return '' ;
-                      		}
-                        }
-              	 },{
+                },{
               	    field: 'loadEmpty', 
               	    title: '装车净重',   
-              	    align: "center",//水平
-                    valign: "middle",//垂直
-                  	formatter:function(value,row,index){
-                     		if(value != null && value != ''){
-                     			return (value/100).toFixed(2) ;
-                     		}else{
-                      			return '' ;
-                      		}
-                        }
-              	 },{
-              	    field: 'uploadHair',
-              	    title: '卸车毛重',   
-              	    align: "center",//水平
-                    valign: "middle",//垂直
-                  	formatter:function(value,row,index){
-                     		if(value != null && value != ''){
-                     			return (value/100).toFixed(2) ;
-                     		}else{
-                      			return '' ;
-                      		}
-                        }
-              	 },{
-              	    field: 'updateSkin',
-              	    title: '卸车皮重',   
               	    align: "center",//水平
                     valign: "middle",//垂直
                   	formatter:function(value,row,index){
@@ -420,16 +291,11 @@
                 	    align: "center",//水平
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
-                    		var uploadEmptyNew = 0 ;
-                       		if(value != null && value != ''){
-                       			uploadEmptyNew =  value  ;
-                       		}
-                       		var loadEmptyNew = 0 ;
-                       		var loadEmpty = row.loadEmpty ;
-                       		if(loadEmpty != null && loadEmpty != ''){
-                       			loadEmptyNew =  loadEmpty  ;
-                       		}
-                       		return (Number(uploadEmptyNew/100) - Number(loadEmptyNew/100)).toFixed(2) ;
+                    		if(row.uploadEmpty != null && row.uploadEmpty != ''){
+                    			return  (row.gasDiff).toFixed(2);
+                    		}else{
+	                    		return '-' ;
+                    		}
                           }
                 	 },
             	     {
@@ -438,11 +304,11 @@
                 	    align: "center",//水平
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
-                       		if(value != null && value != ''){
-                       			return (value/100).toFixed(2) ;
-                       		}else{
-                        			return '' ;
-                        		}
+                    		if(row.uploadEmpty != null && row.uploadEmpty != ''){
+                    			return  value.toFixed(2);
+                    		}else{
+	                    		return '-' ;
+                    		}
                           }
                 	 },
                 	 {
@@ -494,6 +360,7 @@
     	 var formSearchCustomerId = $("#formSearch #customerId").find("option:selected").val() ;
     	 var formSearchFactoryId = $("#formSearch #factoryId").find("option:selected").val() ;
     	 var formSearchCarId = $("#formSearch #carId").find("option:selected").val() ;
+    	 var operateNum = $("#formSearch #operateNum").val() ;
     	  //得到查询的参数  Number(capacity*100) 
     	 oTableInit.queryParams = function (params) {
 	    	  var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
@@ -501,7 +368,8 @@
 		    	   offset: params.offset, //页码
 		    	   customerId: formSearchCustomerId ,
 		    	   factoryId: formSearchFactoryId ,
-		    	   carId: formSearchCarId
+		    	   carId: formSearchCarId ,
+		    	   operateNum:operateNum
 	    	     };
     	  	  return temp;
     	 }; 
@@ -547,8 +415,14 @@
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/customer/index.do">
 	     <div class="form-group" style="margin-top:15px">
-		      <label class="control-label col-sm-1" for="txt_search_departmentname">客户</label>
-		      <div class="col-sm-3" style="width:10%">
+	     
+	     	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
+		      <div class="col-sm-3" style="width:12%">
+		       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
+		      </div>
+	     		
+		      <label class="control-label col-sm-1" for="txt_search_departmentname">下游客户</label>
+		      <div class="col-sm-1" style="width:12%">
 		      		 	<select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">
 		      		 				   <option value=''>----请选择----</option>
                                	<c:forEach items="${companyList}" var="customer">
@@ -559,8 +433,8 @@
 					 	 </select>
 		       		<%-- <input type="text" class="form-control" id="headerNumber" name="headerNumber" value="${carInfo.headerNumber}"> --%>
 		      </div>
-		      <label class="control-label col-sm-1" for="txt_search_statu">出厂地</label>
-		      <div class="col-sm-3" style="width:11%">
+		      <label class="control-label col-sm-1" for="txt_search_statu">上游工厂</label>
+		      <div class="col-sm-3" style="width:12%">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId"> 
 		       								 <option value=''>----请选择----</option>
 							      <c:forEach items="${companyList}" var="factory">
@@ -571,7 +445,7 @@
 					    </select>
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
-		      <div class="col-sm-3" style="width:10%">
+		      <div class="col-sm-3" style="width:12%">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="carId" name="carId"> 
 		       								  <option value=''>----请选择----</option>
                                     	<c:forEach items="${carInfoList}" var="carInfo">
@@ -580,17 +454,6 @@
 					 	</select>
 		      </div>
 		      
-		      
-		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-		      <div class="col-sm-3"  style="width:6%">
-		       		<div class="form-group">
-					    <select class="form-control" id="status" name="status"> 
-						      <option value="">全部</option> 
-						      <option value="0"  <c:if test="${company.status eq 0 }"> selected </c:if>>正常</option> 
-						      <option value="1"  <c:if test="${company.status eq 1 }"> selected </c:if>>禁用</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
-					      </select>
-					  </div>
-		      </div>
 		      <div class="col-sm-2" style="text-align:left;">
 		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
 		      </div>
@@ -642,36 +505,9 @@
                         
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">装车皮重</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <input id="loadSkin"  name="loadSkin" type="text" class="form-control" placeholder="装车皮重" />
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-12">
-                            <div class="form-group">
                                 <label class="control-label col-md-2" style="margin-left:40px">装车净重</label>
                                 <div class="col-md-10" style="width:50%">
                                     <input id="loadEmpty"  name="loadEmpty" type="text" class="form-control" placeholder="装车净重" />
-                                </div>
-                            </div>
-                        </div>
-                        
-                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">卸车毛重</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <input id="uploadHair"  name="uploadHair" type="text" class="form-control" placeholder="卸车毛重" />
-                                </div>
-                            </div>
-                        </div>
-                        
-                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">卸车皮重</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <input id="updateSkin"  name="updateSkin" type="text" class="form-control" placeholder="卸车皮重" />
                                 </div>
                             </div>
                         </div>

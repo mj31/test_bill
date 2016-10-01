@@ -146,20 +146,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	
-     <sql id="update_sql">
+     <sql id="update_sql_operate">
          <set>
-              <if test="operateNum != null">
-	         	operate_num = #{operateNum} ,
-	         </if>
 	         	customer_id = #{customerId} ,
 	         	pounds_diff = #{poundsDiff} ,
 	         	load_date = #{loadDate} ,
-	         	load_skin = #{loadSkin} ,
-	         	load_empty = #{loadEmpty} ,
-	         	upload_date = #{uploadDate} ,
-	         	upload_hair = #{uploadHair} ,
-	         	update_skin = #{updateSkin} ,
-	         	upload_empty = #{uploadEmpty} ,
 	         	company_id = #{companyId} ,
 	         	isOrNotTax = #{isOrNotTax} ,
 	         	car_id = #{carId} ,
@@ -168,15 +159,33 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	         	activity_price = #{activityPrice} ,
 	         	customer_price = #{customerPrice} ,
 	         	car_fee = #{carFee} ,
-	         	fact_weight = #{factWeight} ,
 	         	event_remark = #{eventRemark} ,
+       </set>
+    </sql>
+    
+    <sql id="update_sql_customer">
+         <set>
+	         	load_skin = #{loadSkin} ,
+	         	load_empty = #{loadEmpty} ,
+	         	upload_date = #{uploadDate} ,
+	         	upload_hair = #{uploadHair} ,
+	         	update_skin = #{updateSkin} ,
+	         	upload_empty = #{uploadEmpty} ,
+	         	fact_weight = #{factWeight} ,
 	         	customer_remark = #{customerRemark} 
        </set>
     </sql>
     
-	<update id="update" >
+	<update id="updateOperateByEvent" >
 	        UPDATE  operate_event
-	    <include refid="update_sql" />
+	    <include refid="update_sql_operate" />
+	        WHERE 
+	                id = #{id} 
+	</update>
+	
+	<update id="updateOperateByCustomer" >
+	        UPDATE  operate_event
+	    <include refid="update_sql_customer" />
 	        WHERE 
 	                id = #{id} 
 	</update>
@@ -188,7 +197,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     ]]>
     </delete>
     
-    <select id="getById" resultMap="RM_OperateEvent">
+    <select id="getById" resultMap="RM_OperateEventVo">
 		SELECT <include refid="columns" />
 	    <![CDATA[
 		    FROM operate_event 
@@ -309,8 +318,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	            <if test="factoryId != null">
 		             AND ev.factory_id = #{factoryId}
 	           </if>
+	           <if test="companyId != null">
+		             AND ev.company_id = #{companyId}
+	           </if>
 	           <if test="hisAccountName != null and hisAccountName !=''">
 		             AND bank.his_account_name like  concat(concat('%',#{hisAccountName}),'%')
+	            </if>
+	            <if test="operateNum != null">
+		             AND ev.operate_num like  concat(concat('%',#{operateNum}),'%')
 	            </if>
 	           order by ev.operate_num desc
      </select>
@@ -333,8 +348,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	            <if test="factoryId != null">
 		             AND ev.factory_id = #{factoryId}
 	           </if> 
+	            <if test="companyId != null">
+		             AND ev.company_id = #{companyId}
+	           </if>
 	           <if test="hisAccountName != null and hisAccountName !=''">
 		             AND bank.his_account_name like  concat(concat('%',#{hisAccountName}),'%')
+	            </if>
+	            <if test="operateNum != null">
+		             AND ev.operate_num like  concat(concat('%',#{operateNum}),'%')
 	            </if>
 	    <!-- <include refid="findPage_where_new"/> -->
      </select>

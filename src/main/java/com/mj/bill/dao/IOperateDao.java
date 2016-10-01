@@ -3,6 +3,7 @@ package com.mj.bill.dao;
 import java.util.List;
 
 import com.mj.bill.pojo.CarInfo;
+import com.mj.bill.pojo.OperateEvent;
 import com.mj.bill.pojo.OperateEventVo;
 
 public interface IOperateDao {
@@ -35,5 +36,24 @@ public interface IOperateDao {
 	 * @param operateEvent
 	 */
 	void update(OperateEventVo operateEvent);
+	
+	/**
+	 * 运作事件更新
+	 * @param operateEvent
+	 */
+	void updateOperateByEvent(OperateEventVo operateEvent);
+	
+	/**
+	 * 客户更新
+	 * @param operateEvent
+	 */
+	void updateOperateByCustomer(OperateEventVo operateEvent);
+	
+	/**
+	 * 根据id查询
+	 * @param id
+	 * @return
+	 */
+	OperateEventVo getById(Integer id);
 
 }

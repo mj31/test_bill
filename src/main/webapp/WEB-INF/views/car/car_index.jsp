@@ -436,7 +436,7 @@
 		       		<input type="text" class="form-control" id="driverPhone" name="driverPhone" value="${carInfo.driverPhone}">
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-		      <div class="col-sm-3"  style="width:6%">
+		      <div class="col-sm-3"  style="width:10%">
 		       		<div class="form-group">
 					    <select class="form-control" id="status" name="status"> 
 						      <option value="">全部</option> 

@@ -67,46 +67,77 @@
     		            
     		        }); 
     			 return ;
+    		 }else{
+    			 var id = $(".updataOrDeleteClasss .ids").val() ;
+    			 $.ajax({
+	      		        url : "${ctx}/operate/updateSearch.do",
+	      		        type: "post",
+	      		        data:{"id":id},
+	      		        dataType : "json",
+	      		        success: function(result){
+  		                     if(result.status == 0){
+  		                    	  var operateEvent = result.operateEvent ;
+  		                    	  var customerId = operateEvent.customerId ;
+	  		               		  var carId = operateEvent.carId ;
+	  		               		  var companyId = operateEvent.companyId ;
+	  		               		  var factoryId = operateEvent.factoryId ;
+	  		               		  var isOrNotTax = operateEvent.isOrNotTax ;
+	  		               		 
+	  		               		  
+	  		               		  $("#addForm #customerId").find("option[value="+customerId+"]").attr("selected",true);
+	  		               		  $("#addForm #carId").find("option[value="+carId+"]").attr("selected",true);
+	  		               		  $("#addForm #factoryId").find("option[value="+factoryId+"]").attr("selected",true);
+	  		               		  
+	  		               		  $("#addForm #companyId").find("option[value="+companyId+"]").attr("selected",true);
+	  		               		  $("#addForm #isOrNotTax").find("option[value="+isOrNotTax+"]").attr("selected",true);
+	  		               		  
+	  		               		  if(operateEvent.poundsDiff != '' && operateEvent.poundsDiff != null ){
+		  		           	   		  $("#addForm #poundsDiff").val((operateEvent.poundsDiff)/100);
+	  		               		  }else{
+	  		               			  $("#addForm #poundsDiff").val('');
+	  		               		  }
+	  		               		  
+	  		           	   		  $("#addForm #loadDate").val(operateEvent.strLoadDate);
+	  		           	   		  
+	  		           	   		  if(operateEvent.factoryPrice != '' && operateEvent.factoryPrice != null){
+		  		           	   		  $("#addForm #factoryPrice").val((operateEvent.factoryPrice)/100);
+	  		           	   		  }else{
+	  		           	   			  $("#addForm #factoryPrice").val(""); 
+	  		           	   		  }
+	  		           	   		  
+	  		           	   		  if(operateEvent.activityPrice != null && operateEvent.activityPrice != ""){
+	  		           	   		 		$("#addForm #activityPrice").val((operateEvent.activityPrice)/100);
+	  		           	   		  }else{
+	  		           	   		 		$("#addForm #activityPrice").val("");
+	  		           	   		  }
+	  		           	   		  
+	  		           	   		  if(operateEvent.customerPrice != null && operateEvent.customerPrice != ""){
+	  		           	   			    $("#addForm #customerPrice").val((operateEvent.customerPrice)/100);
+	  		           	   		  }else{
+	  		           	   		 		$("#addForm #customerPrice").val("");
+	  		           	   		  }
+	  		           	   		  
+		  		           	   	 if(operateEvent.carFee != null && operateEvent.carFee != ""){
+		  		           	   			$("#addForm #carFee").val((operateEvent.carFee)/100);
+			           	   		  }else{
+			           	   				$("#addForm #carFee").val("");
+			           	   		  }
+	  		           	   		  
+	  		           	   		  $("#addForm #eventRemark").val(operateEvent.eventRemark); 
+	  		           	   		
+	  		           	   		  $('.selectpicker').selectpicker({
+	  		           	             'selectedText': 'cat'
+	  		           	          });
+	  		           	   		  $('#add').modal();
+  		                     }else{
+  		                    	 bootbox.alert("获取失败"); 
+  		                     }
+   		               },
+   		            error:function(){
+	  		            	 bootbox.alert("获取失败 ");
+   		        	   }
+		          	});
     		 }
-    		 
-    		 //获取数据
-    	/* 	 $("#addForm #customerId").val($(".selected").attr("customerId"));
-    		 $("#addForm #carId").val($(".selected").attr("carId"));
-    		 $("#addForm #companyId").val($(".selected").attr("companyId"));
-    		 $("#addForm #factoryId").val($(".selected").attr("factoryId"));
-    		 $("#addForm #isOrNotTax").val($(".selected").attr("isOrNotTax")); */
-    		 
-    		 var customerId = $(".selected .ids").attr("customerId") ;
-    		 var carId = $(".selected .ids").attr("carId") ;
-    		 var companyId = $(".selected .ids").attr("companyId") ;
-    		 var factoryId = $(".selected .ids").attr("factoryId") ;
-    		 var isOrNotTax = $(".selected .ids").attr("isOrNotTax") ;
-    		 
-    		  
-    		 $("#addForm #customerId").find("option[value="+customerId+"]").attr("selected",true);
-    		 $("#addForm #carId").find("option[value="+carId+"]").attr("selected",true);
-    		 $("#addForm #factoryId").find("option[value="+factoryId+"]").attr("selected",true);
-    		  
-    		 
-    		 $("#addForm #companyId").find("option[value="+companyId+"]").attr("selected",true);
-    		 $("#addForm #isOrNotTax").find("option[value="+isOrNotTax+"]").attr("selected",true);
-    		 
-	   		 $("#addForm #poundsDiff").val($(".selected").find("td:eq(3)").text());
-	   		 $("#addForm #loadDate").val($(".selected").find("td:eq(5)").text());
-	   		 
-	   		 $("#addForm #factoryPrice").val($(".selected").find("td:eq(8)").text());
-	   		 $("#addForm #activityPrice").val($(".selected").find("td:eq(9)").text());
-	   		 
-	   		 $("#addForm #customerPrice").val($(".selected").find("td:eq(11)").text());
-	   		 $("#addForm #carFee").val($(".selected").find("td:eq(13)").text());
-	   		 $("#addForm #eventRemark").val($(".selected").find("td:eq(27)").text()); 
-	   		
-	   		 $('.selectpicker').selectpicker({
-	            'selectedText': 'cat'
-	         });
-	   		 
-	   		 $('#add').modal();
-	   		 
     	 });
     	 
     	 
@@ -179,17 +210,33 @@
 			 	var carFee= $("#addForm #carFee").val();
 			 	var isOrNotTax = $("#addForm #isOrNotTax").find("option:selected").val();
 	 	 		var eventRemark=  $("#addForm #eventRemark").val();
+	 	 		
+	 	 		
 			 	
 			 	//行车证荷载量进行校验
-			 	var reg = /^(([1-9]+)|([0-9]+\.[0-9]{0,2}))$/;
-			 	if(poundsDiff != null  && poundsDiff != ""){
+			 	 var reg = /^[0-9]+(.[0-9]{1,2})?$/;
+			 	/*	if(poundsDiff != null  && poundsDiff != ""){
 			        if(!reg.test(poundsDiff)){
 			        	bootbox.alert("磅差必须是数字且保留2位小数");  
 			        	return  ;
 			        }else{
 			        	poundsDiff = Number(poundsDiff*100) ;
 			        }
+			 	} */ 
+			 	
+			 	if(poundsDiff != null && poundsDiff != ""){
+			 		if(poundsDiff != 100 || poundsDiff != 200){
+			 			bootbox.alert("磅差必须是100或者是200 或者无");    
+			        	return  ;
+			 		}else{
+			 			poundsDiff = Number(poundsDiff*100) ;
+			 		}
 			 	}
+			 	
+				if(factoryPrice == null || factoryPrice == ""){
+					bootbox.alert("出厂价不能为空");  
+		        	return  ;
+				 }
 			 	
 			 	if(factoryPrice != null  && factoryPrice != ''){
 			        if(!reg.test(factoryPrice)){
@@ -200,6 +247,8 @@
 			        }
 			 	}
 			 	
+			 	
+			 	
 			 	if(activityPrice != null  && activityPrice != ''){
 			        if(!reg.test(activityPrice)){
 			        	bootbox.alert("优惠价必须是数字且保留2位小数");   
@@ -209,6 +258,12 @@
 			        }
 			 	}
 			 	
+			 	if(customerPrice == null  || customerPrice == ''){
+			 		bootbox.alert("运到价不能为空");   
+		        	return  ; 
+			 	}
+			 	
+			 	
 			 	if(customerPrice != null  && customerPrice != ''){
 			        if(!reg.test(customerPrice)){
 			        	bootbox.alert("运到价必须是数字且保留2位小数");   
@@ -216,6 +271,11 @@
 			        }else{
 			        	customerPrice = Number(customerPrice*100) ;
 			        }
+			 	}
+			 	
+			 	if(carFee == null  || carFee == ''){
+			 		 bootbox.alert("运费不能为空 ");    
+		        	 return  ;
 			 	}
 			 	
 			 	if(carFee != null  && carFee != ''){
@@ -286,7 +346,7 @@
     	 //初始化Table
     	 oTableInit.Init = function () {
     	  $('#table').bootstrapTable({
-    	   url: '${ctx}/operate/search.do',   //请求后台的URL（*） 
+    	   url: '${ctx}/settle/search.do',   //请求后台的URL（*） 
     	   method: 'get',      //请求方式（*）
     	   toolbar: '#toolbar',    //工具按钮用哪个容器
     	   striped: true,      //是否显示行间隔色
@@ -344,10 +404,22 @@
                }
     	   }, {
     	    field: 'customerShortName',
-    	    title: '客户',
+    	    title: '下游客户',
     	    align: "center",//水平
             valign: "middle"//垂直
-    	   },
+    	   },{
+       	    field: 'isOrNotTax',
+    	    title: '是否含税',    
+    	    align: "center",//水平
+            valign: "middle",//垂直
+            formatter:function(value,row,index){
+         		if(value != null && value == 0){
+         			return '是' ; 
+         		}else{
+         			return '否' ;
+         		}
+            }
+          },
     	   {
        	    field: 'strLoadDate',
        	    title: '装车时间', 
@@ -362,7 +434,7 @@
        	   },
        	   {
        	    field: 'factoryShortName',
-       	    title: '出厂地', 
+       	    title: '上游工厂',  
        	    align: "center",//水平
             valign: "middle"//垂直
        	   },
@@ -390,12 +462,11 @@
                   			return '' ;
                   		}
                     }
-          	   },
-           	{
-              	    field: 'customerAddress',
-              	    title: '目的地',  
-              	    align: "center",//水平
-                   valign: "middle"//垂直
+          	   },{
+               	    field: 'strUploadDate',
+               	    title: '卸车时间',    
+               	    align: "center",//水平
+                    valign: "middle"//垂直
               },
            	  {
               	    field: 'customerPrice',
@@ -429,25 +500,6 @@
                       		}
                         }
               	 },
-             	 {
-               	    field: 'strUploadDate',
-               	    title: '卸车时间',    
-               	    align: "center",//水平
-                    valign: "middle"//垂直
-                },
-            	 {
-            	    field: 'isOrNotTax',
-            	    title: '是否含税',    
-            	    align: "center",//水平
-                    valign: "middle",//垂直
-                    formatter:function(value,row,index){
-                 		if(value != null && value == 0){
-                 			return '是' ; 
-                 		}else{
-                 			return '否' ;
-                 		}
-                    }
-                },
             	 {
             	    field: 'isOrNotTax',
             	    title: '税差',     
@@ -509,7 +561,7 @@
                      		if(value != null && value != ''){
                      			return (value/100).toFixed(2) ;
                      		}else{
-                      			return '' ;
+                      			return '-' ;
                       		}
                         }
               	 },
@@ -522,7 +574,7 @@
                       		if(value != null && value != ''){
                       			return (value/100).toFixed(2) ;
                       		}else{
-                       			return '' ;
+                       			return '-' ;
                        		}
                          }
                	 },
@@ -532,16 +584,11 @@
                 	    align: "center",//水平
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
-                    		var uploadEmptyNew = 0 ;
-                       		if(value != null && value != ''){
-                       			uploadEmptyNew =  value  ;
-                       		}
-                       		var loadEmptyNew = 0 ;
-                       		var loadEmpty = row.loadEmpty ;
-                       		if(loadEmpty != null && loadEmpty != ''){
-                       			loadEmptyNew =  loadEmpty  ;
-                       		}
-                       		return (Number(uploadEmptyNew/100) - Number(loadEmptyNew/100)).toFixed(2) ;
+                    		if(row.uploadEmpty != null && row.uploadEmpty != ''){
+                    			return  (row.gasDiff).toFixed(2);
+                    		}else{
+	                    		return '-' ;
+                    		}
                           }
                 	 },
            	         {
@@ -568,11 +615,11 @@
                 	    align: "center",//水平
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
-                       		if(value != null && value != ''){
-                       			return (value/100).toFixed(2) ;
-                       		}else{
-                        			return '' ;
-                        		}
+                    		if(row.uploadEmpty != null && row.uploadEmpty != ''){
+                    			return  value.toFixed(2);
+                    		}else{
+	                    		return '-' ;
+                    		}
                           }
                 	 },
            	         {
@@ -630,31 +677,15 @@
                  	 },
                 	 {
                  	    field: 'uploadEmpty',
-                 	    title: '气差金额',    
+                 	    title: '气损',     
                  	    align: "center",//水平
                         valign: "middle",//垂直
                      	formatter:function(value,row,index){
-                     		  // ======气差开始======
-                     		   var qicha = 0 ;
-                     		   var uploadEmptyNew = 0 ;
-                        	   if(value != null && value != ''){
-                        			uploadEmptyNew =  value  ;
-                        		}
-                        		var loadEmptyNew = 0 ;
-                        		var loadEmpty = row.loadEmpty ;
-                        		if(loadEmpty != null && loadEmpty != ''){
-                        			loadEmptyNew =  loadEmpty  ;
-                        		}
-                        		qicha =  Number(uploadEmptyNew/100) - Number(loadEmptyNew/100) ;
-                        		// ======气差开始======
-                        			
-                        		//出厂价
-                            	var factoryPriceNew = 0 ;
-                            	var factoryPrice = row.factoryPrice ;
-                            	if(factoryPrice != null && factoryPrice != 0){
-                            		factoryPriceNew = Number(factoryPrice/100) ;
-                            	}
-                            	return Number(qicha*factoryPriceNew).toFixed(2);
+	                     		if(row.uploadEmpty != null && row.uploadEmpty != ''){
+	                    			return  Number(row.gasMiss).toFixed(2);
+	                    		}else{
+	                    			return '-' ;
+	                    		}
                            }
                  	 },
            	         {
@@ -663,7 +694,11 @@
    	               	    align: "center",//水平
    	                    valign: "middle",//垂直
    	                   	formatter:function(value,row,index){
-  	                       		return Number((value/100)*(row.carFee/100)).toFixed(2);  
+		   	                   	if(row.uploadEmpty != null && row.uploadEmpty != ''){
+		                			return  Number(row.settlePrice).toFixed(2);
+		                		}else{
+		                    		return '-' ;
+		                		} 
   	                          }
                   	 },
           	         {
@@ -678,6 +713,8 @@
     	 var formSearchCustomerId = $("#formSearch #customerId").find("option:selected").val() ;
     	 var formSearchFactoryId = $("#formSearch #factoryId").find("option:selected").val() ;
     	 var formSearchCarId = $("#formSearch #carId").find("option:selected").val() ;
+    	 var formSearchCompanyId = $("#formSearch #companyId").find("option:selected").val() ;
+    	 var operateNum = $("#formSearch #operateNum").val() ;
     	  //得到查询的参数  Number(capacity*100) 
     	 oTableInit.queryParams = function (params) {
 	    	  var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
@@ -685,7 +722,9 @@
 		    	   offset: params.offset, //页码
 		    	   customerId: formSearchCustomerId ,
 		    	   factoryId: formSearchFactoryId ,
-		    	   carId: formSearchCarId
+		    	   carId: formSearchCarId ,
+		    	   operateNum: operateNum ,
+		    	   companyId: formSearchCompanyId
 	    	     };
     	  	  return temp;
     	 }; 
@@ -725,56 +764,74 @@
    <div class="panel-heading">运作详情</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/operate/index.do">
-	     <div class="form-group" style="margin-top:15px">
-		      <label class="control-label col-sm-1" for="txt_search_departmentname">客户</label>
-		      <div class="col-sm-3" style="width:10%">
-		      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
-		      		 				   <option value=''>----请选择----</option>
-                               	<c:forEach items="${companyList}" var="customer">
-                               		<c:if test="${customer.flag eq 1}">
-						     			<option value="${customer.id}" <c:if test="${operateEvent.customerId eq customer.id}">selected</c:if>>${customer.shortName}</option> 
-                               		</c:if>
-                               	</c:forEach> 
-					 	 </select>
-		       		<%-- <input type="text" class="form-control" id="headerNumber" name="headerNumber" value="${carInfo.headerNumber}"> --%>
+		     <div class="form-group" style="margin-top:15px">
+		     	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
+			      <div class="col-sm-3" style="width:12%">
+			       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
+			      </div>
+		     		
+			      <label class="control-label col-sm-1" for="txt_search_departmentname">下游客户</label>
+			      <div class="col-sm-3" style="width:12%">
+			      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
+			      		 				   <option value=''>----请选择----</option>
+	                               	<c:forEach items="${companyList}" var="customer">
+	                               		<c:if test="${customer.flag eq 1}">
+							     			<option value="${customer.id}" <c:if test="${operateEvent.customerId eq customer.id}">selected</c:if>>${customer.shortName}</option> 
+	                               		</c:if>
+	                               	</c:forEach> 
+						 	 </select>
+			      </div>
+			      <label class="control-label col-sm-1" for="txt_search_statu">上游工厂</label>
+			      <div class="col-sm-3" style="width:12%">
+			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="factoryId" name="factoryId"> 
+			       								 <option value=''>----请选择----</option>
+								      <c:forEach items="${companyList}" var="factory">
+	                                  		  <c:if test="${factory.flag eq 0}">
+										         <option value="${factory.id}"  <c:if test="${operateEvent.factoryId eq factory.id}">selected</c:if>>${factory.shortName}</option> 
+	                                  		  </c:if>
+	                                  </c:forEach>
+						    </select>
+			      </div>
+			      <!-- <label class="control-label col-sm-1" for="txt_search_statu"></label> -->
 		      </div>
-		      <label class="control-label col-sm-1" for="txt_search_statu">出厂地</label>
-		      <div class="col-sm-3" style="width:11%">
-		       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="factoryId" name="factoryId"> 
-		       								 <option value=''>----请选择----</option>
-							      <c:forEach items="${companyList}" var="factory">
-                                  		  <c:if test="${factory.flag eq 0}">
-									         <option value="${factory.id}"  <c:if test="${operateEvent.factoryId eq factory.id}">selected</c:if>>${factory.shortName}</option> 
-                                  		  </c:if>
-                                  </c:forEach>
-					    </select>
+		      <div class="form-group" style="margin-top:30px">
+			      <label class="control-label col-sm-1" for="txt_search_statu">承运单位</label>
+			      <div class="col-sm-3" style="width:12%">
+			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="companyId" name="companyId"> 
+			       								 <option value=''>----请选择----</option>
+								      <c:forEach items="${companyList}" var="company">
+	                                  		  <c:if test="${company.flag eq 2}">
+										         <option value="${company.id}"  <c:if test="${operateEvent.companyId eq company.id}">selected</c:if>>${company.shortName}</option> 
+	                                  		  </c:if>
+	                                  </c:forEach>
+						    </select>
+			      </div>
+			      
+			      <%-- <label class="control-label col-sm-1" for="txt_search_statu">卸车地</label>
+			      <div class="col-sm-3" style="width:12%">
+			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true"  id="carId" name="carId"> 
+			       								  <option value=''>----请选择----</option>
+	                                    	<c:forEach items="${downCustomerList}" var="carInfo">
+												  <c:if test="${factory.flag eq 1}">
+										         	<option value="${factory.id}"  <c:if test="${operateEvent.factoryId eq factory.id}">selected</c:if>>${factory.shortName}</option> 
+	                                  		     </c:if>
+	                                    	</c:forEach>
+						 	</select>
+			      </div> --%>
+			      <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
+			      <div class="col-sm-3" style="width:4%">
+			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true"  id="carId" name="carId"> 
+			       								  <option value=''>----请选择----</option>
+	                                    	<c:forEach items="${carInfoList}" var="carInfo">
+												   <option value="${carInfo.id}"  <c:if test="${operateEvent.carId eq carInfo.id}">selected</c:if>>${carInfo.headerNumber}</option> 
+	                                    	</c:forEach>
+						 	</select>
+			      </div>
+			      <label class="control-label col-sm-1" for="txt_search_statu"></label>
+			      <div class="col-sm-2" style="text-align:left;">
+		       		 <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+		          </div>
 		      </div>
-		      <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
-		      <div class="col-sm-3" style="width:10%">
-		       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true"  id="carId" name="carId"> 
-		       								  <option value=''>----请选择----</option>
-                                    	<c:forEach items="${carInfoList}" var="carInfo">
-											   <option value="${carInfo.id}"  <c:if test="${operateEvent.carId eq carInfo.id}">selected</c:if>>${carInfo.headerNumber}</option> 
-                                    	</c:forEach>
-					 	</select>
-		      </div>
-		      
-		      <label class="control-label col-sm-1" for="txt_search_statu"></label>
-		    <%--
-		     <label class="control-label col-sm-1" for="txt_search_statu">状态</label>   
-		      <div class="col-sm-3"  style="width:6%">
-		       		<div class="form-group">
-					    <select class="form-control" id="status" name="status"> 
-						      <option value="">全部</option> 
-						      <option value="0"  <c:if test="${company.status eq 0 }"> selected </c:if>>正常</option> 
-						      <option value="1"  <c:if test="${company.status eq 1 }"> selected </c:if>>禁用</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
-					      </select>
-					  </div>
-		      </div> --%>
-		      <div class="col-sm-2" style="text-align:left;">
-		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
-		      </div>
-	     </div>
     </form>
    </div>
   </div>  
@@ -809,7 +866,7 @@
                     
                     	<div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">客户</label> 
+                                <label class="control-label col-md-2" style="margin-left:40px">下游客户</label> 
                                 <div class="col-md-10" style="width:50%"> 
                                     <select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">
                                     	<c:forEach items="${companyList}" var="customer">
@@ -887,7 +944,7 @@
                         
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">出厂地</label> 
+                                <label class="control-label col-md-2" style="margin-left:40px">上游工厂</label> 
                                 <div class="col-md-10" style="width:50%"> 
                                     <select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId"> 
 									      <c:forEach items="${companyList}" var="factory">

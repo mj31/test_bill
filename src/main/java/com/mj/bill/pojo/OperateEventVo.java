@@ -60,6 +60,21 @@ public class OperateEventVo extends OperateEvent {
      * 字段: his_account_name  VARCHAR(100)  
      */	
 	private java.lang.String hisAccountName;
+	
+	/**
+	 * 结算气费
+	 */
+	private Long settlePrice ;
+	
+	/**
+	 * 气差
+	 */
+	private Long gasDiff ;
+	
+	/**
+	 * 气损
+	 */
+	private Long gasMiss ;
 
 	public String getCustomerShortName() {
 		return customerShortName;
@@ -149,7 +164,29 @@ public class OperateEventVo extends OperateEvent {
 	public void setHisAccountName(java.lang.String hisAccountName) {
 		this.hisAccountName = hisAccountName;
 	}
-	
-	
+
+	public Long getGasDiff() {
+		return gasDiff;
+	}
+
+	public void setGasDiff(Long gasDiff) {
+		this.gasDiff = gasDiff;
+	}
+
+	public Long getSettlePrice() {
+		return settlePrice;
+	}
+
+	public void setSettlePrice(Long settlePrice) {
+		this.settlePrice = settlePrice;
+	}
+
+	public Long getGasMiss() {
+		return gasMiss;
+	}
+
+	public void setGasMiss(Long gasMiss) {
+		this.gasMiss = gasMiss;
+	}
 	
 }

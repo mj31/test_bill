@@ -160,7 +160,7 @@
 			 	//交易类型 
 			 	var exchangeFlag = $("#addForm #exchangeFlag").find("option:selected").val();
 			 	//交易金额 
-			 	var reg = /^(([1-9]+)|([0-9]+\.[0-9]{0,2}))$/;
+			 	var reg = /^[0-9]+(.[0-9]{1,2})?$/;
 			 	if(exchangeMoney != null  && exchangeMoney != ""){
 			        if(!reg.test(exchangeMoney)){
 			        	bootbox.alert("交易金额必须是数字且保留2位小数"); 

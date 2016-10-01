@@ -121,7 +121,7 @@
 	 	   	    var companyName = $("#addForm #companyName").val();
 	 	   		var shortName = $("#addForm #shortName").val();
 			 	//车头类型  0代表气头 1代表油头
-			 	var flag = $("#flag").find("option:selected").val();
+			 	var flag = $("#addForm #flag").find("option:selected").val();
 			 	
 	 	   		 if(saveUserValue == '保存'){
 	                    $.ajax({
@@ -224,6 +224,20 @@
     	    align: "center",//水平
             valign: "middle"//垂直
     	   },{
+    	    field: 'flag', 
+    	    title: '公司类别',
+    	    align: "center",//水平
+            valign: "middle",//垂直
+            formatter:function(value,row,index){
+                if(value == 0){
+                	return '上游工厂';
+                }else if(value == 1){
+                	return '下游客户'; 
+                }else if(value == 2){
+                	return '承运单位';
+                }
+            } 
+    	   },{
     	    field: 'status',
     	    title: '状态'  ,
     	    align: "center",//水平
@@ -302,19 +316,19 @@
 		       		<input type="text" class="form-control" id="shortName" name="shortName" value="${company.shortName}">
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">公司类别</label>
-		      <div class="col-sm-3"  style="width:8%">
+		      <div class="col-sm-3"  style="width:10%">
 		       		<div class="form-group">
 					    <select class="form-control" id="flag" name="flag"> 
 						      <option value="">全部</option> 
-						      <option value="0"  <c:if test="${company.flag eq 0 }"> selected </c:if>>裝液地</option> 
-						      <option value="1"  <c:if test="${company.flag eq 1 }"> selected </c:if>>卸液地</option>
+						      <option value="0"  <c:if test="${company.flag eq 0 }"> selected </c:if>>上游工厂</option> 
+						      <option value="1"  <c:if test="${company.flag eq 1 }"> selected </c:if>>下游客户</option>
 						      <option value="2"  <c:if test="${company.flag eq 2 }"> selected </c:if>>承运单位</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
 					      </select>
 					  </div>
 		      </div>
 		      
 		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-		      <div class="col-sm-3"  style="width:6%">
+		      <div class="col-sm-3"  style="width:10%">
 		       		<div class="form-group">
 					    <select class="form-control" id="status" name="status"> 
 						      <option value="">全部</option> 
@@ -363,8 +377,8 @@
                                 <label class="control-label col-md-2" style="margin-left:40px">公司类型</label>
                                 <div class="col-md-10" style="width:50%"> 
                                     <select class="form-control" id="flag" name="flag"> 
-									      <option value="0" >裝液地</option> 
-									      <option  value="1">卸液地</option>
+									      <option value="0" >上游工厂</option> 
+									      <option  value="1">下游客户</option>
 									      <option  value="2">承运单位</option>
 					      			</select>
                                 </div>

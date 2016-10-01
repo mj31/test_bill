@@ -1,33 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<!-- <script type="text/javascript">
-     	$(function(){
-     		$("#loadFactoryData").click(function(){
-	     		$.ajax({
-	  		        url : "${ctx}/company/queryFactory.do",
-	  		        success: function(result){
-			                     if(result.status == 0){
-			                    	 var newHtml = "";
-			                    	for(var i = 0 ; i < result.factoryList.length;i++){
-			                    		var factory = result.factoryList[i];
-			                    		var id=factory.id;
-			                    		var shortName = factory.shortName;
-			                    		newHtml += '<li><a href="${ctx}/factory/index.do?id='+id+'"><i class="fa fa-circle-o fa-fw"></i>&nbsp;'+shortName+'</a></li>'
-			                    	}
-			                    	$("#factoryId").html(newHtml);
-			                    	
-			                     }else{
-			                    	 bootbox.alert("工厂数据加载失败 ");  
-			                     }
-			               }
-			           ,error:function(){
-			            	 bootbox.alert("工厂数据加载失败 "); 
-			        	   }
-			          });
-     		    });
-     		
-     	});
-</script> -->
 <div class="sidebar">
 	<ul class="nav">
 		<%-- <li><a href="${ctx}/login.do">主页面</a></li> --%>
@@ -41,6 +13,7 @@
 			</ul>
 		</li> --%>
 		<li><a href="${ctx}/customer/index.do">客户对账单</a></li>
+		<li><a href="${ctx}/settle/index.do">运费结算</a></li>
 		<li class="has-sub"><a href="javascript:void(0);"><span>系统管理</span><i
 				class="fa fa-caret-right fa-fw pull-right"></i></a>
 			<ul class="sub-menu">

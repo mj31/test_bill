@@ -2,6 +2,7 @@ package com.mj.bill.service;
 
 import java.util.List;
 
+import com.mj.bill.pojo.OperateEvent;
 import com.mj.bill.pojo.OperateEventVo;
 
 public interface IOperateService {
@@ -36,5 +37,24 @@ public interface IOperateService {
 	 * @param operateEvent
 	 */
 	void updateOperateEvent(OperateEventVo operateEvent);
+	
+	/**
+	 * 运作详情更新
+	 * @param operateEvent
+	 */
+	void updateOperateByEvent(OperateEventVo operateEvent);
+	
+	/**
+	 * 客户更新
+	 * @param operateEvent
+	 */
+	void updateOperateByCustomer(OperateEventVo operateEvent);
+	
+	/**
+	 * 根据id查询
+	 * @param id
+	 * @return 
+	 */
+	OperateEventVo getById(Integer id);
 
 }
