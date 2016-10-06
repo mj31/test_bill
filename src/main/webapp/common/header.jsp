@@ -53,6 +53,10 @@
     <link href="${ctx}/js/bootstrap.select/bootstrap-select.min.css" rel="stylesheet" />
     <script src="${ctx}/js/bootstrap.select/bootstrap-select.min.js"></script>
     
+    <!-- 导出 -->
+    <script src="${ctx}/js/tableExport.js"></script>
+    <script src="${ctx}/js/jquery.base64.js"></script>
+    
 
     
     

@@ -1,5 +1,7 @@
 package com.mj.bill.pojo;
 
+import java.util.Date;
+
 public class OperateEvent{
  
  
@@ -46,6 +48,12 @@ public class OperateEvent{
 	private java.lang.Long loadEmpty;
  
 	 /**
+     * 描述:装车地     
+     * 字段: load_address  VARCHAR(100)  
+     */	
+	private java.lang.String loadAddress;
+ 
+	 /**
      * 描述:卸车时间     
      * 字段: upload_date  BIGINT(19)  
      */	
@@ -58,16 +66,22 @@ public class OperateEvent{
 	private java.lang.Long uploadHair;
  
 	 /**
-     * 描述:卸车皮重/100     
+     * 描述:u卸车皮重/100     
      * 字段: update_skin  BIGINT(19)  
      */	
 	private java.lang.Long updateSkin;
  
 	 /**
-     * 描述:卸车净重/100     
+     * 描述:y卸车净重/100     
      * 字段: upload_empty  BIGINT(19)  
      */	
 	private java.lang.Long uploadEmpty;
+ 
+	 /**
+     * 描述:卸车地     
+     * 字段: upload_address  VARCHAR(100)  
+     */	
+	private java.lang.String uploadAddress;
  
 	 /**
      * 描述:承运单位id 取出承运单位     
@@ -76,7 +90,13 @@ public class OperateEvent{
 	private java.lang.Integer companyId;
  
 	 /**
-     * 描述:是否含税     
+     * 描述:承运单价是否含税0代表含税 1代表不含税     
+     * 字段: carIsOrNotTax  TINYINT(3)  
+     */	
+	private Integer carIsOrNotTax;
+ 
+	 /**
+     * 描述:接收单价是否含税0代表含税 1代表不含税     
      * 字段: isOrNotTax  TINYINT(3)  
      */	
 	private Integer isOrNotTax;
@@ -112,7 +132,7 @@ public class OperateEvent{
 	private java.lang.Long customerPrice;
  
 	 /**
-     * 描述:运费/100     
+     * 描述:n运费/100     
      * 字段: car_fee  BIGINT(19)  
      */	
 	private java.lang.Long carFee;
@@ -130,11 +150,47 @@ public class OperateEvent{
 	private java.lang.String eventRemark;
  
 	 /**
+     * 描述:状态 0正常 1代表禁用     
+     * 字段: status  TINYINT(3)  
+     */	
+	private Integer status;
+ 
+	 /**
      * 描述:客户备注     
      * 字段: customer_remark  VARCHAR(255)  
      */	
 	private java.lang.String customerRemark;
-	
+ 
+	 /**
+     * 描述:运输性质 1配送 2承运 3自提     
+     * 字段: transport_properties  TINYINT(3)  
+     */	
+	private Integer transportProperties;
+ 
+	 /**
+     * 描述:押车费用/100     
+     * 字段: stock_fee  BIGINT(19)  
+     */	
+	private java.lang.Long stockFee;
+ 
+	 /**
+     * 描述:管理费用/100     
+     * 字段: manage_fee  BIGINT(19)  
+     */	
+	private java.lang.Long manageFee;
+ 
+	 /**
+     * 描述:结算情况     
+     * 字段: settle_remark  VARCHAR(255)  
+     */	
+	private java.lang.String settleRemark;
+ 
+	 /**
+     * 描述:运费的实际结算量/100     
+     * 字段: tran_fact_weight  BIGINT(19)  
+     */	
+	private java.lang.Long tranFactWeight;
+ 
 
 	public OperateEvent(){
 	}
@@ -175,14 +231,16 @@ public class OperateEvent{
 	
     
     
-	public java.lang.Long getPoundsDiff() {
-		return poundsDiff;
-	}
-
 	public void setPoundsDiff(java.lang.Long poundsDiff) {
 		this.poundsDiff = poundsDiff;
 	}
-
+	
+	public java.lang.Long getPoundsDiff() {
+		return this.poundsDiff;
+	}
+	
+    
+    
 	public void setLoadDate(java.lang.Long loadDate) {
 		this.loadDate = loadDate;
 	}
@@ -209,6 +267,16 @@ public class OperateEvent{
 	
 	public java.lang.Long getLoadEmpty() {
 		return this.loadEmpty;
+	}
+	
+    
+    
+	public void setLoadAddress(java.lang.String loadAddress) {
+		this.loadAddress = loadAddress;
+	}
+	
+	public java.lang.String getLoadAddress() {
+		return this.loadAddress;
 	}
 	
     
@@ -253,12 +321,32 @@ public class OperateEvent{
 	
     
     
+	public void setUploadAddress(java.lang.String uploadAddress) {
+		this.uploadAddress = uploadAddress;
+	}
+	
+	public java.lang.String getUploadAddress() {
+		return this.uploadAddress;
+	}
+	
+    
+    
 	public void setCompanyId(java.lang.Integer companyId) {
 		this.companyId = companyId;
 	}
 	
 	public java.lang.Integer getCompanyId() {
 		return this.companyId;
+	}
+	
+    
+    
+	public void setCarIsOrNotTax(Integer carIsOrNotTax) {
+		this.carIsOrNotTax = carIsOrNotTax;
+	}
+	
+	public Integer getCarIsOrNotTax() {
+		return this.carIsOrNotTax;
 	}
 	
     
@@ -353,6 +441,16 @@ public class OperateEvent{
 	
     
     
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	
+	public Integer getStatus() {
+		return this.status;
+	}
+	
+    
+    
 	public void setCustomerRemark(java.lang.String customerRemark) {
 		this.customerRemark = customerRemark;
 	}
@@ -360,6 +458,59 @@ public class OperateEvent{
 	public java.lang.String getCustomerRemark() {
 		return this.customerRemark;
 	}
-
+	
+    
+    
+	public void setTransportProperties(Integer transportProperties) {
+		this.transportProperties = transportProperties;
+	}
+	
+	public Integer getTransportProperties() {
+		return this.transportProperties;
+	}
+	
+    
+    
+	public void setStockFee(java.lang.Long stockFee) {
+		this.stockFee = stockFee;
+	}
+	
+	public java.lang.Long getStockFee() {
+		return this.stockFee;
+	}
+	
+    
+    
+	public void setManageFee(java.lang.Long manageFee) {
+		this.manageFee = manageFee;
+	}
+	
+	public java.lang.Long getManageFee() {
+		return this.manageFee;
+	}
+	
+    
+    
+	public void setSettleRemark(java.lang.String settleRemark) {
+		this.settleRemark = settleRemark;
+	}
+	
+	public java.lang.String getSettleRemark() {
+		return this.settleRemark;
+	}
+	
+    
+    
+	public void setTranFactWeight(java.lang.Long tranFactWeight) {
+		this.tranFactWeight = tranFactWeight;
+	}
+	
+	public java.lang.Long getTranFactWeight() {
+		return this.tranFactWeight;
+	}
+	
+    
+    
+ 
 }
 

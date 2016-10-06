@@ -35,4 +35,6 @@ public interface IBankDao {
 	BankVo getByOperateId(Long operateId) ;
 
 	void deleteById(String id);
+
+	BankVo getById(Integer id);
 }

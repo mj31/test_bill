@@ -428,15 +428,15 @@
     <form id="formSearch" class="form-horizontal" action="${ctx}/car/list.do" method="post">
 	     <div class="form-group" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">主车号</label>
-		      <div class="col-sm-3" style="width:10%">
+		      <div class="col-sm-2">
 		       		<input type="text" class="form-control" id="headerNumber" name="headerNumber" value="${carInfo.headerNumber}">
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">驾驶员电话</label>
-		      <div class="col-sm-3" style="width:10%">
+		      <div class="col-sm-2">
 		       		<input type="text" class="form-control" id="driverPhone" name="driverPhone" value="${carInfo.driverPhone}">
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-		      <div class="col-sm-3"  style="width:10%">
+		      <div class="col-sm-2">
 		       		<div class="form-group">
 					    <select class="form-control" id="status" name="status"> 
 						      <option value="">全部</option> 
@@ -454,15 +454,18 @@
   </div>  
  
   <div id="toolbar" class="btn-group">
-    <button id="btn_add" type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
-   </button>
-   <button id="btn_edit" type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
-   </button>
-   <button id="btn_delete" type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>禁用
-   </button>
+	    <button id="btn_add" type="button" class="btn btn-default">
+	    	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+	   </button>
+	   <button id="btn_edit" type="button" class="btn btn-default">
+	    	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+	   </button>
+	   <button id="btn_delete" type="button" class="btn btn-default">
+	    	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>禁用
+	   </button>
+	   <button type="button" onclick="$('#table').tableExport({ type: 'excel', separator: ';', escape: 'false' });"  class="btn btn-default">
+			<i class="glyphicon glyphicon-search">导出Excel</i>
+	   </button>
   </div>
         <table id="table"></table>
     </div>

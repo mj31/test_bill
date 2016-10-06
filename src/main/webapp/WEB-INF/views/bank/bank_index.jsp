@@ -50,7 +50,7 @@
     		 $("#saveUser").text("修改") ; 
     		 formNull();
     		 //校验选了一条数据 
-    		 if($(".selected").length != 1){ 
+    		 if($(".updataOrDeleteClasss").length != 1){ 
     			 bootbox.alert({  
     		            buttons: {  
     		               ok: {  
@@ -62,38 +62,75 @@
     		            
     		        }); 
     			 return ;
+    		 }else{
+    			 var id = $(".updataOrDeleteClasss .ids").val() ;
+    			 $.ajax({
+	      		        url : "${ctx}/bank/updateSearch.do",
+	      		        type: "post",
+	      		        data:{"id":id},
+	      		        dataType : "json",
+	      		        success: function(result){
+  		                     if(result.status == 0){
+  		                    	  var bank = result.bank ;
+  		                    	  
+  		                    	  
+  		                       //交易流水号
+  		                       var serialNumber = bank.serialNumber;
+  		                     
+  		                       var strExchangeDate = bank.strExchangeDate;
+  		                       //交易金额 
+  		                       var exchangeMoney = bank.exchangeMoney;
+  		                       //对方账号
+  		                       var hisAccount = bank.hisAccount;
+  		                       //对方账号名称
+  		                       var hisAccountName = bank.hisAccountName;
+  		                       //对方账号id
+  		                       var hisAccountId = bank.hisAccountId;
+  		                       //交易状态0代表收入 1代表支出  
+  		                       var exchangeFlag = bank.exchangeFlag;
+  		                       //业务类型
+  		                       var serviceType = bank.serviceType;
+ 		                       //备注     
+  		                       var remark = bank.remark;
+  		                         
+  		                     //获取数据
+  		            		 $("#addForm #serialNumber").val(serialNumber);
+  		                     
+  		            		 if(exchangeMoney != '' && exchangeMoney != null ){
+  		            			  $("#addForm #exchangeMoney").val(Number(exchangeMoney/100));
+		               		 }else{
+		               			  $("#addForm #exchangeMoney").val('');
+		               		 }
+  		        	   		 
+  		        	   		
+  		        	   		 $("#addForm #serviceType").val(serviceType); 
+  		        	   		 $("#addForm #remark").val(remark); 
+  		        	   	 	 $("#addForm #hisAccount").val(hisAccount); 
+  		        	   	 	 
+  		        	   		 $("#addForm #exchangeDate").val(strExchangeDate);
+  		        	   	 	 
+  		        	   		 $("#addForm #exchangeFlag").find("option[value="+exchangeFlag+"]").attr("selected",true);
+  		        	   		 
+  		        	   	     $("#addForm #hisAccountId").find("option[value="+hisAccountId+"]").attr("selected",true);
+  		           	   		  $('.selectpicker').selectpicker({
+  		           	             'selectedText': 'cat'
+  		           	          });
+  		           	   		  $('#add').modal();
+  		                     }else{
+  		                    	 bootbox.alert("获取失败"); 
+  		                     }
+   		               },
+   		            error:function(){
+	  		            	 bootbox.alert("获取失败 ");
+   		        	   }
+		          	});
     		 }
-    		 
-    		 //获取数据
-    		 $("#addForm #serialNumber").val($(".selected").find("td:eq(2)").text());
-    		 
-	   		 $("#addForm #exchangeMoney").val(Number($(".selected .ids").attr("exchangeMoney")/100));
-	   		
-	   		 $("#addForm #exchangeDate").val($(".selected").find("td:eq(3)").text());
-	   		 $("#addForm #hisAccount").val($(".selected").find("td:eq(5)").text());
-	   		 
-	   		 $("#addForm #serviceType").val($(".selected").find("td:eq(7)").text()); 
-	   		 $("#addForm #remark").val($(".selected").find("td:eq(8)").text()); 
-	   		 var exchangeFlag = $(".selected .ids").attr("exchangeFlag") ;
-	   		 $("#addForm #exchangeFlag").find("option[value="+exchangeFlag+"]").attr("selected",true);
-	   		 
-	   		 var hisAccountId = $(".selected .ids").attr("hisAccountId");
-	   		 var hisAccountName = $(".selected").find("td:eq(6)").text() ;
-	   		 
-	   		 $("#addForm  #hisAccountId").append('<option value='+hisAccountId+' selected="true">'+hisAccountName+'</option>');
-	   		 
-	   		$('.selectpicker').selectpicker({
-	             'selectedText': 'cat'
-	         });
-	   		 
-	   		 $('#add').modal();
-	   		 
     	 });
     	 
     	 
     	 //===============删除开始=========================
     	 $("#btn_delete").click(function(){
-    		 if($(".selected").length == 0){ 
+    		 if($(".updataOrDeleteClasss").length == 0){ 
     			 bootbox.alert({  
     		            buttons: {  
     		               ok: {  
@@ -107,7 +144,7 @@
     			 return ;
     		 }
     		 
-    		 var $ids = $(".selected .ids") ;
+    		 var $ids = $(".updataOrDeleteClasss .ids") ;
     		 var arrayIds = new Array();
     		 for(var i = 0 ; i< $ids.length ;i++){
     			 arrayIds[i] = $ids[i].value ;
@@ -171,6 +208,10 @@
 			 	}
 			 	
 			 	
+			 	if(exchangeDate == '-'){
+			 		exchangeDate = '';
+			 	}
+			 	
 	 	   		 if(saveUserValue == '保存'){
 	                    $.ajax({
 			      		        url : "${ctx}/bank/save.do",
@@ -193,7 +234,7 @@
  	   		 }
  	   		 
  	   		if(saveUserValue == '修改'){
- 	   			var id = $(".selected .ids").val() ;
+ 	   			var id = $(".updataOrDeleteClasss .ids").val() ;
 	 	   		$.ajax({
 	      		        url : "${ctx}/bank/update.do",
 	      		        type: "post",
@@ -237,7 +278,7 @@
     	   queryParams: oTableInit.queryParams,//传递参数（*）
     	   sidePagination: "client",   //分页方式：client客户端分页，server服务端分页（*）
     	   pageNumber:1,      //初始化加载第一页，默认第一页
-    	   pageSize: 5,      //每页的记录行数（*）
+    	   pageSize: 20,      //每页的记录行数（*）
     	   pageList: [10, 25, 50, 100],  //可供选择的每页的行数（*）
     	   search: true,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
     	   strictSearch: true,
@@ -262,7 +303,7 @@
                 //通过formatter可以自定义列显示的内容
                 //value：当前field的值，即id
                 //row：当前行的数据
-                return index+1+'<input type="hidden" class="ids"  value='+value+' exchangeFlag = '+row.exchangeFlag+' exchangeMoney = '+row.exchangeMoney+' hisAccountId = '+row.hisAccountId+'>';
+                return index+1+'<input type="hidden" class="ids"  value='+value+'>';
               
             }
     	   },{
@@ -282,14 +323,16 @@
             valign: "middle",//垂直
            	formatter:function(value,row,index){
            		var exchangeFlag = row.exchangeFlag ;
-           		   if(exchangeFlag == 0){
-           			   return Number(value/100).toFixed(2) ;
-           		   }
-           		   
-           		   if(exchangeFlag == 1){
-           			   return '-'+Number(value/100).toFixed(2) ;
-           		   }
-                 
+	           		if(value != null && value != "" ){
+	           		   if(exchangeFlag == 0){
+	           			   
+	           			   return Number(value/100).toFixed(2) ;
+	           		   }
+	           		   
+	           		   if(exchangeFlag == 1){
+	           			   return '-'+Number(value/100).toFixed(2) ;
+	           		   }
+	           		}
                }
     	   }, {
     	    field: 'hisAccount',
@@ -377,16 +420,16 @@
     <div class="container-fluid all">
         <%@ include file="/common/left.jsp"%>
         <div class="panel panel-default">
-   <div class="panel-heading">交易流水信息</div>
+   <div class="panel-heading">付款信息</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/bank/index.do" method="post">
 	     <div class="form-group" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">对方账户名称</label>
-		      <div class="col-sm-3" style="width:10%">
+		      <div class="col-sm-2">
 		       		<input type="text" class="form-control" id="hisAccountName" name="hisAccountName" value="${bank.hisAccountName}">
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-		      <div class="col-sm-3"  style="width:6%">
+		      <div class="col-sm-2" >
 		       		<div class="form-group">
 					    <select class="form-control" id="exchangeFlag" name="exchangeFlag"> 
 						      <option value="">全部</option> 
@@ -413,6 +456,9 @@
    <button id="btn_delete" type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>禁用
    </button>
+   <button type="button" onclick="$('#table').tableExport({ type: 'excel', separator: ';', escape: 'false' });"  class="btn btn-default">
+	     <i class="glyphicon glyphicon-search">导出Excel</i>
+	</button>
   </div>
         <table id="table"></table>
     </div>

@@ -40,5 +40,12 @@ public interface IBankService {
 	 * @param string
 	 */
 	void deleteById(String string);
+	
+	/**
+	 * 根据id查询
+	 * @param id
+	 * @return
+	 */
+	BankVo getById(Integer id);
 
 }

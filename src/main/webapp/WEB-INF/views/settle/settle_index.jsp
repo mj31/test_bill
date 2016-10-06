@@ -14,6 +14,203 @@
 	    	 $('.querySelect').selectpicker({
 		            'selectedText': 'cat'
 		      });
+	    	 
+	    	 //修改弹出层 
+	    	 $("#btn_edit").click(function(){
+	    		 $("#lblAddTitle").text("修改运费结算");   
+	    		 $("#saveUser").text("修改") ; 
+	    		 /* formNull(); */
+	    		 //校验选了一条数据 
+	    		 if($(".updataOrDeleteClasss").length != 1){ 
+	    			 bootbox.alert({  
+	    		            buttons: {  
+	    		               ok: {  
+	    		                    label: '确定',  
+	    		                    className: 'btn-myStyle'  
+	    		                }  
+	    		            },  
+	    		            message: '请选择一条数据进行操作',  
+	    		            
+	    		        }); 
+	    			 return ;
+	    		 }else{
+	    			 var id = $(".updataOrDeleteClasss .ids").val() ;
+	    			 $.ajax({
+		      		        url : "${ctx}/operate/updateSearch.do",
+		      		        type: "post",
+		      		        data:{"id":id},
+		      		        dataType : "json",
+		      		        success: function(result){
+	  		                     if(result.status == 0){
+	  		                    	  var operateEvent = result.operateEvent ;
+		  		               		  //运单编号 
+		  		               		  var operateNum = operateEvent.operateNum ;
+		  		               		  $("#addForm #operateNum").val(operateNum);
+		  		               		  //供货单价
+		  		               		  var factoryPrice = operateEvent.factoryPrice ;
+			  		               	  if(factoryPrice != '' && factoryPrice != null){
+			  		           	   		  $("#addForm #factoryPrice").val(factoryPrice/100);
+		  		           	   		  }else{
+		  		           	   			  $("#addForm #factoryPrice").val(""); 
+		  		           	   		  }
+		  		               		  //接收单价
+		  		               		  var customerPrice = operateEvent.customerPrice ;
+		  		               		  if(customerPrice != null && customerPrice != ""){
+	  		           	   			      $("#addForm #customerPrice").val(customerPrice/100);
+	  		           	   		  	  }else{
+	  		           	   		 		  $("#addForm #customerPrice").val("");
+	  		           	   		      }
+		  		               		  //接收单价是否含税 
+		  		               		  var isOrNotTax = operateEvent.isOrNotTax ;
+		  		               		  $("#addForm #isOrNotTax").find("option[value="+isOrNotTax+"]").attr("selected",true);
+		  		               		  // 运费单价 
+		  		               		  var carFee = operateEvent.carFee ;
+			  		               	  if(carFee != null && carFee != ""){
+			  		           	   			$("#addForm #carFee").val(carFee/100);
+				           	   		  }else{
+				           	   				$("#addForm #carFee").val("");
+				           	   		  }
+		  		               		  //运费单价是否含税
+		  		               		  var carIsOrNotTax = operateEvent.carIsOrNotTax ;
+		  		               		  $("#addForm #carIsOrNotTax").find("option[value="+carIsOrNotTax+"]").attr("selected",true);
+		  		               		  //实际结算量
+		  		               		  var tranFactWeight = operateEvent.tranFactWeight ;
+		  		               		  if(tranFactWeight != null && tranFactWeight != ""){
+		  		           	   			  $("#addForm #tranFactWeight").val(tranFactWeight/100);
+			           	   		      }else{
+			           	   				  $("#addForm #tranFactWeight").val("");
+			           	   		       }
+		  		               		  
+		  		               		  //押车费用
+		  		               		  var stockFee = operateEvent.stockFee ;
+		  		               		  if(stockFee != null && stockFee != ""){
+		  		           	   			  $("#addForm #stockFee").val(stockFee/100);
+			           	   		      }else{
+			           	   				$("#addForm #stockFee").val("");
+			           	   		       }
+		  		               		  //管理费用
+		  		               		  var manageFee = operateEvent.manageFee ;
+			  		               	  if(manageFee != null && manageFee != ""){
+			  		           	   			$("#addForm #manageFee").val(manageFee/100);
+				           	   		  }else{
+				           	   				$("#addForm #manageFee").val("");
+				           	   		  }
+		  		               		  //结算情况
+		  		               		  var settleRemark = operateEvent.settleRemark ;
+		  		               	 	  $("#addForm #settleRemark").val(settleRemark); 
+		  		               	      
+		  		           	   		  
+		  		           	   		  $('#add').modal();
+	  		                     }else{
+	  		                    	 bootbox.alert("获取失败"); 
+	  		                     }
+	   		               },
+	   		            error:function(){
+		  		            	 bootbox.alert("获取失败 ");
+	   		        	   }
+			          	});
+	    		 }
+	    	 });
+	    	 
+	    	 
+	    	//============保存开始====================================
+	    	 $("#saveUser").click(function(){
+
+		 	   		 var saveUserValue = $("#saveUser").text() ;
+		 	   		 
+		 	   		  var reg = /^[0-9]+(.[0-9]{1,2})?$/;
+               		  //供货单价
+					  var factoryPrice= $("#addForm #factoryPrice").val(); 
+					  if(factoryPrice != null  && factoryPrice != ''){
+					        if(!reg.test(factoryPrice)){
+					        	bootbox.alert("供货单价必须是数字且保留2位小数");   
+					        	return  ;
+					        }else{
+					        	factoryPrice = Number(factoryPrice*100) ;
+					        }
+					 	}
+               		  
+               		  //接收单价
+					  var customerPrice= $("#addForm #customerPrice").val(); 
+					  if(customerPrice != null  && customerPrice != ''){
+					        if(!reg.test(customerPrice)){
+					        	bootbox.alert("接收单价必须是数字且保留2位小数");   
+					        	return  ;
+					        }else{
+					        	customerPrice = Number(customerPrice*100) ;
+					        }
+					 	}
+               		  
+               		  //接收单价是否含税 
+				 	  var isOrNotTax = $("#addForm #isOrNotTax").find("option:selected").val();
+               		  // 运费单价 
+               		  var carFee= $("#addForm #carFee").val();
+               		  if(carFee != null  && carFee != ''){
+				         if(!reg.test(carFee)){
+				        	 bootbox.alert("运费单价必须是数字且保留2位小数");   
+				        	 return  ;
+				         }else{
+				        	 carFee = Number(carFee*100) ;
+				         }
+				 	 }
+               		  //运费单价是否含税
+               		  var carIsOrNotTax = $("#addForm #carIsOrNotTax").find("option:selected").val(); ;
+               		  //实际结算量
+               		  var tranFactWeight = $("#addForm #tranFactWeight").val();
+               		  if(tranFactWeight != null  && tranFactWeight != ''){
+					        if(!reg.test(tranFactWeight)){
+					        	bootbox.alert("实际结算量必须是数字且保留2位小数");   
+					        	return  ;
+					        }else{
+					        	tranFactWeight = Number(tranFactWeight*100) ;
+					        }
+				 	  }
+                 	  //押车费用
+               		  var stockFee = $("#addForm #stockFee").val() ;  
+               		  if(stockFee != null  && stockFee != ''){
+				         if(!reg.test(stockFee)){
+				        	 bootbox.alert("押车费用必须是数字且保留2位小数");   
+				        	 return  ;
+				         }else{
+				        	 stockFee = Number(stockFee*100) ;
+				         }
+				 	 }
+               		  //管理费用
+               		  var manageFee = $("#addForm #manageFee").val() ;
+               		  if(manageFee != null  && manageFee != ''){
+				         if(!reg.test(manageFee)){
+				        	 bootbox.alert("管理费用是数字且保留2位小数");   
+				        	 return  ;
+				         }else{
+				        	 manageFee = Number(manageFee*100) ;
+				        }
+				 	 }
+               		  //结算情况
+               	 	  var settleRemark=  $("#addForm #settleRemark").val();
+		 	 		
+	 	   		if(saveUserValue == '修改'){
+	 	   			var id = $(".updataOrDeleteClasss .ids").val() ;
+		 	   		$.ajax({
+		      		        url : "${ctx}/operate/updateBySettle.do",
+		      		        type: "post",
+		      		        data:{"id":id,"stockFee":stockFee,"manageFee":manageFee,"tranFactWeight":tranFactWeight
+	      		        		,"carIsOrNotTax":carIsOrNotTax,"factoryPrice":factoryPrice
+	      		        		,"customerPrice":customerPrice,"carFee":carFee,"isOrNotTax":isOrNotTax, "settleRemark":settleRemark},
+		      		        dataType : "json",
+		      		        success: function(result){
+		 		                     if(result.status == 0){
+		 		                    	 $("#formSearch").submit();
+		 		                     }else{
+		 		                    	 bootbox.alert("保存失败 "); 
+		 		                     }
+		  		               }
+	      		           ,error:function(){
+		  		            	 bootbox.alert("保存失败 ");
+	      		        	   }
+		  		          });
+	 	   		}
+	    	 });
+	    	 //============保存结束====================================
 
 	    	
 	    	 //1.初始化Table
@@ -47,7 +244,7 @@
     	   queryParams: oTableInit.queryParams,//传递参数（*）
     	   sidePagination: "client",   //分页方式：client客户端分页，server服务端分页（*）
     	   pageNumber:1,      //初始化加载第一页，默认第一页
-    	   pageSize: 5,      //每页的记录行数（*）
+    	   pageSize: 20,      //每页的记录行数（*）
     	   pageList: [10, 25, 50, 100],  //可供选择的每页的行数（*）
     	   search: true,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
     	   strictSearch: true,
@@ -76,21 +273,77 @@
               
             }
     	   },{
-    	    field: 'operateNum',
-    	    title: '运单编号', 
-    	    align: "center",//水平
-            valign: "middle"//垂直
+	    	    field: 'operateNum',
+	    	    title: '运单编号', 
+	    	    align: "center",//水平
+	            valign: "middle"//垂直
     	   },{
-    	    field: 'customerShortName',
-    	    title: '下游客户',
-    	    align: "center",//水平
-            valign: "middle"//垂直
+          	    field: 'compangShortName',
+           	    title: '承运单位',   
+           	    align: "center",//水平
+                valign: "middle"//垂直
+           	},{
+           	    field: 'carNum',
+           	    title: '承运车号', 
+           	    align: "center",//水平
+                valign: "middle"//垂直
+            },{
+           	    field: 'factoryShortName',
+           	    title: '供货单位',   
+           	    align: "center",//水平
+                valign: "middle"//垂直
+           	},{
+          	    field: 'loadEmpty',
+          	    title: '装车净重',   
+          	    align: "center",//水平
+                valign: "middle",//垂直
+              	formatter:function(value,row,index){
+                 		if(value != null && value != ''){
+                 			return (value/100).toFixed(2) ;
+                 		}else{
+                  			return '-' ;
+                  		}
+                    }
+          	 },{
+            	    field: 'factoryPrice',
+               	    title: '供货单价', 
+               	    align: "center",//水平
+                    valign: "middle",//垂直
+                   	formatter:function(value,row,index){
+                      		if(value != null && value != ''){
+                      			return (value/100).toFixed(2) ;
+                      		}else{
+                      			return '-' ;
+                      		}
+                         }
+               	    },{
+	    	    field: 'customerShortName',
+	    	    title: '接收单位', 
+	    	    align: "center",//水平
+	            valign: "middle"//垂直
     	   },{
-    	    field: 'poundsDiff',
-    	    title: '磅差', 
-    	    align: "center",//水平
-            valign: "middle",//垂直
-           	formatter:function(value,row,index){
+         	    field: 'uploadAddress', 
+          	    title: '卸车地点',   
+          	    align: "center",//水平
+               valign: "middle"//垂直
+          },{
+           	    field: 'uploadEmpty',
+           	    title: '卸车净重',   
+           	    align: "center",//水平
+                 valign: "middle",//垂直
+               	formatter:function(value,row,index){
+                  		if(value != null && value != ''){
+                  			return (value/100).toFixed(2) ;
+                  		}else{
+                   			return '-' ;
+                   		}
+                     }
+           	 },{
+	    	    field: 'poundsDiff',
+	    	    title: '磅差', 
+	    	    align: "center",//水平
+	            valign: "middle",//垂直
+	           	formatter:function(value,row,index){
             		if(value != null && value != ''){
             			return (value/100).toFixed(2) ;
             		}else{
@@ -98,92 +351,6 @@
              		}
                }
     	   },{
-          	    field: 'strLoadDate',
-           	    title: '装车时间', 
-           	    align: "center",//水平
-                valign: "middle"//垂直
-           	},{
-       	    field: 'carNum',
-       	    title: '承运车号', 
-       	    align: "center",//水平
-            valign: "middle"//垂直
-       	   },
-       	   {
-       	    field: 'factoryShortName',
-       	    title: '上游工厂',  
-       	    align: "center",//水平
-            valign: "middle"//垂直
-       	   },
-       	   {
-       	    field: 'factoryPrice',
-       	    title: '出厂价',
-       	    align: "center",//水平
-            valign: "middle",//垂直
-           	formatter:function(value,row,index){
-              		if(value != null && value != ''){
-              			return (value/100).toFixed(2) ;
-              		}else{
-              			return '-' ;
-              		}
-                 }
-       	    },
-           	{
-              	    field: 'customerAddress',
-              	    title: '卸车地',   
-              	    align: "center",//水平
-                   valign: "middle"//垂直
-              },{
-               	    field: 'strUploadDate',
-               	    title: '卸车时间',    
-               	    align: "center",//水平
-                    valign: "middle"//垂直
-              },
-           	  {
-              	    field: 'customerPrice',
-              	    title: '运到价',  
-              	    align: "center",//水平
-                    valign: "middle",//垂直
-                  	formatter:function(value,row,index){
-                     		if(value != null && value != ''){
-                     			return (value/100).toFixed(2) ;
-                     		}else{
-                      			return '-' ;
-                      		}
-                        }
-              	 },
-             	 {
-               	    field: 'compangShortName',
-               	    title: '承运单位',   
-               	    align: "center",//水平
-                    valign: "middle"//垂直
-               	},
-           		{
-              	    field: 'loadEmpty',
-              	    title: '装车净重',   
-              	    align: "center",//水平
-                    valign: "middle",//垂直
-                  	formatter:function(value,row,index){
-                     		if(value != null && value != ''){
-                     			return (value/100).toFixed(2) ;
-                     		}else{
-                      			return '-' ;
-                      		}
-                        }
-              	 },
-            	 {
-               	    field: 'uploadEmpty',
-               	    title: '卸车净重',   
-               	    align: "center",//水平
-                     valign: "middle",//垂直
-                   	formatter:function(value,row,index){
-                      		if(value != null && value != ''){
-                      			return (value/100).toFixed(2) ;
-                      		}else{
-                       			return '-' ;
-                       		}
-                         }
-               	 },
-            	 {
                 	    field: 'uploadEmpty',
                 	    title: '气差',   
                 	    align: "center",//水平
@@ -196,42 +363,35 @@
                     		}
                     	}
                 	 },{
-                	    field: 'factWeight',
+                	    field: 'tranFactWeight',
                 	    title: '实际结算量',     
                 	    align: "center",//水平
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
-                    		if(row.uploadEmpty != null && row.uploadEmpty != ''){
-                    			return  value.toFixed(2);
+                    		if(value != null && value != ''){
+                    			return  Number(value/100).toFixed(2);
                     		}else{
 	                    		return '-' ;
                     		}
                           }
                 	 },{
                    	    field: 'carFee',
-                  	    title: '运费',   
+                  	    title: '运费单价(税)',    
                   	    align: "center",//水平
                         valign: "middle",//垂直
                       	formatter:function(value,row,index){
                          		if(value != null && value != ''){
-                         			return Number(value/100).toFixed(2) ;
+                         			var carIsOrNotTax = row.carIsOrNotTax ;
+                         				if(carIsOrNotTax == 0){
+		                         			return Number(value/100).toFixed(2)+"(是)" ;
+                         				}else{
+                         					return Number(value/100).toFixed(2) ;
+                         				}
                          		}else{
                           			return '-' ;
                           		}
                             }
                   	 },{
-                    	    field: 'isOrNotTax',
-                    	    title: '是否含税',    
-                    	    align: "center",//水平
-                            valign: "middle",//垂直
-                            formatter:function(value,row,index){
-                         		if(value != null && value == 0){
-                         			return '是' ; 
-                         		}else{
-                         			return '否' ;
-                         		}
-                            }
-                       },{
                  	    field: 'uploadEmpty',
                  	    title: '气损',    
                  	    align: "center",//水平
@@ -256,7 +416,31 @@
 	                    		return '-' ;
 	                		}
   	                     }
-                  	 }
+                  	 },{
+    	               	    field: 'stockFee',
+       	               	    title: '押车费用',   
+       	               	    align: "center",//水平
+       	                    valign: "middle",//垂直
+       	                   	formatter:function(value,row,index){
+    	   	                   	if(value != null && value != ''){
+    	                			return  Number(value/100).toFixed(2);
+    	                		}else{
+    	                    		return '-' ;
+    	                		}
+      	                     }
+                      	 },{
+        	               	    field: 'manageFee',
+           	               	    title: '管理费用',   
+           	               	    align: "center",//水平
+           	                    valign: "middle",//垂直
+           	                   	formatter:function(value,row,index){
+        	   	                   	if(value != null && value != ''){
+        	                			return  Number(value/100).toFixed(2);
+        	                		}else{
+        	                    		return '-' ;
+        	                		}
+          	                     }
+                          	 }
     	   ]
     	  });
     	 };
@@ -304,12 +488,27 @@
     <form id="formSearch" class="form-horizontal" action="${ctx}/settle/index.do">
 		     <div class="form-group" style="margin-top:15px">
 		     	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
-			      <div class="col-sm-3" style="width:12%">
+			      <div class="col-sm-2">
 			       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
 			      </div>
-		     		
-			      <label class="control-label col-sm-1" for="txt_search_departmentname">下游客户</label>
-			      <div class="col-sm-3" style="width:12%">
+			      
+			       <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
+			      <div class="col-sm-2">
+			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true"  id="carId" name="carId"> 
+			       								  <option value=''>----请选择----</option>
+	                                    	<c:forEach items="${carInfoList}" var="carInfo">
+												   <option value="${carInfo.id}"  <c:if test="${operateEvent.carId eq carInfo.id}">selected</c:if>>${carInfo.headerNumber}</option> 
+	                                    	</c:forEach>
+						 	</select>
+			      </div>
+			      <!-- <label class="control-label col-sm-1" for="txt_search_statu"></label> -->
+			      <div class="col-sm-2" style="text-align:left;">
+		       		 <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+		          </div>
+		     </div>
+		     <div class="form-group" style="margin-top:25px">		
+			      <label class="control-label col-sm-1" for="txt_search_departmentname">接收单位</label>
+			      <div class="col-sm-2">
 			      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
 			      		 				   <option value=''>----请选择----</option>
 	                               	<c:forEach items="${companyList}" var="customer">
@@ -319,8 +518,8 @@
 	                               	</c:forEach> 
 						 	 </select>
 			      </div>
-			      <label class="control-label col-sm-1" for="txt_search_statu">上游工厂</label>
-			      <div class="col-sm-3" style="width:12%">
+			      <label class="control-label col-sm-1" for="txt_search_statu">供货单位</label>
+			      <div class="col-sm-2">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="factoryId" name="factoryId"> 
 			       								 <option value=''>----请选择----</option>
 								      <c:forEach items="${companyList}" var="factory">
@@ -334,7 +533,7 @@
 		      </div>
 		      <div class="form-group" style="margin-top:30px">
 			      <label class="control-label col-sm-1" for="txt_search_statu">承运单位</label>
-			      <div class="col-sm-3" style="width:12%">
+			      <div class="col-sm-2">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="companyId" name="companyId"> 
 			       								 <option value=''>----请选择----</option>
 								      <c:forEach items="${companyList}" var="company">
@@ -344,26 +543,143 @@
 	                                  </c:forEach>
 						    </select>
 			      </div>
-			      
-			      <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
-			      <div class="col-sm-3" style="width:4%">
-			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true"  id="carId" name="carId"> 
-			       								  <option value=''>----请选择----</option>
-	                                    	<c:forEach items="${carInfoList}" var="carInfo">
-												   <option value="${carInfo.id}"  <c:if test="${operateEvent.carId eq carInfo.id}">selected</c:if>>${carInfo.headerNumber}</option> 
-	                                    	</c:forEach>
-						 	</select>
-			      </div>
-			      <label class="control-label col-sm-1" for="txt_search_statu"></label>
-			      <div class="col-sm-2" style="text-align:left;">
-		       		 <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
-		          </div>
 		      </div>
     </form>
    </div>
-  </div>  
+  </div> 
+  <div id="toolbar" class="btn-group">
+	   <button id="btn_edit" type="button" class="btn btn-default">
+	    	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+	   </button>
+	   <button type="button" onclick="$('#table').tableExport({ type: 'excel', separator: ';', escape: 'false' });"  class="btn btn-default">
+			<i class="glyphicon glyphicon-search">导出Excel</i>
+	   </button>
+  </div> 
         <table id="table"></table>
     </div>
+    <!--------------------------添加/修改信息的弹出层---------------------------->
+	<div id="add" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">
+                    <i class="icon-pencil"></i>
+                    <span id="lblAddTitle" style="font-weight:bold">修改运费结算</span>
+                </h4>
+            </div>
+            <form class="form-horizontal form-bordered form-row-strippe"  id="addForm" data-toggle="validator" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="row">
+                    
+                    	
+                    	<div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">运单编号</label> 
+                                <div class="col-md-10" style="width:50%"> 
+                                     <input id="operateNum"  name="operateNum" type="text" class="form-control" readonly placeholder="运单编号" />
+                                </div>
+                            </div>
+                        </div>
+                    
+                        
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">供货单价</label>
+                                <div class="col-md-10" style="width:50%">
+                                    <input id="factoryPrice" name="factoryPrice"  type="text" class="form-control" placeholder="供货单价" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">接收单价</label>
+                                <div class="col-md-10" style="width:50%">
+                                    <input id="customerPrice" name="customerPrice" type="text" class="form-control" placeholder="接收单价" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">是否含税</label> 
+                                <div class="col-md-10" style="width:50%"> 
+                                    <select class="form-control" id="isOrNotTax" name="isOrNotTax"> 
+									      <option value="0" >是</option> 
+									      <option  value="1">否</option>
+					      			</select>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">运费单价</label>
+                                <div class="col-md-10" style="width:50%">
+                                    <input id="carFee" name="carFee" type="text" class="form-control" placeholder="运费单价" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">是否含税</label> 
+                                <div class="col-md-10" style="width:50%"> 
+                                    <select class="form-control" id="carIsOrNotTax" name="carIsOrNotTax"> 
+									      <option value="0" >是</option> 
+									      <option  value="1">否</option>
+					      			</select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">实际结算量</label>
+                                <div class="col-md-10" style="width:50%">
+                                    <input id="tranFactWeight" name="tranFactWeight" type="text" class="form-control" placeholder="实际结算量" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">押车费用</label>
+                                <div class="col-md-10" style="width:50%">
+                                    <input id="stockFee" name="stockFee" type="text" class="form-control" placeholder="押车费用" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">管理费用</label>
+                                <div class="col-md-10" style="width:50%">
+                                    <input id="manageFee" name="manageFee" type="text" class="form-control" placeholder="管理费用" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">结算情况</label>
+                                <div class="col-md-10" style="width:50%">
+                                    <textarea id="settleRemark" name="settleRemark"  class="form-control"/></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-info">
+                    <button type="button" class="btn blue" id="saveUser">保存</button>
+                    <button type="button" class="btn green" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
   <%@ include file="/common/footer.jsp"%>
 </body>
 </html>

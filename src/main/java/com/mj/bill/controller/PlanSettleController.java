@@ -25,9 +25,10 @@ import com.mj.bill.service.ICompanyService;
 import com.mj.bill.service.IOperateService;
 
 @Controller
-@RequestMapping("/settle")
-public class FeeSettleController {
-	private final static Logger logger = LoggerFactory.getLogger(FeeSettleController.class);
+@RequestMapping("/planSettle")
+public class PlanSettleController {
+
+	private final static Logger logger = LoggerFactory.getLogger(PlanSettleController.class);
 	
 	@Resource
 	private IOperateService operateService;
@@ -52,37 +53,13 @@ public class FeeSettleController {
 		company.setStatus(0);
 		List<Company> companyList = companyService.queryCompanyByCondition(company) ;
 		model.addAttribute("companyList", companyList);
-		/*//上游工厂
-		Company upFactory = new Company();
-		upFactory.setStatus(0);
-		upFactory.setFlag(0);
-		List<Company> upFactoryList = companyService.queryCompanyByCondition(upFactory) ;
-		model.addAttribute("upFactoryList", upFactoryList);
 		
-		//承运单位
-		Company company = new Company();
-		company.setStatus(0);
-		company.setFlag(2);
-		List<Company> companyList = companyService.queryCompanyByCondition(company) ;
-		model.addAttribute("companyList", companyList);*/
-		
-		/*//卸车地
-		Company loadCustomer = new Company();
-		loadCustomer.setStatus(0);
-		loadCustomer.setFlag(1);
-		List<Company> loadCustomerList = companyService.queryCompanyByCondition(loadCustomer) ;
-		model.addAttribute("loadCustomerList", loadCustomerList);*/
-		
-		
-		//获取company表数据 可用的数据========================
-		//获取car_info表数据 可用的数据=======================
 		CarInfo carInfo = new CarInfo();
 		carInfo.setStatus(0);
 		List<CarInfo> carInfoList = carInfoService.queryCarInfoByCondition(carInfo);
 		model.addAttribute("carInfoList", carInfoList);
-		//获取car_info表数据 可用的数据=======================
 		
-		return "settle/settle_index";
+		return "plan/plan_index";
 	}
 	
 	@RequestMapping(value="/search")
@@ -194,6 +171,5 @@ public class FeeSettleController {
 		 json.put("page",1);
 	     ResponseUtils.responseJson(response, json.toString());
 	}
-	
 
 }

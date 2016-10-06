@@ -31,6 +31,8 @@ public interface IUserDao {
 	List<User> findPage(User user);
 
 	void update(User user);
+
+	void updateUserRight(User user);
 	
 	
 	

@@ -79,6 +79,8 @@ public class User{
 	private java.lang.String department;
 	
 	private List<String> ids = new ArrayList<String>();
+	
+	private String menuIds ;
  
 
 	public User(){
@@ -214,6 +216,14 @@ public class User{
 
 	public void setIds(List<String> ids) {
 		this.ids = ids;
+	}
+
+	public String getMenuIds() {
+		return menuIds;
+	}
+
+	public void setMenuIds(String menuIds) {
+		this.menuIds = menuIds;
 	}
 
 	

@@ -15,11 +15,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="loadDate" column="load_date"/>
         <result property="loadSkin" column="load_skin"/>
         <result property="loadEmpty" column="load_empty"/>
+        <result property="loadAddress" column="load_address"/>
         <result property="uploadDate" column="upload_date"/>
         <result property="uploadHair" column="upload_hair"/>
         <result property="updateSkin" column="update_skin"/>
         <result property="uploadEmpty" column="upload_empty"/>
+        <result property="uploadAddress" column="upload_address"/>
         <result property="companyId" column="company_id"/>
+        <result property="carIsOrNotTax" column="carIsOrNotTax"/>
         <result property="isOrNotTax" column="isOrNotTax"/>
         <result property="carId" column="car_id"/>
         <result property="factoryId" column="factory_id"/>
@@ -29,7 +32,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="carFee" column="car_fee"/>
         <result property="factWeight" column="fact_weight"/>
         <result property="eventRemark" column="event_remark"/>
+        <result property="status" column="status"/>
         <result property="customerRemark" column="customer_remark"/>
+        <result property="transportProperties" column="transport_properties"/>
+        <result property="stockFee" column="stock_fee"/>
+        <result property="manageFee" column="manage_fee"/>
+        <result property="settleRemark" column="settle_remark"/>
+        <result property="tranFactWeight" column="tran_fact_weight"/>
         
 	</resultMap>
 	
@@ -41,11 +50,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="loadDate" column="load_date"/>
         <result property="loadSkin" column="load_skin"/>
         <result property="loadEmpty" column="load_empty"/>
+        <result property="loadAddress" column="load_address"/>
         <result property="uploadDate" column="upload_date"/>
         <result property="uploadHair" column="upload_hair"/>
         <result property="updateSkin" column="update_skin"/>
         <result property="uploadEmpty" column="upload_empty"/>
+        <result property="uploadAddress" column="upload_address"/>
         <result property="companyId" column="company_id"/>
+        <result property="carIsOrNotTax" column="carIsOrNotTax"/>
         <result property="isOrNotTax" column="isOrNotTax"/>
         <result property="carId" column="car_id"/>
         <result property="factoryId" column="factory_id"/>
@@ -55,7 +67,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="carFee" column="car_fee"/>
         <result property="factWeight" column="fact_weight"/>
         <result property="eventRemark" column="event_remark"/>
+        <result property="status" column="status"/>
         <result property="customerRemark" column="customer_remark"/>
+        <result property="transportProperties" column="transport_properties"/>
+        <result property="stockFee" column="stock_fee"/>
+        <result property="manageFee" column="manage_fee"/>
+        <result property="settleRemark" column="settle_remark"/>
+        <result property="tranFactWeight" column="tran_fact_weight"/>
+        
+        
         <result property="customerShortName" column="customerShortName"/>
         <result property="customerAddress" column="customerAddress"/>
         <result property="carNum" column="carNum"/>
@@ -67,28 +87,35 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="hisAccount" column="hisAccount"/>
         <result property="hisAccountName" column="hisAccountName"/>
         
+        <result property="loadBeiginDate" column="loadBeiginDate"/>
+        <result property="loadEndDate" column="loadEndDate"/>
+        
 	</resultMap>
 	
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-		id,operate_num,customer_id,pounds_diff,load_date,load_skin,load_empty,upload_date,upload_hair,update_skin,upload_empty,company_id,isOrNotTax,car_id,factory_id,factory_price,activity_price,customer_price,car_fee,fact_weight,event_remark,customer_remark
-	    ]]>
+			id,operate_num,customer_id,pounds_diff,load_date,load_skin,load_empty,load_address,upload_date,upload_hair,
+			update_skin,upload_empty,upload_address,company_id,carIsOrNotTax,isOrNotTax,car_id,factory_id,factory_price,
+			activity_price,customer_price,car_fee,fact_weight,event_remark,status,customer_remark,transport_properties,
+			stock_fee,manage_fee,settle_remark,tran_fact_weight
+			]]>
 	</sql>
 	
 	<sql id="columns_new">
 	    <![CDATA[
-			ev.id,ev.operate_num,ev.customer_id,ev.pounds_diff,ev.load_date,ev.load_skin,ev.load_empty,ev.upload_date,
-			ev.upload_hair,ev.update_skin,ev.upload_empty,ev.company_id,ev.isOrNotTax,ev.car_id,ev.factory_id,
-			ev.factory_price,ev.activity_price,ev.customer_price,
-			ev.car_fee,ev.fact_weight,ev.event_remark,ev.customer_remark
+			ev.id,ev.operate_num,ev.customer_id,ev.pounds_diff,ev.load_date,ev.load_skin,ev.load_empty,
+			ev.load_address,ev.upload_date,ev.upload_hair,ev.update_skin,ev.upload_empty,ev.upload_address,
+			ev.company_id,ev.carIsOrNotTax,ev.isOrNotTax,ev.car_id,ev.factory_id,ev.factory_price,ev.activity_price,
+			ev.customer_price,ev.car_fee,ev.fact_weight,ev.event_remark,ev.status,ev.customer_remark,ev.transport_properties,
+			ev.stock_fee,ev.manage_fee,ev.settle_remark,ev.tran_fact_weight
 	    ]]>
 	</sql>
 
 	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
     <![CDATA[
-        INSERT INTO operate_event (
+         INSERT INTO operate_event (
         	id ,
         	operate_num ,
         	customer_id ,
@@ -96,11 +123,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         	load_date ,
         	load_skin ,
         	load_empty ,
+        	load_address ,
         	upload_date ,
         	upload_hair ,
         	update_skin ,
         	upload_empty ,
+        	upload_address ,
         	company_id ,
+        	carIsOrNotTax ,
         	isOrNotTax ,
         	car_id ,
         	factory_id ,
@@ -110,7 +140,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         	car_fee ,
         	fact_weight ,
         	event_remark ,
-        	customer_remark 
+        	status ,
+        	customer_remark ,
+        	transport_properties ,
+        	stock_fee ,
+        	manage_fee ,
+        	settle_remark ,
+        	tran_fact_weight 
         ) VALUES (
         	#{id} ,
         	#{operateNum} ,
@@ -119,11 +155,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         	#{loadDate} ,
         	#{loadSkin} ,
         	#{loadEmpty} ,
+        	#{loadAddress} ,
         	#{uploadDate} ,
         	#{uploadHair} ,
         	#{updateSkin} ,
         	#{uploadEmpty} ,
+        	#{uploadAddress} ,
         	#{companyId} ,
+        	#{carIsOrNotTax} ,
         	#{isOrNotTax} ,
         	#{carId} ,
         	#{factoryId} ,
@@ -133,7 +172,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         	#{carFee} ,
         	#{factWeight} ,
         	#{eventRemark} ,
-        	#{customerRemark} 
+        	#{status} ,
+        	#{customerRemark} ,
+        	#{transportProperties} ,
+        	#{stockFee} ,
+        	#{manageFee} ,
+        	#{settleRemark} ,
+        	#{tranFactWeight} 
         )
     ]]>
 		<!--	
@@ -152,15 +197,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	         	pounds_diff = #{poundsDiff} ,
 	         	load_date = #{loadDate} ,
 	         	company_id = #{companyId} ,
-	         	isOrNotTax = #{isOrNotTax} ,
 	         	car_id = #{carId} ,
 	         	factory_id = #{factoryId} ,
-	         	factory_price = #{factoryPrice} ,
-	         	activity_price = #{activityPrice} ,
-	         	customer_price = #{customerPrice} ,
-	         	car_fee = #{carFee} ,
 	         	event_remark = #{eventRemark} ,
+	         	load_address = #{loadAddress} ,
+	         	upload_address = #{uploadAddress} ,
+	         	transport_properties = #{transportProperties}
        </set>
+       
     </sql>
     
     <sql id="update_sql_customer">
@@ -173,6 +217,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	         	upload_empty = #{uploadEmpty} ,
 	         	fact_weight = #{factWeight} ,
 	         	customer_remark = #{customerRemark} 
+       </set>
+    </sql>
+    
+    <sql id="update_sql_settle">
+         <set>
+	         	stock_fee = #{stockFee} ,
+	         	manage_fee = #{manageFee} ,
+	         	tran_fact_weight = #{tranFactWeight} ,
+	         	carIsOrNotTax = #{carIsOrNotTax} ,
+	         	factory_price = #{factoryPrice} ,
+	         	customer_price = #{customerPrice} ,
+	         	car_fee = #{carFee} ,
+	         	isOrNotTax = #{isOrNotTax} ,
+	         	settle_remark = #{settleRemark} 
        </set>
     </sql>
     
@@ -189,6 +247,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	        WHERE 
 	                id = #{id} 
 	</update>
+	
+	<update id="updateBySettle" >
+	        UPDATE  operate_event
+	    <include refid="update_sql_settle" />
+	        WHERE 
+	                id = #{id} 
+	</update>
+	
+	
+	
 
     <delete id="delete">
     <![CDATA[
@@ -209,7 +277,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="findPage_where">
 		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
 		<where>	      				
-               <if test="id != null">
+                 <if test="id != null">
 		             AND id = #{id}
 	           </if>
                <if test="operateNum != null">
@@ -230,6 +298,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                <if test="loadEmpty != null">
 		             AND load_empty = #{loadEmpty}
 	           </if>
+                <if test="loadAddress != null and loadAddress !=''">
+		             AND load_address = #{loadAddress}
+	            </if>
                <if test="uploadDate != null">
 		             AND upload_date = #{uploadDate}
 	           </if>
@@ -242,8 +313,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                <if test="uploadEmpty != null">
 		             AND upload_empty = #{uploadEmpty}
 	           </if>
+                <if test="uploadAddress != null and uploadAddress !=''">
+		             AND upload_address = #{uploadAddress}
+	            </if>
                <if test="companyId != null">
 		             AND company_id = #{companyId}
+	           </if>
+               <if test="carIsOrNotTax != null">
+		             AND carIsOrNotTax = #{carIsOrNotTax}
 	           </if>
                <if test="isOrNotTax != null">
 		             AND isOrNotTax = #{isOrNotTax}
@@ -272,9 +349,27 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
                 <if test="eventRemark != null and eventRemark !=''">
 		             AND event_remark = #{eventRemark}
 	            </if>
+               <if test="status != null">
+		             AND status = #{status}
+	           </if>
                 <if test="customerRemark != null and customerRemark !=''">
 		             AND customer_remark = #{customerRemark}
 	            </if>
+               <if test="transportProperties != null">
+		             AND transport_properties = #{transportProperties}
+	           </if>
+               <if test="stockFee != null">
+		             AND stock_fee = #{stockFee}
+	           </if>
+               <if test="manageFee != null">
+		             AND manage_fee = #{manageFee}
+	           </if>
+                <if test="settleRemark != null and settleRemark !=''">
+		             AND settle_remark = #{settleRemark}
+	            </if>
+               <if test="tranFactWeight != null">
+		             AND tran_fact_weight = #{tranFactWeight}
+	           </if>
 		</where>
 	</sql>
 		
@@ -327,6 +422,24 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	            <if test="operateNum != null">
 		             AND ev.operate_num like  concat(concat('%',#{operateNum}),'%')
 	            </if>
+	            
+	            <if test="loadAddress != null and loadAddress !=''">
+		             AND ev.load_address like  concat(concat('%',#{loadAddress}),'%')
+	            </if>
+	            <if test="uploadAddress != null and uploadAddress !=''">
+		             AND ev.upload_address like  concat(concat('%',#{uploadAddress}),'%')
+	            </if>
+	            <if test="transportProperties != null">
+		             AND ev.transport_properties = #{transportProperties}
+	           </if>
+	           
+	           <if test="loadBeiginDate != null">
+		            <![CDATA[  AND ev.load_date >= #{loadBeiginDate} ]]>
+	           </if>
+	           <if test="loadEndDate != null">
+		           <![CDATA[   AND ev.load_date < #{loadEndDate} ]]>
+	           </if>
+	           
 	           order by ev.operate_num desc
      </select>
      
@@ -357,6 +470,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	            <if test="operateNum != null">
 		             AND ev.operate_num like  concat(concat('%',#{operateNum}),'%')
 	            </if>
+	            <if test="loadAddress != null and loadAddress !=''">
+		             AND ev.load_address like  concat(concat('%',#{loadAddress}),'%')
+	            </if>
+	            <if test="uploadAddress != null and uploadAddress !=''">
+		             AND ev.upload_address like  concat(concat('%',#{uploadAddress}),'%')
+	            </if>
+	            <if test="transportProperties != null">
+		             AND ev.transport_properties = #{transportProperties}
+	           </if>
+	            <if test="loadBeiginDate != null">
+		            <![CDATA[  AND ev.load_date >= #{loadBeiginDate} ]]>
+	           </if>
+	           <if test="loadEndDate != null">
+		           <![CDATA[   AND ev.load_date < #{loadEndDate} ]]>
+	           </if>
 	    <!-- <include refid="findPage_where_new"/> -->
      </select>
       			
@@ -364,7 +492,5 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	SELECT max(ev.operate_num) FROM operate_event ev where ev.operate_num  like concat(concat(#{operateNum}),'%')
      </select>
      
-
-	
 </mapper>
 

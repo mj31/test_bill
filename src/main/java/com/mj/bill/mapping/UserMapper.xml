@@ -20,12 +20,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="age" column="age"/>
         <result property="status" column="status"/>
         <result property="department" column="department"/>
+        <result property="menuIds" column="menu_ids"/>
 	</resultMap>
 	
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-		id,login_name,password,user_name,mobile,email,address,position,work_code,age,status,department
+		id,login_name,password,user_name,mobile,email,address,position,work_code,age,status,department,menu_ids
 	    ]]>
 	</sql>
 
@@ -44,7 +45,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         	work_code ,
         	age ,
         	status ,
-        	department 
+        	department ,
+        	menu_ids
         ) VALUES (
         	#{id} ,
         	#{loginName} ,
@@ -57,7 +59,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         	#{workCode} ,
         	#{age} ,
         	#{status} ,
-        	#{department} 
+        	#{department} ,
+        	#{menuIds} 
         )
     ]]>
 		<!--	
@@ -100,6 +103,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	        WHERE 
 	                id = #{id} 
 	</update>
+	
+	<update id="updateUserRight" >
+	        UPDATE  user
+	    		   set menu_ids = #{menuIds}
+	        WHERE 
+	                id = #{id} 
+	</update>
+	
+	
 
     <delete id="delete">
     <![CDATA[

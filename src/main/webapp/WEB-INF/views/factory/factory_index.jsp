@@ -15,8 +15,35 @@
             'selectedText': 'cat'
         });
         
+        var strLoadBeginDate = {
+    		    elem:'#strLoadBeginDate',
+    		    format:'YYYY-MM-DD',
+    		    istime:false,
+    		    isclear:true,
+    		    istoday:true,
+    		    issure:true,
+    		    festival:false,
+    		    fixed:false,
+    		    zIndex:99999999
+    		}
+        
+        var strLoadEndDate = {
+    		    elem:'#strLoadEndDate',
+    		    format:'YYYY-MM-DD',
+    		    istime:false,
+    		    isclear:true,
+    		    istoday:true,
+    		    issure:true,
+    		    festival:false,
+    		    fixed:false,
+    		    zIndex:99999999
+    		}
+
+    		laydate(strLoadBeginDate);
+            laydate(strLoadEndDate);
+            
     	
-    	 //1.初始化Table
+    	 //1.初始化Table 
     	 var oTable = new TableInit();
     	 oTable.Init();
     	 
@@ -51,7 +78,7 @@
     	   queryParams: oTableInit.queryParams,//传递参数（*）
     	   sidePagination: "client",   //分页方式：client客户端分页，server服务端分页（*）
     	   pageNumber:1,      //初始化加载第一页，默认第一页
-    	   pageSize: 5,      //每页的记录行数（*）
+    	   pageSize: 20,      //每页的记录行数（*）
     	   pageList: [10, 25, 50, 100],  //可供选择的每页的行数（*）
     	   search: true,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
     	   strictSearch: true,
@@ -85,12 +112,16 @@
 		    	    align: "center",//水平
 		            valign: "middle"//垂直
     	   },{
+	       	    field: 'carNum',
+	       	    title: '承运车号', 
+	       	    align: "center",//水平
+	            valign: "middle"//垂直
+   	      },{
 		    	    field: 'strExchangeDate',
 		    	    title: '转账时间',
 		    	    align: "center",//水平
 		            valign: "middle"//垂直
-    	   },
-    	   {
+    	  },{
 	    	    field: 'exchangeMoney',
 	    	    title: '转账金额',
 	    	    align: "center",//水平
@@ -118,31 +149,11 @@
 		       	    title: '装车时间', 
 		       	    align: "center",//水平
 		            valign: "middle"//垂直
-       	   },
-       	   {
-		       	    field: 'carNum',
-		       	    title: '承运车号', 
-		       	    align: "center",//水平
-		            valign: "middle"//垂直
-       	   },
-      		{
-         	    field: 'activityPrice',
-         	    title: '优惠价/吨', 
-         	    align: "center",//水平
-                valign: "middle",//垂直
-             	formatter:function(value,row,index){
-                		if(value != null && value != ''){
-                			return (value/100).toFixed(2) ;
-                		}else{
-                 			return '' ;
-                 		}
-                   }
-          },
-       	   {
+       	   },{
           	    field: 'factoryPrice',
-          	    title: '单价/吨',
+          	    title: '供货单价',
           	    align: "center",//水平
-               valign: "middle",//垂直
+                valign: "middle",//垂直
               	formatter:function(value,row,index){
                  		if(value != null && value != ''){
                  			return (value/100).toFixed(2) ;
@@ -150,7 +161,7 @@
                  			return '' ;
                  		}
                     }
-          	    },{
+          	},{
               	    field: 'loadEmpty', 
               	    title: '装车净重',   
               	    align: "center",//水平
@@ -162,21 +173,7 @@
                       			return '' ;
                       		}
                         }
-              	 },
-             	 {
-                	    field: 'factoryPrice',
-                	    title: '出厂价',
-                	    align: "center",//水平
-                     	valign: "middle",//垂直
-                    	formatter:function(value,row,index){
-                       		if(value != null && value != ''){
-                       			return (value/100).toFixed(2) ;
-                       		}else{
-                       			return '' ;
-                       		}
-                          }
-                 },
-               	 {
+              },{
                 	    field: 'loadEmpty',
                 	    title: '结算金额',    
                 	    align: "center",//水平
@@ -197,8 +194,7 @@
                        		
                     		
                           }
-                	 },
-                	{
+               },{
                 	    field: 'factWeight',
                 	    title: '结余',     
                 	    align: "center",//水平
@@ -210,14 +206,20 @@
     	   ]
     	  });
     	 };
+    	 
     	 var factoryId = $("#formSearch #factoryId").find("option:selected").val() ;
+    	 var loadBeginDate = $("#formSearch #strLoadBeginDate").val() ;
+    	 var loadEndDate = $("#formSearch #strLoadEndDate").val() ;
     	  //得到查询的参数  Number(capacity*100) 
     	 oTableInit.queryParams = function (params) {
 	    	  var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
 		    	   limit: params.limit, //页面大小
 		    	   offset: params.offset, //页码
 		    	 /*   hisAccountName: $("#formSearch #hisAccountName").val(),  */
-		    	   factoryId: factoryId
+		    	   factoryId: factoryId,
+		    	   strLoadBeginDate :loadBeginDate,
+		    	   strLoadEndDate : loadEndDate
+		    	   
 	    	     };
     	  	  return temp;
     	 }; 
@@ -243,12 +245,12 @@
     <div class="container-fluid all">
         <%@ include file="/common/left.jsp"%>
         <div class="panel panel-default">
-   <div class="panel-heading">工厂对账单信息</div>
+   <div class="panel-heading">装车对账单</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/factory/index.do">
 	     <div class="form-group" style="margin-top:15px">
-		      <label class="control-label col-sm-1" for="txt_search_statu">上游工厂名称</label> 
-		      <div class="col-sm-3" style="width:10%">
+		      <label class="control-label col-sm-1" for="txt_search_statu">发货方</label> 
+		      <div class="col-sm-2">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="factoryId" name="factoryId"> 
 		       								  <option value=''>----请选择----</option>
                                     	<c:forEach items="${factoryList}" var="factory">
@@ -256,6 +258,17 @@
                                     	</c:forEach>
 					 	</select>
 		      </div>
+		      
+		      s
+		      <label class="control-label col-sm-1" for="txt_search_statu" >装车时间</label> 
+		      <div class="col-sm-2">
+		       			<input id="strLoadBeginDate" name="strLoadBeginDate" type="text" class="form-control" value = "${operateEvent.strLoadBeginDate}" placeholder="装车开始时间" />
+		      </div>
+		      <label class="control-label col-sm-1" for="txt_search_statu" style="width:2%">~</label>
+		      <div class="col-sm-2">
+		       			<input id="strLoadEndDate" name="strLoadEndDate" type="text" class="form-control" value = "${operateEvent.strLoadEndDate}"  placeholder="装车结束时间" />
+		      </div>
+		      
 		      <label class="control-label col-sm-1" for="txt_search_statu"></label>
 		      <%-- <label class="control-label col-sm-2" for="txt_search_statu">转账单位</label>
 		      <div class="col-sm-3"  style="width:15%">
@@ -269,6 +282,11 @@
 	     </div>
     </form>
    </div>
+  </div>
+  <div id="toolbar" class="btn-group">
+	   <button type="button" onclick="$('#table').tableExport({ type: 'excel', separator: ';', escape: 'false' });"  class="btn btn-default">
+		     <i class="glyphicon glyphicon-search">导出Excel</i>
+		</button>
   </div> 
       <table id="table"></table>
     </div>

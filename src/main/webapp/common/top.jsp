@@ -19,7 +19,7 @@
     			 return ;
      			}
      			
-     			bootbox.confirm("一定要记住密码,点击ok!", function (result) {
+     			bootbox.confirm("一定要记住密码,点击确定即可!", function (result) { 
      	             if (result) {
      	                 //然后发送异步请求的信息到后台删除数据
      	                 $.get("${ctx}/user/update.do?id="+id+"&password="+firstPassword, function (json) {

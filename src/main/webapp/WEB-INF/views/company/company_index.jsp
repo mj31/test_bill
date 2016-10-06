@@ -210,7 +210,7 @@
             }
     	   },{
     	    field: 'companyAddress',
-    	    title: '地址',
+    	    title: '公司地址',
     	    align: "center",//水平
             valign: "middle"//垂直
     	   }, {
@@ -220,7 +220,7 @@
             valign: "middle"//垂直
     	   },{
     	    field: 'shortName', 
-    	    title: '简称',
+    	    title: '公司简称',
     	    align: "center",//水平
             valign: "middle"//垂直
     	   },{
@@ -230,11 +230,11 @@
             valign: "middle",//垂直
             formatter:function(value,row,index){
                 if(value == 0){
-                	return '上游工厂';
+                	return '发货方';
                 }else if(value == 1){
-                	return '下游客户'; 
+                	return '收货方'; 
                 }else if(value == 2){
-                	return '承运单位';
+                	return '承运方'; 
                 }
             } 
     	   },{
@@ -304,31 +304,32 @@
     <form id="formSearch" class="form-horizontal" action="${ctx}/company/list.do" method="post">
 	     <div class="form-group" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">地址</label>
-		      <div class="col-sm-3" style="width:10%">
+		      <div class="col-sm-2">
 		       		<input type="text" class="form-control" id="companyAddress" name="companyAddress" value="${company.companyAddress}">
 		      </div>
-		      <%-- <label class="control-label col-sm-1" for="txt_search_statu">公司名称</label>
-		      <div class="col-sm-3" style="width:10%">
-		       		<input type="text" class="form-control" id="companyName" name="companyName" value="${company.companyName}">
-		      </div> --%>
-		      <label class="control-label col-sm-1" for="txt_search_statu">简称</label>
-		      <div class="col-sm-3" style="width:10%">
+		      <label class="control-label col-sm-1" for="txt_search_departmentname">简称</label>
+		      <div class="col-sm-2">
 		       		<input type="text" class="form-control" id="shortName" name="shortName" value="${company.shortName}">
 		      </div>
-		      <label class="control-label col-sm-1" for="txt_search_statu">公司类别</label>
-		      <div class="col-sm-3"  style="width:10%">
+		      <div class="col-sm-2" style="text-align:left;">
+		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+		      </div>
+		  </div>
+		  <div class="form-group" style="margin-top:25px">
+		      <label class="control-label col-sm-1" for="txt_search_departmentname">公司类别</label>
+		      <div class="col-sm-2">
 		       		<div class="form-group">
 					    <select class="form-control" id="flag" name="flag"> 
 						      <option value="">全部</option> 
-						      <option value="0"  <c:if test="${company.flag eq 0 }"> selected </c:if>>上游工厂</option> 
-						      <option value="1"  <c:if test="${company.flag eq 1 }"> selected </c:if>>下游客户</option>
-						      <option value="2"  <c:if test="${company.flag eq 2 }"> selected </c:if>>承运单位</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
+						      <option value="0"  <c:if test="${company.flag eq 0 }"> selected </c:if>>发货方</option> 
+						      <option value="1"  <c:if test="${company.flag eq 1 }"> selected </c:if>>收货方</option>
+						      <option value="2"  <c:if test="${company.flag eq 2 }"> selected </c:if>>承运方</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
 					      </select>
 					  </div>
 		      </div>
 		      
-		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-		      <div class="col-sm-3"  style="width:10%">
+		      <label class="control-label col-sm-1" for="txt_search_departmentname">状态</label>
+		      <div class="col-sm-2">
 		       		<div class="form-group">
 					    <select class="form-control" id="status" name="status"> 
 						      <option value="">全部</option> 
@@ -337,9 +338,7 @@
 					      </select>
 					  </div>
 		      </div>
-		      <div class="col-sm-2" style="text-align:left;">
-		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
-		      </div>
+		      
 	     </div>
     </form>
    </div>
@@ -377,16 +376,16 @@
                                 <label class="control-label col-md-2" style="margin-left:40px">公司类型</label>
                                 <div class="col-md-10" style="width:50%"> 
                                     <select class="form-control" id="flag" name="flag"> 
-									      <option value="0" >上游工厂</option> 
-									      <option  value="1">下游客户</option>
-									      <option  value="2">承运单位</option>
+									      <option value="0" >发货方</option> 
+									      <option  value="1">收货方</option>
+									      <option  value="2">承运方</option>
 					      			</select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">地址</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">公司地址</label>
                                 <div class="col-md-10" style="width:50%">
                                     <!-- <select id="PID" name="PID" type="text" class="form-control select2" placeholder="父ID..." ></select> -->
                                     <input id="companyAddress"  name="companyAddress" type="text" class="form-control" placeholder="公司地址" />
@@ -403,9 +402,9 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">简称</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">公司简称</label>
                                 <div class="col-md-10" style="width:50%">
-                                    <input id="shortName" name="shortName" type="text" class="form-control" placeholder="简称" />
+                                    <input id="shortName" name="shortName" type="text" class="form-control" placeholder="公司简称" />
                                 </div>
                             </div>
                         </div>

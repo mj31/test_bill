@@ -69,6 +69,16 @@ public class OperateServiceImpl implements IOperateService {
 		return operateDao.getById(id);
 		
 	}
+
+	@Override
+	public void updateBySettle(OperateEventVo operateEvent) {
+		operateDao.updateBySettle(operateEvent);
+	}
+
+	@Override
+	public void delete(OperateEventVo operateEvent) {
+		operateDao.delete(operateEvent);
+	}
 	
 	
 

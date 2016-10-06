@@ -53,13 +53,6 @@ public class FactoryController {
 		@RequestMapping("/index")
 		public String toIndex(HttpServletRequest request,Model model,OperateEventVo operateEvent){
 			model.addAttribute("operateEvent", operateEvent);
-			//获取car_info表数据 可用的数据=======================
-			/*CarInfo carInfo = new CarInfo();
-			carInfo.setStatus(0);
-			List<CarInfo> carInfoList = carInfoService.queryCarInfoByCondition(carInfo);
-			model.addAttribute("carInfoList", carInfoList);*/
-			
-			//获取car_info表数据 可用的数据=======================
 			
 			Company company = new Company();
 			company.setFlag(0);
@@ -70,16 +63,30 @@ public class FactoryController {
 		}
 		
 		@RequestMapping(value="/search")
-		public void search(HttpServletRequest request,HttpServletResponse response,OperateEventVo operateEvent){
+		public void search(HttpServletRequest request,HttpServletResponse response,OperateEventVo operateEvent)throws Exception{
 			
 			JSONObject json = new JSONObject();
 			
 			if(operateEvent.getFactoryId() != null){
+				String strLoadBeginDate = operateEvent.getStrLoadBeginDate();
+				String strLoadEndDate = operateEvent.getStrLoadEndDate() ;
+				
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				if(StringUtils.isNotEmpty(strLoadBeginDate)){
+						Date newDate = format.parse(strLoadBeginDate) ;
+						operateEvent.setLoadBeiginDate(newDate.getTime());
+					
+				}
+				
+				if(!StringUtils.isEmpty(strLoadEndDate)){
+						Date newDate = format.parse(strLoadEndDate) ;
+						operateEvent.setLoadEndDate(newDate.getTime());
+				}
+				
 				List<OperateEventVo> operateList = this.operateService.queryOperateByCondition(operateEvent);
 				Integer total = this.operateService.queryOperateByConditionTotal(operateEvent);
 				
 				if(!CollectionUtils.isEmpty(operateList)){
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 					Calendar c = Calendar.getInstance();
 					for(int i = 0 ; i < operateList.size() ; i++){
 						//装车时间

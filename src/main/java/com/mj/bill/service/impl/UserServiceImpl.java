@@ -62,5 +62,10 @@ public class UserServiceImpl implements IUserService {
 		userDao.update(user);
 	}
 
+	@Override
+	public void updateUserRight(User user) {
+		userDao.updateUserRight(user) ;
+	}
+
 
 } 

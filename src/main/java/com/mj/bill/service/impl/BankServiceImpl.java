@@ -71,4 +71,9 @@ public class BankServiceImpl implements IBankService {
 		bankDao.deleteById(id) ;
 	}
 
+	@Override
+	public BankVo getById(Integer id) {
+		return bankDao.getById(id);
+	}
+
 } 

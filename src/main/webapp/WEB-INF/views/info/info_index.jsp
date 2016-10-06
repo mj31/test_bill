@@ -346,7 +346,7 @@
     	 //初始化Table
     	 oTableInit.Init = function () {
     	  $('#table').bootstrapTable({
-    	   url: '${ctx}/settle/search.do',   //请求后台的URL（*） 
+    	   url: '${ctx}/info/search.do',   //请求后台的URL（*） 
     	   method: 'get',      //请求方式（*）
     	   toolbar: '#toolbar',    //工具按钮用哪个容器
     	   striped: true,      //是否显示行间隔色
@@ -687,7 +687,7 @@
                  	 },
                 	 {
                  	    field: 'uploadEmpty',
-                 	    title: '亏损金额',       
+                 	    title: '亏损结算',      
                  	    align: "center",//水平
                         valign: "middle",//垂直
                      	formatter:function(value,row,index){
@@ -771,9 +771,9 @@
     <div class="container-fluid all">
         <%@ include file="/common/left.jsp"%>
         <div class="panel panel-default">
-   <div class="panel-heading">运作详情</div>
+   <div class="panel-heading">装卸车信息采集</div>
    <div class="panel-body">
-    <form id="formSearch" class="form-horizontal" action="${ctx}/operate/index.do">
+    <form id="formSearch" class="form-horizontal" action="${ctx}/info/index.do">
 		     <div class="form-group" style="margin-top:15px">
 		     	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
 			      <div class="col-sm-3" style="width:12%">

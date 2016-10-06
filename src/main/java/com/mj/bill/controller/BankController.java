@@ -64,7 +64,7 @@ public class BankController {
 		 List<BankVo> bankList = this.bankService.queryBankByCondition(bank);
 		 Integer total = this.bankService.queryBankByConditionTotal(bank);
 		 if(!CollectionUtils.isEmpty(bankList)){
-			 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			 SimpleDateFormat format = new SimpleDateFormat("yyMMdd");
 			 Calendar c = Calendar.getInstance();
 			 for(int i = 0 ; i < bankList.size() ; i++){
 				 long exchangeDate = bankList.get(i).getExchangeDate();
@@ -200,11 +200,38 @@ public class BankController {
 	     ResponseUtils.responseJson(response, json.toString());
 	}
 	
-	public static void main(String[] args)throws Exception {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			String strExchangeDate = "2016-12-01" ;
-			Date newDate = format.parse(strExchangeDate) ;
-			System.out.println(newDate.getTime());
+	
+	
+	/**
+	 * 修改弹出
+	 * @param request
+	 * @param response
+	 * @param operateEvent
+	 */
+	@RequestMapping("/updateSearch")
+	@ResponseBody
+	public void updateSearch(HttpServletRequest request,HttpServletResponse response,Integer id){
+		JSONObject json = new JSONObject();
+		try {
+			    BankVo bank =	this.bankService.getById(id);
+			    if(bank != null ){
+			    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					Calendar c = Calendar.getInstance();
+					Long exchangeDate = bank.getExchangeDate() ;
+					if(exchangeDate != null && exchangeDate != 0){
+						 c.setTimeInMillis(exchangeDate);
+						 bank.setStrExchangeDate(format.format(c.getTime()));
+					 }else{
+						 bank.setStrExchangeDate("-");
+					 }
+			    }
+			    json.put("bank", bank) ;
+				json.put("status",0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("status",1);
+		}
+	     ResponseUtils.responseJson(response, json.toString());
 	}
-
+	
 }

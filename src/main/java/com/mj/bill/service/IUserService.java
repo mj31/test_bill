@@ -61,4 +61,11 @@ public interface IUserService {
 	 */
 	void updateUser(User user);
 
+	
+	/**
+	 * 用户权限 
+	 * @param user
+	 */
+	void updateUserRight(User user);
+
 }

@@ -56,5 +56,17 @@ public interface IOperateService {
 	 * @return 
 	 */
 	OperateEventVo getById(Integer id);
+	
+	/**
+	 * 运费结算更新
+	 * @param operateEvent
+	 */
+	void updateBySettle(OperateEventVo operateEvent);
+	
+	/**
+	 * 删除
+	 * @param operateEvent
+	 */
+	void delete(OperateEventVo operateEvent);
 
 }

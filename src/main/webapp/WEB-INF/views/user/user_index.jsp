@@ -108,8 +108,120 @@
     	 })
     	 
     	 //===============删除结束=========================
+    		 
+    	//修改权限 
+        $("#btn_update_right").click(function(){
+        	var id = $(".updataOrDeleteClasss .ids").val() ;
+        	 //校验选了一条数据 
+	   		 if($(".selected").length != 1){ 
+	   			 bootbox.alert({  
+	   		            buttons: {  
+	   		               ok: {  
+	   		                    label: '确定',  
+	   		                    className: 'btn-myStyle'  
+	   		                }  
+	   		            },  
+	   		            message: '请选择一条数据进行操作',  
+	   		            
+	   		        }); 
+	   			 return ;
+	   		 }else{
+	   			 
+	   			 var html = '<div class="col-md-12">'
+                 				+'<div class="form-group">'
+                 				   + '<label class="control-label col-md-4" style="margin-left:70px">#menuName</label>'
+                 				   + '<div class="col-md-10" style="width:50%">'
+                 				  	 +  '<input type="checkbox" style="height:25px;" newData="#data"  class="menuClass" value="#menuId">'
+                 				   + '</div>'
+                 				+ '</div>'
+                            + '</div>'
+	   			$.ajax({
+      		        url : "${ctx}/user/menu.do",
+      		        type: "post",
+      		        data:{"id":id},
+      		        dataType : "json",
+      		        success: function(result){
+		                     if(result.status == 0){
+		                    	  var menuList = result.menuList ;
+		                    	  var totalHtml = "";
+		                    	  var newHtml = "" ;
+		                    	  for(var i = 0 ; i < menuList.length ;i++){
+		                    		  var menu = menuList[i];
+		                    		  newHtml = html ;
+		                    		  newHtml = newHtml.replace("#menuName",menu.menuName);
+		                    		  newHtml = newHtml.replace("#menuId",menu.id);
+		                    		  newHtml = newHtml.replace("#data",menu.id);
+		                    		  
+		                    		  
+		                    		  totalHtml += newHtml ;
+		                    	  }
+		                    	  $("#rightData").html(totalHtml) ;
+		                    	  
+		                    	  if(result.menuIds != '' && result.menuIds != null){
+		                    		  var obj = $(".menuClass");
+			                    	  var arrMenuId = result.menuIds.split(",");
+			                    	  for(var j = 0 ; j < arrMenuId.length ;j++){
+			                    		  if(arrMenuId[j] != 0){
+				                    		  for(var k = 0 ; k < obj.length ; k++){
+				                    			  if($(obj[k]).attr("newData") == arrMenuId[j]){
+				                    				  $(obj[k]).attr("checked",true);
+				                    			  }
+				                    		  }
+			                    		  }
+			                    	  }  
+		                    	  }
+		                    	  
+  		               		 
+  		           	   		   	  $("#updateRight").modal();
+		                     }else{
+		                    	 bootbox.alert("获取失败"); 
+		                     }
+		               },
+		            error:function(){
+  		            	 bootbox.alert("获取失败 ");
+		        	   }
+	          	});
+	        	
+	   		 }
+        })
     	 
-    	 
+    	 //保存权限数据 
+    	 $("#updateRightSave").click(function(){
+    		 var obj = $(".menuClass");
+    		 var chk_value =[]; 
+    		 for(var j = 0 ; j < obj.length ;j++){
+    			 if(obj[j].checked){
+    				 chk_value.push(obj[j].value); 
+    			 }
+    		 }
+    		 var id = $(".updataOrDeleteClasss .ids").val() ;
+    		 if(chk_value.length >= 0){
+    			 if(chk_value.length == 0){
+    				 chk_value.push(0);
+    			 }
+    			 $.ajax({
+    	   		        url : "${ctx}/user/updateUserMenu.do",
+    	   		        type: "post",
+    	   		        data:{"menuIds":chk_value,"id":id} ,
+    	   		        dataType : "json",
+    	   		        success: function(result){
+    			                     if(result.status == 0){
+    			                    	 $("#formSearch").submit();
+    			                     }else{
+    			                    	 bootbox.alert("更新权限失败"); 
+    			                     }
+    			               },
+    			         error:function(){
+    			            	 	bootbox.alert("更新权限失败");
+    			        	   }
+    		          	});
+    		 }else{
+    			 $("#formSearch").submit();
+    		 }
+    		 
+    		 
+    		 
+    	 })
     	 
     	 //查询 
     	 $("#btn_query").click(function(){
@@ -358,15 +470,15 @@
     <form id="formSearch" class="form-horizontal" action="${ctx}/user/list.do" method="post">
 	     <div class="form-group" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">登录名</label>
-		      <div class="col-sm-3" style="width:12%">
+		      <div class="col-sm-2">
 		       		<input type="text" class="form-control" id="loginName" name="loginName" value="${newUser.loginName}">
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">用户名</label>
-		      <div class="col-sm-3" style="width:12%">
+		      <div class="col-sm-2">
 		       		<input type="text" class="form-control" id="userName" name="userName" value="${newUser.userName}">
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-		      <div class="col-sm-3"  style="width:6%">
+		      <div class="col-sm-2">
 		       		<div class="form-group">
 					    <select class="form-control" id="status" name="status"> 
 						      <option value="">全部</option> 
@@ -375,7 +487,7 @@
 					      </select>
 					  </div>
 		      </div>
-		      <div class="col-sm-4" style="text-align:left;">
+		      <div class="col-sm-2" style="text-align:left;">
 		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
 		      </div>
 	     </div>
@@ -392,6 +504,10 @@
    </button>
    <button id="btn_delete" type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>禁用
+   </button>
+   
+   <button id="btn_update_right" type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>修改权限
    </button>
   </div>
         <table id="table"></table>
@@ -479,6 +595,28 @@
                 </div>
                 <div class="modal-footer bg-info">
                     <button type="button" class="btn blue" id="saveUser">保存</button>
+                    <button type="button" class="btn green" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="updateRight" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">
+                    <i class="icon-pencil"></i>
+                    <span id="lblUpdateRightTitle" style="font-weight:bold">修改权限</span>
+                </h4>
+            </div>
+            <form class="form-horizontal form-bordered form-row-strippe"  id="updateRightForm" data-toggle="validator" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="row" id="rightData"></div>
+                </div>
+                <div class="modal-footer bg-info">
+                    <button type="button" class="btn blue" id="updateRightSave">确认</button>
                     <button type="button" class="btn green" data-dismiss="modal">取消</button>
                 </div>
             </form>

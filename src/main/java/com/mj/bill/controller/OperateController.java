@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +22,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.mj.bill.common.ResponseUtils;
 import com.mj.bill.pojo.CarInfo;
 import com.mj.bill.pojo.Company;
-import com.mj.bill.pojo.OperateEvent;
 import com.mj.bill.pojo.OperateEventVo;
 import com.mj.bill.service.ICarInfoService;
 import com.mj.bill.service.ICompanyService;
@@ -44,9 +42,6 @@ public class OperateController {
 	private ICarInfoService carInfoService;
 	
 	
-	
-	
-	
 	/**
 	 * 显示运作详情页面
 	 * @param request
@@ -61,13 +56,11 @@ public class OperateController {
 		company.setStatus(0);
 		List<Company> companyList = companyService.queryCompanyByCondition(company) ;
 		model.addAttribute("companyList", companyList);
-		//获取company表数据 可用的数据========================
-		//获取car_info表数据 可用的数据=======================
+		
 		CarInfo carInfo = new CarInfo();
 		carInfo.setStatus(0);
 		List<CarInfo> carInfoList = carInfoService.queryCarInfoByCondition(carInfo);
 		model.addAttribute("carInfoList", carInfoList);
-		//获取car_info表数据 可用的数据=======================
 		
 		return "operate/operate_index";
 	}
@@ -82,7 +75,7 @@ public class OperateController {
 	public void save(HttpServletRequest request,HttpServletResponse response,OperateEventVo operateEvent){
 		JSONObject json = new JSONObject();
 		try {
-			
+			logger.info("=====保存计划数据====");
 			if(operateEvent != null){
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				String strLoadDate = operateEvent.getStrLoadDate() ;
@@ -179,15 +172,59 @@ public class OperateController {
 	     ResponseUtils.responseJson(response, json.toString());
 	}
 	
-	public static void main(String[] args) {
-	  
-	        Date date = new Date();  
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");  
-	        String dateNowStr = sdf.format(date);  
-	        System.out.println("格式化后的日期：" + dateNowStr); 
+	
+	/**
+	 * 修改运作信息
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/updateBySettle")
+	@ResponseBody
+	public void updateBySettle(HttpServletRequest request,HttpServletResponse response,OperateEventVo operateEvent){
+		JSONObject json = new JSONObject();
+		try {
+			logger.info("===开始更新操作===");
+			logger.info("===更新传入的参数="+operateEvent);
+			if(operateEvent != null){
+				this.operateService.updateBySettle(operateEvent);
+				json.put("status",0);
+			}else{
+				json.put("status",1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("更新打印错误数据====="+e);
+			json.put("status",1);
+		}
+	     ResponseUtils.responseJson(response, json.toString());
 	}
 	
-	
-	
 
+	/**
+	 * 删除 物理
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/delete")
+	@ResponseBody
+	public void delete(HttpServletRequest request,HttpServletResponse response,OperateEventVo operateEvent){
+		JSONObject json = new JSONObject();
+		try {
+			logger.info("====开始进行删除操作====");
+			logger.info("====传入的id="+operateEvent.getId());
+			if(operateEvent != null){
+				this.operateService.delete(operateEvent);
+				json.put("status",0);
+			}else{
+				json.put("status",1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("删除事件操作====="+e);
+			json.put("status",1);
+		}
+	     ResponseUtils.responseJson(response, json.toString());
+	}
 }

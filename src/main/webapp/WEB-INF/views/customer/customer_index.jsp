@@ -40,7 +40,7 @@
     	 
     	 //修改弹出层 
     	 $("#btn_edit").click(function(){
-    		 $("#lblAddTitle").text("修改客户对账单");    
+    		 $("#lblAddTitle").text("修改卸车对账单");    
     		 $("#saveUser").text("修改") ; 
     		 formNull();
     		 //校验选了一条数据 
@@ -113,7 +113,7 @@
 			 	var uploadDate = $("#addForm #uploadDate").val();
 			 	var loadEmpty= $("#addForm #loadEmpty").val();
 			 	var uploadEmpty = $("#addForm #uploadEmpty").val(); 
-			 	var factWeight= $("#addForm #factWeight").val();
+			 	/* var factWeight= $("#addForm #factWeight").val(); */
 			 	var customerRemark= $("#addForm #customerRemark").val();
 	 	 		
 			 	
@@ -137,14 +137,14 @@
 			        }
 			 	}
 			 	
-				if(factWeight != null  && factWeight != ''){
+				/* if(factWeight != null  && factWeight != ''){
 			        if(!reg.test(factWeight)){
 			        	bootbox.alert("实际结算量必须是数字且保留2位小数");      
 			        	return  ;
 			        }else{
 			        	factWeight = Number(factWeight*100) ;
 			        }
-			 	}
+			 	} */
 				
 				if(uploadDate == '-'){
 					uploadDate = '';
@@ -157,8 +157,7 @@
 	      		        url : "${ctx}/customer/update.do",
 	      		        type: "post",
 	      		        data:{"id":id,"loadEmpty":loadEmpty,"strUploadDate":uploadDate
-	      		        	 , "uploadEmpty":uploadEmpty, "customerRemark":customerRemark
-      		        		 , "factWeight":factWeight},
+	      		        	 , "uploadEmpty":uploadEmpty, "customerRemark":customerRemark},
 	      		        dataType : "json",
 	      		        success: function(result){
 	 		                     if(result.status == 0){
@@ -193,7 +192,7 @@
     	   queryParams: oTableInit.queryParams,//传递参数（*）
     	   sidePagination: "client",   //分页方式：client客户端分页，server服务端分页（*）
     	   pageNumber:1,      //初始化加载第一页，默认第一页
-    	   pageSize: 5,      //每页的记录行数（*）
+    	   pageSize: 20,      //每页的记录行数（*）
     	   pageList: [10, 25, 50, 100],  //可供选择的每页的行数（*）
     	   search: true,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
     	   strictSearch: true,
@@ -226,54 +225,49 @@
 		    	    title: '运单编号', 
 		    	    align: "center",//水平
 		            valign: "middle"//垂直
-    	   }, {
+    	   },{
+	       	    field: 'carNum',
+	       	    title: '承运车号', 
+	       	    align: "center",//水平
+	            valign: "middle"//垂直
+   	       },{
+	       	    field: 'factoryShortName',
+	       	    title: '供货单位',    
+	       	    align: "center",//水平
+	            valign: "middle"//垂直
+   	       },{
+	       	    field: 'strLoadDate',
+	       	    title: '装车时间', 
+	       	    align: "center",//水平
+	            valign: "middle"//垂直
+   	      },{
+        	    field: 'loadEmpty', 
+          	    title: '装车净重',   
+          	    align: "center",//水平
+                valign: "middle",//垂直
+              	formatter:function(value,row,index){
+                 		if(value != null && value != ''){
+                 			return (value/100).toFixed(2) ;
+                 		}else{
+                  			return '' ;
+                  		}
+                    }
+          	 },{
 		    	    field: 'customerShortName',
-		    	    title: '下游客户', 
+		    	    title: '接收单位',    
 		    	    align: "center",//水平
 		            valign: "middle"//垂直
-    	   },
-    	   {
-		       	    field: 'strLoadDate',
-		       	    title: '装车时间', 
-		       	    align: "center",//水平
-		            valign: "middle"//垂直
-       	   },
-       	   {
-		       	    field: 'carNum',
-		       	    title: '承运车号', 
-		       	    align: "center",//水平
-		            valign: "middle"//垂直
-       	   },
-       	   {
-		       	    field: 'factoryShortName',
-		       	    title: '上游工厂',  
-		       	    align: "center",//水平
-		            valign: "middle"//垂直
-       	   },
-       	   {
-              	    field: 'customerAddress',
-              	    title: '卸车地',   
+    	     },{
+              	    field: 'uploadAddress',
+              	    title: '卸车地点',    
               	    align: "center",//水平
                     valign: "middle"//垂直
-              	},
-             	 {
+             },{
                	    field: 'strUploadDate',
                	    title: '卸车时间',    
                	    align: "center",//水平
                     valign: "middle"//垂直
                 },{
-              	    field: 'loadEmpty', 
-              	    title: '装车净重',   
-              	    align: "center",//水平
-                    valign: "middle",//垂直
-                  	formatter:function(value,row,index){
-                     		if(value != null && value != ''){
-                     			return (value/100).toFixed(2) ;
-                     		}else{
-                      			return '' ;
-                      		}
-                        }
-              	 },{
               	    field: 'uploadEmpty',
               	    title: '卸车净重',    
               	    align: "center",//水平
@@ -310,8 +304,31 @@
 	                    		return '-' ;
                     		}
                           }
-                	 },
-                	 {
+                	 },{
+                  	    field: 'customerPrice',
+                 	    title: '接收单价(税)',   
+                 	    align: "center",//水平
+                       valign: "middle",//垂直
+                     	formatter:function(value,row,index){
+                     		var isOrNotTax = row.isOrNotTax ;	
+                     		 if(isOrNotTax != null && isOrNotTax == 0){
+                     			if(value != null && value != ''){
+                       				return (value/100).toFixed(2);
+                       			}else{
+                        			return "";
+                        		}
+                    		}else{
+                    			isOrNotTax = '否' ;
+                    			if(value != null && value != ''){
+                       				return (value/100).toFixed(2)+"("+isOrNotTax+")" ;
+                       			}else{
+                        			return "("+isOrNotTax+")";
+                        		}
+                    		}
+                     		 
+                       		
+                           }
+                 	 }, {
                  	    field: 'factWeight',
                  	    title: '结算金额',    
                  	    align: "center",//水平
@@ -411,41 +428,17 @@
     <div class="container-fluid all">
         <%@ include file="/common/left.jsp"%>
         <div class="panel panel-default">
-   <div class="panel-heading">客户对账单</div>
+   <div class="panel-heading">卸车对账单</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/customer/index.do">
 	     <div class="form-group" style="margin-top:15px">
 	     
 	     	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
-		      <div class="col-sm-3" style="width:12%">
+		      <div class="col-sm-2">
 		       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
 		      </div>
-	     		
-		      <label class="control-label col-sm-1" for="txt_search_departmentname">下游客户</label>
-		      <div class="col-sm-1" style="width:12%">
-		      		 	<select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">
-		      		 				   <option value=''>----请选择----</option>
-                               	<c:forEach items="${companyList}" var="customer">
-                               		<c:if test="${customer.flag eq 1}">
-						     			<option value="${customer.id}" <c:if test="${operateEvent.customerId eq customer.id}">selected</c:if>>${customer.shortName}</option> 
-                               		</c:if>
-                               	</c:forEach> 
-					 	 </select>
-		       		<%-- <input type="text" class="form-control" id="headerNumber" name="headerNumber" value="${carInfo.headerNumber}"> --%>
-		      </div>
-		      <label class="control-label col-sm-1" for="txt_search_statu">上游工厂</label>
-		      <div class="col-sm-3" style="width:12%">
-		       			<select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId"> 
-		       								 <option value=''>----请选择----</option>
-							      <c:forEach items="${companyList}" var="factory">
-                                  		  <c:if test="${factory.flag eq 0}">
-									         <option value="${factory.id}"  <c:if test="${operateEvent.factoryId eq factory.id}">selected</c:if>>${factory.shortName}</option> 
-                                  		  </c:if>
-                                  </c:forEach>
-					    </select>
-		      </div>
-		      <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
-		      <div class="col-sm-3" style="width:12%">
+	     	 <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
+		      <div class="col-sm-2">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="carId" name="carId"> 
 		       								  <option value=''>----请选择----</option>
                                     	<c:forEach items="${carInfoList}" var="carInfo">
@@ -457,15 +450,44 @@
 		      <div class="col-sm-2" style="text-align:left;">
 		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
 		      </div>
+	     	
+	     	</div>
+	     	<div class="form-group" style="margin-top:15px">
+		      <label class="control-label col-sm-1" for="txt_search_departmentname">接收单位</label>
+		      <div class="col-sm-2">
+		      		 	<select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">
+		      		 				   <option value=''>----请选择----</option>
+                               	<c:forEach items="${companyList}" var="customer">
+                               		<c:if test="${customer.flag eq 1}">
+						     			<option value="${customer.id}" <c:if test="${operateEvent.customerId eq customer.id}">selected</c:if>>${customer.shortName}</option> 
+                               		</c:if>
+                               	</c:forEach> 
+					 	 </select>
+		       		<%-- <input type="text" class="form-control" id="headerNumber" name="headerNumber" value="${carInfo.headerNumber}"> --%>
+		      </div>
+		      <label class="control-label col-sm-1" for="txt_search_statu">供货单位</label>
+		      <div class="col-sm-2">
+		       			<select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId"> 
+		       								 <option value=''>----请选择----</option>
+							      <c:forEach items="${companyList}" var="factory">
+                                  		  <c:if test="${factory.flag eq 0}">
+									         <option value="${factory.id}"  <c:if test="${operateEvent.factoryId eq factory.id}">selected</c:if>>${factory.shortName}</option> 
+                                  		  </c:if>
+                                  </c:forEach>
+					    </select>
+		      </div>
 	     </div>
     </form>
    </div>
   </div>  
  
   <div id="toolbar" class="btn-group">
-   <button id="btn_edit" type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
-   </button>
+	   <button id="btn_edit" type="button" class="btn btn-default">
+	    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+	   </button>
+	   <button type="button" onclick="$('#table').tableExport({ type: 'excel', separator: ';', escape: 'false' });"  class="btn btn-default">
+			<i class="glyphicon glyphicon-search">导出Excel</i>
+	   </button>
   </div>
         <table id="table"></table>
     </div>
@@ -521,14 +543,14 @@
                             </div>
                         </div>
                         
-                          <div class="col-md-12">
+                          <!-- <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label col-md-2" style="margin-left:40px">实际结算量</label>
                                 <div class="col-md-10" style="width:50%">
                                     <input id="factWeight"  name="factWeight" type="text" class="form-control" placeholder="实际结算量" />
                                 </div>
                             </div>
-                         </div>
+                         </div> -->
                         
                         
                         <div class="col-md-12">

@@ -75,6 +75,18 @@ public class OperateEventVo extends OperateEvent {
 	 * 气损
 	 */
 	private Long gasMiss ;
+	
+	
+	private String strLoadBeginDate ;
+	
+	private String strLoadEndDate ;
+	
+	private Long  loadBeiginDate ;
+	
+	private Long loadEndDate ;
+	
+	
+	
 
 	public String getCustomerShortName() {
 		return customerShortName;
@@ -187,6 +199,38 @@ public class OperateEventVo extends OperateEvent {
 
 	public void setGasMiss(Long gasMiss) {
 		this.gasMiss = gasMiss;
+	}
+
+	public String getStrLoadBeginDate() {
+		return strLoadBeginDate;
+	}
+
+	public void setStrLoadBeginDate(String strLoadBeginDate) {
+		this.strLoadBeginDate = strLoadBeginDate;
+	}
+
+	public String getStrLoadEndDate() {
+		return strLoadEndDate;
+	}
+
+	public void setStrLoadEndDate(String strLoadEndDate) {
+		this.strLoadEndDate = strLoadEndDate;
+	}
+
+	public Long getLoadBeiginDate() {
+		return loadBeiginDate;
+	}
+
+	public void setLoadBeiginDate(Long loadBeiginDate) {
+		this.loadBeiginDate = loadBeiginDate;
+	}
+
+	public Long getLoadEndDate() {
+		return loadEndDate;
+	}
+
+	public void setLoadEndDate(Long loadEndDate) {
+		this.loadEndDate = loadEndDate;
 	}
 	
 }

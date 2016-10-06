@@ -1,5 +1,6 @@
 package com.mj.bill.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -12,13 +13,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mj.bill.common.MD5Util;
 import com.mj.bill.common.ResponseUtils;
+import com.mj.bill.pojo.Menu;
 import com.mj.bill.pojo.User;
+import com.mj.bill.service.IMenuService;
 import com.mj.bill.service.IUserService;
 
 @Controller
@@ -28,6 +33,11 @@ public class UserController {
 	
 	@Resource
 	private IUserService userService;
+	
+	@Resource
+	private IMenuService menuService;
+	
+	
 	
 	@RequestMapping("/login")
 	public String index(HttpServletRequest request,Model model){
@@ -58,6 +68,23 @@ public class UserController {
 			if(MD5Util.MD5Encode(user.getPassword(), "utf-8").equals(password)){
 				session.setAttribute("user", queryUser);
 				model.addAttribute("user", queryUser);
+					List<Menu> menuList = new ArrayList<Menu>();
+					String menuIds = queryUser.getMenuIds() ;
+					if(!StringUtils.isEmpty(menuIds)){
+						String ids[] = menuIds.split(",");
+						Menu menu = null ;
+						for(int i = 0 ; i < ids.length ;i++ ){
+							menu = new Menu();
+							menu.setId(Long.parseLong(ids[i]));
+							menu.setStatus(0);
+							List<Menu> newMenuList = menuService.findPage(menu) ;
+							if(!CollectionUtils.isEmpty(newMenuList)){
+								menuList.add(newMenuList.get(0)) ;
+							}
+						}
+					}
+				model.addAttribute("menuList", menuList);
+				session.setAttribute("menuList", menuList);
 				return file ;
 			}else{
 				response.sendRedirect(request.getContextPath()
@@ -85,7 +112,6 @@ public class UserController {
 		//目的是让top显示用户信息
 		User user = (User)session.getAttribute("user");
 		model.addAttribute("user", user);
-		System.out.println();
 		return "user/user_index";
 	}
 	
@@ -223,6 +249,68 @@ public class UserController {
 		}
 	     ResponseUtils.responseJson(response, json.toString());
 	}
+	
+	
+	
+	/**
+	 * 查询权限数据
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/user/menu")
+	@ResponseBody
+	public void queryMenu(HttpServletRequest request,HttpServletResponse response,User user){
+		JSONObject json = new JSONObject();
+		try {
+				Menu menu = new Menu();
+				menu.setStatus(0);
+				List<Menu> menuList = this.menuService.findPage(menu);
+				List<User> userList = this.userService.queryUserByCondition(user);
+				
+				if(menuList.size() > 0){
+					json.put("status",0);
+					json.put("menuList",menuList);
+					if(!CollectionUtils.isEmpty(userList)){
+						json.put("menuIds", userList.get(0).getMenuIds());;
+					}
+					
+				}else{
+					json.put("status",1);
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("检查权限==="+e);
+			json.put("status",1);
+		}
+	     ResponseUtils.responseJson(response, json.toString());
+	}
+	
+	/**
+	 * 查询权限数据
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/user/updateUserMenu")
+	@ResponseBody
+	public void updateUserMenu(HttpServletRequest request,HttpServletResponse response,@RequestParam("menuIds[]") String menuIds ,Integer id){
+		JSONObject json = new JSONObject();
+		HttpSession session = request.getSession();
+		try {
+				User user = new User();
+				user.setId(id);
+				user.setMenuIds(menuIds);
+				this.userService.updateUserRight(user);
+			    json.put("status",0);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("检查权限==="+e);
+			json.put("status",1);
+		}
+	     ResponseUtils.responseJson(response, json.toString());
+	}
+	
 	
 	
 	
