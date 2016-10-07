@@ -81,6 +81,8 @@ public class User{
 	private List<String> ids = new ArrayList<String>();
 	
 	private String menuIds ;
+	
+	private Integer level ;
  
 
 	public User(){
@@ -226,6 +228,12 @@ public class User{
 		this.menuIds = menuIds;
 	}
 
-	
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
 }
 

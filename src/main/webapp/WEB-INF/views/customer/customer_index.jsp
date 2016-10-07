@@ -291,8 +291,19 @@
 	                    		return '-' ;
                     		}
                           }
-                	 },
-            	     {
+                	 },{
+         	    	    field: 'poundsDiff',
+        	    	    title: '磅差', 
+        	    	    align: "center",//水平
+        	            valign: "middle",//垂直
+        	           	formatter:function(value,row,index){
+                    		if(value != null && value != ''){
+                    			return (value/100).toFixed(2) ;
+                    		}else{
+                     			return '-' ;
+                     		}
+                       }
+            	   },{
                 	    field: 'factWeight',
                 	    title: '实际结算量',    
                 	    align: "center",//水平
@@ -335,7 +346,7 @@
                          valign: "middle",//垂直
                      	formatter:function(value,row,index){
                      		var factWeightNew = 0 ;
-                       		if(value != null && value != ''){
+                       		if(row.uploadEmpty != null && row.uploadEmpty != ''){
                        			factWeightNew  =  value  ;
                        		}
                        		
@@ -344,7 +355,7 @@
                        		if(customerPrice != null && customerPrice != ''){
                        			customerPriceNew =  customerPrice  ;
                        		}
-                       		return (Number(factWeightNew/100)*Number(customerPriceNew/100)).toFixed(2) ;
+                       		return (Number(factWeightNew/100)*Number(customerPriceNew/100)*100).toFixed(2) ;
                            }
                  	 },
                  	{
@@ -355,17 +366,7 @@
                      	formatter:function(value,row,index){
                      		return '没处理';
                            }
-                 	 },
-                 	{
-                 	    field: 'factWeight',
-                 	    title: '余额',     
-                 	    align: "center",//水平
-                         valign: "middle",//垂直
-                     	formatter:function(value,row,index){
-                     		return '没处理';
-                           }
-                 	 },
-          	         {
+                 	 },{
   	               	    field: 'customerRemark',
   	               	    title: '备注',    
   	               	    align: "center",//水平
@@ -425,20 +426,20 @@
 </head>
 <body>
 <%@ include file="/common/top.jsp"%>
-    <div class="container-fluid all">
+    <div class="container-fluid all" style="margin-right:20px;">
         <%@ include file="/common/left.jsp"%>
-        <div class="panel panel-default">
+        <div class="panel panel-default"  style="margin-left:20px;">
    <div class="panel-heading">卸车对账单</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/customer/index.do">
 	     <div class="form-group" style="margin-top:15px">
 	     
 	     	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
-		      <div class="col-sm-2">
+		      <div class="col-sm-3">
 		       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
 		      </div>
 	     	 <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
-		      <div class="col-sm-2">
+		      <div class="col-sm-3">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="carId" name="carId"> 
 		       								  <option value=''>----请选择----</option>
                                     	<c:forEach items="${carInfoList}" var="carInfo">
@@ -454,7 +455,7 @@
 	     	</div>
 	     	<div class="form-group" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">接收单位</label>
-		      <div class="col-sm-2">
+		      <div class="col-sm-3">
 		      		 	<select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">
 		      		 				   <option value=''>----请选择----</option>
                                	<c:forEach items="${companyList}" var="customer">
@@ -466,7 +467,7 @@
 		       		<%-- <input type="text" class="form-control" id="headerNumber" name="headerNumber" value="${carInfo.headerNumber}"> --%>
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">供货单位</label>
-		      <div class="col-sm-2">
+		      <div class="col-sm-3">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId"> 
 		       								 <option value=''>----请选择----</option>
 							      <c:forEach items="${companyList}" var="factory">

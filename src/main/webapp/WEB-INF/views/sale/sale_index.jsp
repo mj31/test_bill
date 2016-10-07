@@ -39,7 +39,7 @@
     	 //初始化Table
     	 oTableInit.Init = function () {
     	  $('#table').bootstrapTable({
-	    	   url: '${ctx}/planSettle/search.do',   //请求后台的URL（*） 
+	    	   url: '${ctx}/settle/search.do',   //请求后台的URL（*） 
 	    	   method: 'get',      //请求方式（*）
 	    	   toolbar: '#toolbar',    //工具按钮用哪个容器
 	    	   striped: true,      //是否显示行间隔色
@@ -226,15 +226,15 @@
 </head>
 <body>
 <%@ include file="/common/top.jsp"%>
-    <div class="container-fluid all">
+    <div class="container-fluid all" style="margin-right:20px;">
         <%@ include file="/common/left.jsp"%>
-        <div class="panel panel-default">
+        <div class="panel panel-default"  style="margin-left:20px;">
    <div class="panel-heading">销售计划</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/salePlan/index.do">
 		     <div class="form-group" style="margin-top:10px">
 			      <label class="control-label col-sm-1" for="txt_search_departmentname">接收方</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
 			      		 				   <option value=''>----请选择----</option>
 	                               	<c:forEach items="${companyList}" var="customer">
@@ -245,7 +245,7 @@
 						 	 </select>
 			      </div>
 			      <label class="control-label col-sm-1" for="txt_search_statu">供货方</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="factoryId" name="factoryId"> 
 			       								 <option value=''>----请选择----</option>
 								      <c:forEach items="${companyList}" var="factory">
@@ -262,23 +262,23 @@
 		      
 		      <div class="form-group" style="margin-top:20px">
 		      	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
 			      </div>
 		     		
 		     	  <label class="control-label col-sm-1" for="txt_search_departmentname">装车地点</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       	  <input type="text" class="form-control" id="loadAddress" name="loadAddress" value="${operateEvent.loadAddress}">
 			      </div>
 			       <label class="control-label col-sm-1" for="txt_search_departmentname">接收地点</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       	  <input type="text" class="form-control" id="uploadAddress" name="uploadAddress" value="${operateEvent.uploadAddress}">
 			      </div>
 		     		
 		      </div>
 		      <div class="form-group" style="margin-top:24px">
 			      <label class="control-label col-sm-1" for="txt_search_statu">承运方</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="companyId" name="companyId"> 
 			       								 <option value=''>----请选择----</option>
 								      <c:forEach items="${companyList}" var="company">
@@ -290,7 +290,7 @@
 			      </div>
 			      
 			      <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true"  id="carId" name="carId"> 
 			       								  <option value=''>----请选择----</option>
 	                                    	<c:forEach items="${carInfoList}" var="carInfo">
@@ -300,7 +300,7 @@
 			      </div>
 			      
 			      <label class="control-label col-sm-1" for="txt_search_statu">运输性质</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       			<select class="form-control" id="transportProperties" name="transportProperties">
                                           <option  value=''>--请选择--</option> 
 									      <option  value="1"  <c:if test="${operateEvent.transportProperties eq 1}">selected</c:if>>配送</option> 

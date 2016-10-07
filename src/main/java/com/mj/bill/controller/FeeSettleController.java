@@ -122,33 +122,33 @@ public class FeeSettleController {
 				 //磅差
 				 Long  poundsDiff = newOperateEvent.getPoundsDiff();
 				 //卸车净重
-				 Long  uploadEmpty = newOperateEvent.getUploadEmpty() ;
+				 Float  uploadEmpty = newOperateEvent.getUploadEmpty() ;
 				 //装车净重
-				 Long  loadEmpty = newOperateEvent.getLoadEmpty() ;
+				 Float  loadEmpty = newOperateEvent.getLoadEmpty() ;
 				 
 				 //装车净重与卸车净重都有值时
 				 if(uploadEmpty != null && uploadEmpty != 0 && loadEmpty != null && loadEmpty != 0){
 					 uploadEmpty = uploadEmpty/100 ;
 					 loadEmpty = loadEmpty/100 ;
-					 Long diffValue = uploadEmpty - loadEmpty ;
+					 Float diffValue = (uploadEmpty - loadEmpty)*1000 ;
 					 
 					 //如果磅差不等于0
 					 if(poundsDiff != null && poundsDiff != 0){
 						 poundsDiff = poundsDiff/100 ;
 						 if(poundsDiff == 200){
-							 if(diffValue > 200){
+							 if(diffValue > 200 || diffValue < -200){
 								 newOperateEvent.setGasDiff(diffValue);
 								 newOperateEvent.setFactWeight(uploadEmpty);
 							 }else{
-								 newOperateEvent.setGasDiff(0l);
+								 newOperateEvent.setGasDiff(0f);
 								 newOperateEvent.setFactWeight(loadEmpty);
 							 }
 						 }else if(poundsDiff == 100){
-							 if(diffValue > 100){
-								 newOperateEvent.setGasDiff(diffValue+100);
-								 newOperateEvent.setFactWeight(uploadEmpty+100);
+							 if(diffValue > 100 || diffValue < -100){
+								 newOperateEvent.setGasDiff(diffValue+0.1f);
+								 newOperateEvent.setFactWeight(uploadEmpty+0.1f);
 							 }else{
-								 newOperateEvent.setGasDiff(0l);
+								 newOperateEvent.setGasDiff(0f);
 								 newOperateEvent.setFactWeight(loadEmpty);
 							 }
 						 }else{
@@ -170,7 +170,7 @@ public class FeeSettleController {
 							 
 					 if(factoryPrice != null && factoryPrice != 0){
 						 //气损
-						 newOperateEvent.setGasMiss(newOperateEvent.getGasDiff()*factoryPrice/100);
+						 newOperateEvent.setGasMiss(newOperateEvent.getGasDiff()/1000*factoryPrice/100);
 					 }
 					 
 					 Long carFee = newOperateEvent.getCarFee() ;
@@ -182,7 +182,6 @@ public class FeeSettleController {
 					 
 				 }
 				//==============气差的计算============
-				 
 				 
 			 }
 			 

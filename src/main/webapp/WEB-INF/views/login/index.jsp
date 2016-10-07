@@ -10,7 +10,7 @@
 </head>
 <body>
    <%@ include file="/common/top.jsp"%>
-    <div class="container-fluid all">
+    <div class="container-fluid all" style="margin-right:20px;">
         <%@ include file="/common/left.jsp"%>
         <div class="maincontent row">
             <!--我是主要内容 start-->

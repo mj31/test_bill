@@ -768,9 +768,9 @@
 </head>
 <body>
 <%@ include file="/common/top.jsp"%>
-    <div class="container-fluid all">
+    <div class="container-fluid all" style="margin-right:20px;">
         <%@ include file="/common/left.jsp"%>
-        <div class="panel panel-default">
+        <div class="panel panel-default"  style="margin-left:20px;">
    <div class="panel-heading">运作详情</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/operate/index.do">

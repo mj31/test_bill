@@ -196,7 +196,7 @@
                           }
                },{
                 	    field: 'factWeight',
-                	    title: '结余',     
+                	    title: '预付款',      
                 	    align: "center",//水平
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
@@ -242,9 +242,9 @@
 </head>
 <body>
 <%@ include file="/common/top.jsp"%>
-    <div class="container-fluid all">
+    <div class="container-fluid all" style="margin-right:20px;">
         <%@ include file="/common/left.jsp"%>
-        <div class="panel panel-default">
+        <div class="panel panel-default"  style="margin-left:20px;">
    <div class="panel-heading">装车对账单</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/factory/index.do">
@@ -258,27 +258,21 @@
                                     	</c:forEach>
 					 	</select>
 		      </div>
-		      
-		      s
-		      <label class="control-label col-sm-1" for="txt_search_statu" >装车时间</label> 
-		      <div class="col-sm-2">
-		       			<input id="strLoadBeginDate" name="strLoadBeginDate" type="text" class="form-control" value = "${operateEvent.strLoadBeginDate}" placeholder="装车开始时间" />
-		      </div>
-		      <label class="control-label col-sm-1" for="txt_search_statu" style="width:2%">~</label>
-		      <div class="col-sm-2">
-		       			<input id="strLoadEndDate" name="strLoadEndDate" type="text" class="form-control" value = "${operateEvent.strLoadEndDate}"  placeholder="装车结束时间" />
-		      </div>
-		      
 		      <label class="control-label col-sm-1" for="txt_search_statu"></label>
-		      <%-- <label class="control-label col-sm-2" for="txt_search_statu">转账单位</label>
-		      <div class="col-sm-3"  style="width:15%">
-		       		<div class="form-group">
-					   <input type="text" class="form-control" id="hisAccountName" name="hisAccountName" value="${operateEvent.hisAccountName}">
-					  </div>
-		      </div> --%>
 		      <div class="col-sm-2" style="text-align:left;">
 		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
 		      </div>
+		   </div>
+		   <div class="form-group" style="margin-top:20px">
+		      <label class="control-label col-sm-1" for="txt_search_statu" >装车时间</label> 
+		      <div class="col-sm-3">
+		       			<input id="strLoadBeginDate" name="strLoadBeginDate" type="text" class="form-control" value = "${operateEvent.strLoadBeginDate}" placeholder="装车开始时间" />
+		      </div>
+		      <label class="control-label col-sm-1" for="txt_search_statu" style="width:2%">~</label>
+		      <div class="col-sm-3">
+		       			<input id="strLoadEndDate" name="strLoadEndDate" type="text" class="form-control" value = "${operateEvent.strLoadEndDate}"  placeholder="装车结束时间" />
+		      </div>
+		      
 	     </div>
     </form>
    </div>

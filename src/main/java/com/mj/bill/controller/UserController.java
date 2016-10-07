@@ -179,6 +179,7 @@ public class UserController {
 			
 			if(user != null){
 				user.setStatus(0);
+				user.setLevel(1);
 				user.setPassword(MD5Util.MD5Encode("123456", "utf-8"));
 				this.userService.saveUser(user);
 				json.put("status",0);

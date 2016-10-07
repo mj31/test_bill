@@ -281,7 +281,7 @@
     	 //初始化Table
     	 oTableInit.Init = function () {
     	  $('#table').bootstrapTable({
-	    	   url: '${ctx}/planSettle/search.do',   //请求后台的URL（*） 
+	    	   url: '${ctx}/settle/search.do',   //请求后台的URL（*） 
 	    	   method: 'get',      //请求方式（*）
 	    	   toolbar: '#toolbar',    //工具按钮用哪个容器
 	    	   striped: true,      //是否显示行间隔色
@@ -306,7 +306,9 @@
 	    	   cardView: false,     //是否显示详细视图
 	    	   detailView: false,     //是否显示父子表
 	    	   columns: [{
-	    	    checkbox: true
+	    	    checkbox: true,
+	    	    align: "center",//水平
+	            valign: "middle"//垂直;
     	   }, {
     	    field: 'id',
     	    title: '序号', 
@@ -504,15 +506,15 @@
 </head>
 <body>
 <%@ include file="/common/top.jsp"%>
-    <div class="container-fluid all">
+    <div class="container-fluid all" style="margin-right:20px;">
         <%@ include file="/common/left.jsp"%>
-        <div class="panel panel-default">
+        <div class="panel panel-default" style="margin-left:20px;">
    <div class="panel-heading">计划结算</div> 
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/planSettle/index.do">
 		     <div class="form-group" style="margin-top:10px">
 			      <label class="control-label col-sm-1" for="txt_search_departmentname">接收方</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
 			      		 				   <option value=''>----请选择----</option>
 	                               	<c:forEach items="${companyList}" var="customer">
@@ -523,7 +525,7 @@
 						 	 </select>
 			      </div>
 			      <label class="control-label col-sm-1" for="txt_search_statu">供货方</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="factoryId" name="factoryId"> 
 			       								 <option value=''>----请选择----</option>
 								      <c:forEach items="${companyList}" var="factory">
@@ -533,60 +535,60 @@
 	                                  </c:forEach>
 						    </select>
 			      </div>
-			      <div class="col-sm-2" style="text-align:left;">
+			      <div class="col-sm-1" style="text-align:left;">
 		       		 <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
 		          </div>
 		      </div>
-		      
-		      <div class="form-group" style="margin-top:20px">
-		      	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
-			      <div class="col-sm-2">
-			       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
+		      <div id="extentDivId">
+			      <div class="form-group" style="margin-top:20px">
+			      	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
+				      <div class="col-sm-3">
+				       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
+				      </div>
+			     		
+			     	  <label class="control-label col-sm-1" for="txt_search_departmentname">装车地点</label>
+				      <div class="col-sm-3">
+				       	  <input type="text" class="form-control" id="loadAddress" name="loadAddress" value="${operateEvent.loadAddress}">
+				      </div>
+				       <label class="control-label col-sm-1" for="txt_search_departmentname">接收地点</label>
+				      <div class="col-sm-3">
+				       	  <input type="text" class="form-control" id="uploadAddress" name="uploadAddress" value="${operateEvent.uploadAddress}">
+				      </div>
+			     		
 			      </div>
-		     		
-		     	  <label class="control-label col-sm-1" for="txt_search_departmentname">装车地点</label>
-			      <div class="col-sm-2">
-			       	  <input type="text" class="form-control" id="loadAddress" name="loadAddress" value="${operateEvent.loadAddress}">
+			      <div class="form-group" style="margin-top:24px">
+				      <label class="control-label col-sm-1" for="txt_search_statu">承运方</label>
+				      <div class="col-sm-3">
+				       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="companyId" name="companyId"> 
+				       								 <option value=''>----请选择----</option>
+									      <c:forEach items="${companyList}" var="company">
+		                                  		  <c:if test="${company.flag eq 2}">
+											         <option value="${company.id}"  <c:if test="${operateEvent.companyId eq company.id}">selected</c:if>>${company.shortName}</option> 
+		                                  		  </c:if>
+		                                  </c:forEach>
+							    </select>
+				      </div>
+				      
+				      <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
+				      <div class="col-sm-3">
+				       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true"  id="carId" name="carId"> 
+				       								  <option value=''>----请选择----</option>
+		                                    	<c:forEach items="${carInfoList}" var="carInfo">
+													   <option value="${carInfo.id}"  <c:if test="${operateEvent.carId eq carInfo.id}">selected</c:if>>${carInfo.headerNumber}</option> 
+		                                    	</c:forEach>
+							 	</select>
+				      </div>
+				      
+				      <label class="control-label col-sm-1" for="txt_search_statu">运输性质</label>
+				      <div class="col-sm-3">
+				       			<select class="form-control" id="transportProperties" name="transportProperties">
+	                                          <option  value=''>--请选择--</option> 
+										      <option  value="1"  <c:if test="${operateEvent.transportProperties eq 1}">selected</c:if>>配送</option> 
+										      <option  value="2"  <c:if test="${operateEvent.transportProperties eq 2}">selected</c:if>>承运</option>
+										      <option  value="3"  <c:if test="${operateEvent.transportProperties eq 3}">selected</c:if>>自提</option>
+						      			</select>
+				      </div>
 			      </div>
-			       <label class="control-label col-sm-1" for="txt_search_departmentname">接收地点</label>
-			      <div class="col-sm-2">
-			       	  <input type="text" class="form-control" id="uploadAddress" name="uploadAddress" value="${operateEvent.uploadAddress}">
-			      </div>
-		     		
-		      </div>
-		      <div class="form-group" style="margin-top:24px">
-			      <label class="control-label col-sm-1" for="txt_search_statu">承运方</label>
-			      <div class="col-sm-2">
-			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="companyId" name="companyId"> 
-			       								 <option value=''>----请选择----</option>
-								      <c:forEach items="${companyList}" var="company">
-	                                  		  <c:if test="${company.flag eq 2}">
-										         <option value="${company.id}"  <c:if test="${operateEvent.companyId eq company.id}">selected</c:if>>${company.shortName}</option> 
-	                                  		  </c:if>
-	                                  </c:forEach>
-						    </select>
-			      </div>
-			      
-			      <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
-			      <div class="col-sm-2">
-			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true"  id="carId" name="carId"> 
-			       								  <option value=''>----请选择----</option>
-	                                    	<c:forEach items="${carInfoList}" var="carInfo">
-												   <option value="${carInfo.id}"  <c:if test="${operateEvent.carId eq carInfo.id}">selected</c:if>>${carInfo.headerNumber}</option> 
-	                                    	</c:forEach>
-						 	</select>
-			      </div>
-			      
-			      <label class="control-label col-sm-1" for="txt_search_statu">运输性质</label>
-			      <div class="col-sm-2">
-			       			<select class="form-control" id="transportProperties" name="transportProperties">
-                                          <option  value=''>--请选择--</option> 
-									      <option  value="1"  <c:if test="${operateEvent.transportProperties eq 1}">selected</c:if>>配送</option> 
-									      <option  value="2"  <c:if test="${operateEvent.transportProperties eq 2}">selected</c:if>>承运</option>
-									      <option  value="3"  <c:if test="${operateEvent.transportProperties eq 3}">selected</c:if>>自提</option>
-					      			</select>
-			      </div>
-			      
 		      </div>
     </form>
    </div>

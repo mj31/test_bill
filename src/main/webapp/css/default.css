@@ -1,6 +1,6 @@
-ï»¿html, body { background: #f9f9f9; -ms-overflow-style: scrollbar; /*ie-scrollbar*/ overflow-x: hidden; /* Prevent scroll on narrow devices */ }
+html, body { background: #f9f9f9; -ms-overflow-style: scrollbar; /*ie-scrollbar*/ overflow-x: hidden; /* Prevent scroll on narrow devices */ }
 .all { margin-top: 50px; margin-left: 220px; z-index: 20; padding-left: 0; padding-right: 0; }
-.sidebar { position: fixed; left: 0; top: 50px; width: 220px; padding: 0; background-color: #f1f1f1; -webkit-overflow-scrolling: touch; -webkit-overflow-scrolling: -blackberry-touch; border-right: 1px solid #ccc; overflow-y: auto; overflow-x: hidden; height: 100%; }
+.sidebar { position: fixed; left: 0; top: 50px; width: 220px; padding: 0; background-color: #f1f1f1; -webkit-overflow-scrolling: touch; -webkit-overflow-scrolling: -blackberry-touch; border-right: 1px solid #ccc; overflow-y: auto; overflow-x: hidden; height: 100%; margin-left:15px;}
 .sidebar ul { list-style-type: none; margin: 0; padding: 0; }
 .sidebar li { border-top: 1px solid #f3f3f3; }
 .sidebar li a { color: #6d7983; }
@@ -26,5 +26,5 @@
 }
 
 .forkme { position: absolute; top: 50px; right: 0; border: 0; }
-/*faå­—ä½“åº“æ ·å¼çº æ­£ï¼Œæ³¨æ„å†™æ³•ï¼Œä¸­é—´æ˜¯æ²¡æœ‰é—´éš”çš„*/
+/*fa×ÖÌå¿âÑùÊ½¾ÀÕı£¬×¢ÒâĞ´·¨£¬ÖĞ¼äÊÇÃ»ÓĞ¼ä¸ôµÄ*/
 .fa.pull-right { line-height: inherit; }

@@ -64,17 +64,17 @@ public class OperateEventVo extends OperateEvent {
 	/**
 	 * 结算气费
 	 */
-	private Long settlePrice ;
+	private Float settlePrice ;
 	
 	/**
 	 * 气差
 	 */
-	private Long gasDiff ;
+	private Float gasDiff ;
 	
 	/**
 	 * 气损
 	 */
-	private Long gasMiss ;
+	private Float gasMiss ;
 	
 	
 	private String strLoadBeginDate ;
@@ -177,29 +177,15 @@ public class OperateEventVo extends OperateEvent {
 		this.hisAccountName = hisAccountName;
 	}
 
-	public Long getGasDiff() {
+    
+	public Float getGasDiff() {
 		return gasDiff;
 	}
 
-	public void setGasDiff(Long gasDiff) {
+	public void setGasDiff(Float gasDiff) {
 		this.gasDiff = gasDiff;
 	}
 
-	public Long getSettlePrice() {
-		return settlePrice;
-	}
-
-	public void setSettlePrice(Long settlePrice) {
-		this.settlePrice = settlePrice;
-	}
-
-	public Long getGasMiss() {
-		return gasMiss;
-	}
-
-	public void setGasMiss(Long gasMiss) {
-		this.gasMiss = gasMiss;
-	}
 
 	public String getStrLoadBeginDate() {
 		return strLoadBeginDate;
@@ -231,6 +217,22 @@ public class OperateEventVo extends OperateEvent {
 
 	public void setLoadEndDate(Long loadEndDate) {
 		this.loadEndDate = loadEndDate;
+	}
+
+	public Float getGasMiss() {
+		return gasMiss;
+	}
+
+	public void setGasMiss(Float gasMiss) {
+		this.gasMiss = gasMiss;
+	}
+
+	public Float getSettlePrice() {
+		return settlePrice;
+	}
+
+	public void setSettlePrice(Float settlePrice) {
+		this.settlePrice = settlePrice;
 	}
 	
 }

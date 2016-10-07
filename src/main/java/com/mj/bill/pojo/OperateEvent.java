@@ -45,7 +45,7 @@ public class OperateEvent{
      * 描述:装车净重/100     
      * 字段: load_empty  BIGINT(19)  
      */	
-	private java.lang.Long loadEmpty;
+	private java.lang.Float loadEmpty;
  
 	 /**
      * 描述:装车地     
@@ -75,7 +75,7 @@ public class OperateEvent{
      * 描述:y卸车净重/100     
      * 字段: upload_empty  BIGINT(19)  
      */	
-	private java.lang.Long uploadEmpty;
+	private java.lang.Float uploadEmpty;
  
 	 /**
      * 描述:卸车地     
@@ -141,7 +141,7 @@ public class OperateEvent{
      * 描述:实际结算量/100     
      * 字段: fact_weight  BIGINT(19)  
      */	
-	private java.lang.Long factWeight;
+	private java.lang.Float factWeight;
  
 	 /**
      * 描述:运作事件备注     
@@ -260,17 +260,6 @@ public class OperateEvent{
 	}
 	
     
-    
-	public void setLoadEmpty(java.lang.Long loadEmpty) {
-		this.loadEmpty = loadEmpty;
-	}
-	
-	public java.lang.Long getLoadEmpty() {
-		return this.loadEmpty;
-	}
-	
-    
-    
 	public void setLoadAddress(java.lang.String loadAddress) {
 		this.loadAddress = loadAddress;
 	}
@@ -307,16 +296,6 @@ public class OperateEvent{
 	
 	public java.lang.Long getUpdateSkin() {
 		return this.updateSkin;
-	}
-	
-    
-    
-	public void setUploadEmpty(java.lang.Long uploadEmpty) {
-		this.uploadEmpty = uploadEmpty;
-	}
-	
-	public java.lang.Long getUploadEmpty() {
-		return this.uploadEmpty;
 	}
 	
     
@@ -420,17 +399,14 @@ public class OperateEvent{
 	}
 	
     
-    
-	public void setFactWeight(java.lang.Long factWeight) {
+	public java.lang.Float getFactWeight() {
+		return factWeight;
+	}
+
+	public void setFactWeight(java.lang.Float factWeight) {
 		this.factWeight = factWeight;
 	}
-	
-	public java.lang.Long getFactWeight() {
-		return this.factWeight;
-	}
-	
-    
-    
+
 	public void setEventRemark(java.lang.String eventRemark) {
 		this.eventRemark = eventRemark;
 	}
@@ -508,9 +484,23 @@ public class OperateEvent{
 	public java.lang.Long getTranFactWeight() {
 		return this.tranFactWeight;
 	}
+
+	public java.lang.Float getLoadEmpty() {
+		return loadEmpty;
+	}
+
+	public void setLoadEmpty(java.lang.Float loadEmpty) {
+		this.loadEmpty = loadEmpty;
+	}
+
+	public java.lang.Float getUploadEmpty() {
+		return uploadEmpty;
+	}
+
+	public void setUploadEmpty(java.lang.Float uploadEmpty) {
+		this.uploadEmpty = uploadEmpty;
+	}
 	
-    
-    
  
 }
 

@@ -339,18 +339,18 @@
                    		}
                      }
            	 },{
-	    	    field: 'poundsDiff',
-	    	    title: '磅差', 
-	    	    align: "center",//水平
-	            valign: "middle",//垂直
-	           	formatter:function(value,row,index){
-            		if(value != null && value != ''){
-            			return (value/100).toFixed(2) ;
-            		}else{
-             			return '-' ;
-             		}
-               }
-    	   },{
+			    	    field: 'poundsDiff',
+			    	    title: '磅差', 
+			    	    align: "center",//水平
+			            valign: "middle",//垂直
+			           	formatter:function(value,row,index){
+		            		if(value != null && value != ''){
+		            			return (value/100).toFixed(2) ;
+		            		}else{
+		             			return '-' ;
+		             		}
+		               }
+    	   	},{
                 	    field: 'uploadEmpty',
                 	    title: '气差',   
                 	    align: "center",//水平
@@ -405,18 +405,6 @@
                            }
                  	 },
            	         {
-   	               	    field: 'factWeight',
-   	               	    title: '车辆运费',  
-   	               	    align: "center",//水平
-   	                    valign: "middle",//垂直
-   	                   	formatter:function(value,row,index){
-	   	                   	if(row.uploadEmpty != null && row.uploadEmpty != ''){
-	                			return  Number(row.settlePrice).toFixed(2);
-	                		}else{
-	                    		return '-' ;
-	                		}
-  	                     }
-                  	 },{
     	               	    field: 'stockFee',
        	               	    title: '押车费用',   
        	               	    align: "center",//水平
@@ -440,7 +428,42 @@
         	                    		return '-' ;
         	                		}
           	                     }
-                          	 }
+                          	 },{
+            	               	    field: 'tranFactWeight',
+               	               	    title: '车辆运费',  
+               	               	    align: "center",//水平
+               	                    valign: "middle",//垂直
+               	                   	formatter:function(value,row,index){
+               	                   		var yunfei = 0 ;
+            	   	                   	if(value != null && value != ''){
+            	   	                   		yunfei=  Number(value/100).toFixed(2);
+            	                		}
+            	   	                   	
+            	   	                   	var carFee = 0 ;
+            	   	                   	if(row.carFee != null && row.carFee != ''){
+            	   	                   		carFee = Number(row.carFee/100).toFixed(2);
+            	   	                   	}
+            	   	                   	
+            	   	                   	var uploadEmpty = 0 ;
+            		   	                if(row.uploadEmpty != null && row.uploadEmpty != ''){
+            		   	                	uploadEmpty =  Number(row.gasMiss).toFixed(2);
+            	                 		}
+            		   	                
+            		   	                var stockFee = 0 ;
+            		   	                if(row.stockFee != null && row.stockFee != ''){
+            		   	                	stockFee = row.stockFee ;
+            		   	                }
+            		   	                
+            		   	                var manageFee = 0;
+            		   	               if(row.manageFee != null && row.manageFee != ''){
+            		   	            		manageFee = row.manageFee ;
+            		   	                }
+            		   	                
+            		   	                return Number(yunfei*carFee+Number(uploadEmpty)+Number(stockFee/100)+Number(manageFee/100)).toFixed(2);
+            	   	                   	
+            	   	                   	
+              	                     }
+                              	 },
     	   ]
     	  });
     	 };
@@ -480,20 +503,20 @@
 </head>
 <body>
 <%@ include file="/common/top.jsp"%>
-    <div class="container-fluid all">
+    <div class="container-fluid all" style="margin-right:20px;">
         <%@ include file="/common/left.jsp"%>
-        <div class="panel panel-default">
+        <div class="panel panel-default"  style="margin-left:20px;">
    <div class="panel-heading">运费结算</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/settle/index.do">
 		     <div class="form-group" style="margin-top:15px">
 		     	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
 			      </div>
 			      
 			       <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true"  id="carId" name="carId"> 
 			       								  <option value=''>----请选择----</option>
 	                                    	<c:forEach items="${carInfoList}" var="carInfo">
@@ -508,7 +531,7 @@
 		     </div>
 		     <div class="form-group" style="margin-top:25px">		
 			      <label class="control-label col-sm-1" for="txt_search_departmentname">接收单位</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
 			      		 				   <option value=''>----请选择----</option>
 	                               	<c:forEach items="${companyList}" var="customer">
@@ -519,7 +542,7 @@
 						 	 </select>
 			      </div>
 			      <label class="control-label col-sm-1" for="txt_search_statu">供货单位</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="factoryId" name="factoryId"> 
 			       								 <option value=''>----请选择----</option>
 								      <c:forEach items="${companyList}" var="factory">
@@ -533,7 +556,7 @@
 		      </div>
 		      <div class="form-group" style="margin-top:30px">
 			      <label class="control-label col-sm-1" for="txt_search_statu">承运单位</label>
-			      <div class="col-sm-2">
+			      <div class="col-sm-3">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="companyId" name="companyId"> 
 			       								 <option value=''>----请选择----</option>
 								      <c:forEach items="${companyList}" var="company">

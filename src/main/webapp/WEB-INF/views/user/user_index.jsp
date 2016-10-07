@@ -334,7 +334,7 @@
     	   queryParams: oTableInit.queryParams,//传递参数（*）
     	   sidePagination: "client",   //分页方式：client客户端分页，server服务端分页（*）
     	   pageNumber:1,      //初始化加载第一页，默认第一页
-    	   pageSize: 5,      //每页的记录行数（*）
+    	   pageSize: 20,      //每页的记录行数（*）
     	   pageList: [10, 25, 50, 100],  //可供选择的每页的行数（*）
     	   search: true,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
     	   strictSearch: true,
@@ -462,9 +462,9 @@
 </head>
 <body>
 <%@ include file="/common/top.jsp"%>
-    <div class="container-fluid all">
+    <div class="container-fluid all" style="margin-right:20px;">
         <%@ include file="/common/left.jsp"%>
-        <div class="panel panel-default">
+        <div class="panel panel-default"  style="margin-left:20px;">
    <div class="panel-heading">用户管理</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/user/list.do" method="post">
@@ -502,13 +502,15 @@
    <button id="btn_edit" type="button" class="btn btn-default">
     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
    </button>
-   <button id="btn_delete" type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>禁用
-   </button>
-   
-   <button id="btn_update_right" type="button" class="btn btn-default">
-    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>修改权限
-   </button>
+   <c:if test="${user.level eq 0 }">
+	   <button id="btn_delete" type="button" class="btn btn-default">
+	    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>禁用
+	   </button>
+	   
+	   <button id="btn_update_right" type="button" class="btn btn-default">
+	    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>修改权限
+	   </button>
+   </c:if>
   </div>
         <table id="table"></table>
     </div>

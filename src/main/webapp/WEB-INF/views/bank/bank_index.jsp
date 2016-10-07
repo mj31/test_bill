@@ -80,8 +80,8 @@
   		                       var strExchangeDate = bank.strExchangeDate;
   		                       //交易金额 
   		                       var exchangeMoney = bank.exchangeMoney;
-  		                       //对方账号
-  		                       var hisAccount = bank.hisAccount;
+  		                       /* //对方账号
+  		                       var hisAccount = bank.hisAccount; */
   		                       //对方账号名称
   		                       var hisAccountName = bank.hisAccountName;
   		                       //对方账号id
@@ -103,9 +103,9 @@
 		               		 }
   		        	   		 
   		        	   		
-  		        	   		 $("#addForm #serviceType").val(serviceType); 
+  		        	   		 $("#addForm #serviceType").find("option[value="+serviceType+"]").attr("selected",true);
   		        	   		 $("#addForm #remark").val(remark); 
-  		        	   	 	 $("#addForm #hisAccount").val(hisAccount); 
+  		        	   	 	 /* $("#addForm #hisAccount").val(hisAccount);  */
   		        	   	 	 
   		        	   		 $("#addForm #exchangeDate").val(strExchangeDate);
   		        	   	 	 
@@ -189,8 +189,8 @@
 	 	   		var serialNumber =  $("#addForm #serialNumber").val();
 	 	   	    var exchangeMoney = $("#addForm #exchangeMoney").val();
 	 	   		var exchangeDate= $("#addForm #exchangeDate").val();
-	 	   		var hisAccount= $("#addForm #hisAccount").val();
-	 	 		var serviceType= $("#addForm #serviceType").val();
+	 	   		/* var hisAccount= $("#addForm #hisAccount").val(); */
+	 	 		var serviceType= $("#addForm #serviceType").find("option:selected").val();
 	 	 		var remark=  $("#addForm #remark").val();
 			 	var hisAccountId =  $("#addForm #hisAccountId").find("option:selected").val();
 			 	var hisAccountName = $("#addForm #hisAccountId").find("option:selected").text();
@@ -217,7 +217,7 @@
 			      		        url : "${ctx}/bank/save.do",
 			      		        type: "post",
 			      		        data:{"serialNumber":serialNumber,"exchangeMoney":exchangeMoney,"strExchangeDate":exchangeDate
-			      		        	,"hisAccount":hisAccount,"serviceType":serviceType,"remark":remark,"hisAccountId":hisAccountId,
+			      		        	,"serviceType":serviceType,"remark":remark,"hisAccountId":hisAccountId,
 			      		        	"hisAccountName":hisAccountName,"exchangeFlag":exchangeFlag},
 			      		        dataType : "json",
 			      		        success: function(result){
@@ -239,7 +239,7 @@
 	      		        url : "${ctx}/bank/update.do",
 	      		        type: "post",
 	      		        data:{"id":id,"serialNumber":serialNumber,"exchangeMoney":exchangeMoney,"strExchangeDate":exchangeDate
-	      		        		,"hisAccount":hisAccount,"serviceType":serviceType,"remark":remark,"hisAccountId":hisAccountId,
+	      		        		,"serviceType":serviceType,"remark":remark,"hisAccountId":hisAccountId,
 	      		        		"hisAccountName":hisAccountName,"exchangeFlag":exchangeFlag},
 	      		        dataType : "json",
 	      		        success: function(result){
@@ -334,21 +334,28 @@
 	           		   }
 	           		}
                }
-    	   }, {
-    	    field: 'hisAccount',
-    	    title: '对方账户',
-    	    align: "center",//水平
-            valign: "middle"//垂直
-    	   }, {
+    	   },{
     	    field: 'hisAccountName',
-    	    title: '对方账号名称',
+    	    title: '客户名称', 
     	    align: "center",//水平
             valign: "middle"//垂直
     	   }, {
     	    field: 'serviceType',
     	    title: '业务类型',  
     	    align: "center",//水平
-            valign: "middle"//垂直
+            valign: "middle",//垂直
+           	formatter:function(value,row,index){
+           		   if(value == 1){
+           			   return '配送' ; 
+           		   }else if(value == 2){
+           			   return '自提' ; 
+           		   }else if(value == 3){
+           			   return '承运' ; 
+           		   }else if(value == 4){
+           			   return '借款' ; 
+           		   }
+                 
+               }
     	   }, {
     	    field: 'remark',
     	    title: '备注', 
@@ -417,19 +424,19 @@
 </head>
 <body>
 <%@ include file="/common/top.jsp"%>
-    <div class="container-fluid all">
+    <div class="container-fluid all" style="margin-right:20px;">
         <%@ include file="/common/left.jsp"%>
-        <div class="panel panel-default">
+        <div class="panel panel-default"  style="margin-left:20px;">
    <div class="panel-heading">付款信息</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/bank/index.do" method="post">
 	     <div class="form-group" style="margin-top:15px">
-		      <label class="control-label col-sm-1" for="txt_search_departmentname">对方账户名称</label>
-		      <div class="col-sm-2">
+		      <label class="control-label col-sm-1" for="txt_search_departmentname">客户名称</label>
+		      <div class="col-sm-3">
 		       		<input type="text" class="form-control" id="hisAccountName" name="hisAccountName" value="${bank.hisAccountName}">
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-		      <div class="col-sm-2" >
+		      <div class="col-sm-3" >
 		       		<div class="form-group">
 					    <select class="form-control" id="exchangeFlag" name="exchangeFlag"> 
 						      <option value="">全部</option> 
@@ -480,7 +487,7 @@
                           		<div class="form-group">
                                 <label class="control-label col-md-2" style="margin-left:40px">交易类型</label>
                                 <div class="col-md-10" style="width:50%"> 
-                                    <select class="form-control" id="exchangeFlag" name="exchangeFlag"> 
+                                    <select class="selectpicker bla bla bli" id="exchangeFlag" name="exchangeFlag"> 
 									      <option value="0" >收入</option> 
 									      <option  value="1">支出</option>
 					      			</select>
@@ -513,18 +520,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                      <!--   <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">对方账户</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">客户账号</label>
                                 <div class="col-md-10" style="width:50%">
                                     <input id="hisAccount" name="hisAccount" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" type="text" class="form-control" placeholder="对方账户" />
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         
                          <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">对方账户名称</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">客户名称</label>
                                 <div class="col-md-10" style="width:50%">
                                     <select class="selectpicker bla bla bli"  data-live-search="true" id="hisAccountId" name="hisAccountId"> 
 									      <c:forEach items="${companyList}" var="factory">
@@ -541,7 +548,14 @@
                             <div class="form-group">
                                 <label class="control-label col-md-2" style="margin-left:40px">业务类型</label>
                                 <div class="col-md-10" style="width:50%">
-                                    <input id="serviceType" name="serviceType" type="text" class="form-control" placeholder="业务类型" />
+                                
+                                	<select class="selectpicker bla bla bli" id="serviceType" name="serviceType"> 
+									      <option value="1" >配送</option> 
+									      <option  value="2">自提</option>
+									      <option  value="3">承运</option>
+									      <option  value="4">借款</option>
+					      			</select>
+                                    <!-- <input id="serviceType" name="serviceType" type="text" class="form-control" placeholder="业务类型" /> -->
                                 </div>
                             </div>
                         </div>
