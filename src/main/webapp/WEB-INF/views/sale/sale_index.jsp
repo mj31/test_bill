@@ -111,7 +111,7 @@
                     }
           	 },{
           	    field: 'factoryShortName',
-           	    title: '供货方',   
+           	    title: '供应商',   
            	    align: "center",//水平
                 valign: "middle"//垂直
            	},{
@@ -138,12 +138,12 @@
                         }
              },{
 		    	    field: 'customerShortName',
-		    	    title: '接收方', 
+		    	    title: '采购商',  
 		    	    align: "center",//水平
 		            valign: "middle"//垂直
 		     },{
 		    	    field: 'uploadAddress',
-		    	    title: '接收地点',   
+		    	    title: '卸车地点',   
 		    	    align: "center",//水平
 		            valign: "middle"//垂直
     	     },{
@@ -170,7 +170,7 @@
                     valign: "middle",//垂直
                    	formatter:function(value,row,index){
                    		if(row.uploadEmpty != null && row.uploadEmpty != ''){
-                   			return  (row.gasDiff).toFixed(2);
+                   			return  (row.gasDiff/1000).toFixed(2);
                    		}else{
                     		return '-' ;
                    		}
@@ -233,7 +233,7 @@
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/salePlan/index.do">
 		     <div class="form-group" style="margin-top:10px">
-			      <label class="control-label col-sm-1" for="txt_search_departmentname">接收方</label>
+			      <label class="control-label col-sm-1" for="txt_search_departmentname">采购商</label>
 			      <div class="col-sm-3">
 			      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
 			      		 				   <option value=''>----请选择----</option>
@@ -244,7 +244,7 @@
 	                               	</c:forEach> 
 						 	 </select>
 			      </div>
-			      <label class="control-label col-sm-1" for="txt_search_statu">供货方</label>
+			      <label class="control-label col-sm-1" for="txt_search_statu">供应商</label>
 			      <div class="col-sm-3">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="factoryId" name="factoryId"> 
 			       								 <option value=''>----请选择----</option>
@@ -270,7 +270,7 @@
 			      <div class="col-sm-3">
 			       	  <input type="text" class="form-control" id="loadAddress" name="loadAddress" value="${operateEvent.loadAddress}">
 			      </div>
-			       <label class="control-label col-sm-1" for="txt_search_departmentname">接收地点</label>
+			       <label class="control-label col-sm-1" for="txt_search_departmentname">卸车地点</label>
 			      <div class="col-sm-3">
 			       	  <input type="text" class="form-control" id="uploadAddress" name="uploadAddress" value="${operateEvent.uploadAddress}">
 			      </div>

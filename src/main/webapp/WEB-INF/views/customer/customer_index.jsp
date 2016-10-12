@@ -88,6 +88,11 @@
 	 		         	   		 }
 	  		         	   		
 	  		         	   		 $("#addForm #customerRemark").val(operateEvent.customerRemark); 
+	  		         	   		 
+	  		         	   	 	 //承运车号 
+	  		               	 	 var carNum = operateEvent.carNum ;
+	  		               	     $("#addForm #carNum").val(carNum);
+	  		               	     
 	  		         	   		 $('#add').modal();
   		                     }else{
   		                    	 bootbox.alert("获取失败"); 
@@ -232,7 +237,7 @@
 	            valign: "middle"//垂直
    	       },{
 	       	    field: 'factoryShortName',
-	       	    title: '供货单位',    
+	       	    title: '供应商',    
 	       	    align: "center",//水平
 	            valign: "middle"//垂直
    	       },{
@@ -254,7 +259,7 @@
                     }
           	 },{
 		    	    field: 'customerShortName',
-		    	    title: '接收单位',    
+		    	    title: '采购商',     
 		    	    align: "center",//水平
 		            valign: "middle"//垂直
     	     },{
@@ -281,12 +286,12 @@
                         }
               	 },{
                 	    field: 'uploadEmpty',
-                	    title: '气差',   
+                	    title: '装卸亏损',   
                 	    align: "center",//水平
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
                     		if(row.uploadEmpty != null && row.uploadEmpty != ''){
-                    			return  (row.gasDiff).toFixed(2);
+                    			return  (row.gasDiff/1000).toFixed(2);
                     		}else{
 	                    		return '-' ;
                     		}
@@ -305,7 +310,7 @@
                        }
             	   },{
                 	    field: 'factWeight',
-                	    title: '实际结算量',    
+                	    title: '实际吨位',     
                 	    align: "center",//水平
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
@@ -322,7 +327,7 @@
                        valign: "middle",//垂直
                      	formatter:function(value,row,index){
                      		var isOrNotTax = row.isOrNotTax ;	
-                     		 if(isOrNotTax != null && isOrNotTax == 0){
+                     		 if(isOrNotTax == 0 || isOrNotTax == null){
                      			if(value != null && value != ''){
                        				return (value/100).toFixed(2);
                        			}else{
@@ -454,7 +459,7 @@
 	     	
 	     	</div>
 	     	<div class="form-group" style="margin-top:15px">
-		      <label class="control-label col-sm-1" for="txt_search_departmentname">接收单位</label>
+		      <label class="control-label col-sm-1" for="txt_search_departmentname">采购商</label>
 		      <div class="col-sm-3">
 		      		 	<select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">
 		      		 				   <option value=''>----请选择----</option>
@@ -466,7 +471,7 @@
 					 	 </select>
 		       		<%-- <input type="text" class="form-control" id="headerNumber" name="headerNumber" value="${carInfo.headerNumber}"> --%>
 		      </div>
-		      <label class="control-label col-sm-1" for="txt_search_statu">供货单位</label>
+		      <label class="control-label col-sm-1" for="txt_search_statu">供应商</label>
 		      <div class="col-sm-3">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId"> 
 		       								 <option value=''>----请选择----</option>
@@ -500,7 +505,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title">
                     <i class="icon-pencil"></i>
-                    <span id="lblAddTitle" style="font-weight:bold">修改客户对账单</span>
+                    <span id="lblAddTitle" style="font-weight:bold">修改卸车对账单</span>
                 </h4>
             </div>
             <form class="form-horizontal form-bordered form-row-strippe"  id="addForm" data-toggle="validator" enctype="multipart/form-data">
@@ -515,6 +520,15 @@
                                 </div>
                             </div>
                          </div>
+                         
+                         <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">承运车号</label> 
+                                <div class="col-md-10" style="width:50%"> 
+                                     <input id="carNum"  name="carNum" type="text" class="form-control" readonly placeholder="承运车号" />
+                                </div>
+                            </div>
+                        </div>
                         
                         <div class="col-md-12">
                             <div class="form-group">

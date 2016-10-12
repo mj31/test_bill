@@ -39,7 +39,7 @@
     	 
     	 // 添加弹出层 
     	 $("#btn_add").click(function(){
-    		 $("#lblAddTitle").text("添加计划结算");
+    		 $("#lblAddTitle").text("添加采购计划");
     		 $("#addForm #loginName").attr("readonly",false);
     		 formNull();
     		 $("#saveUser").text("保存") ; 
@@ -51,7 +51,7 @@
     	 
     	 //修改弹出层 
     	 $("#btn_edit").click(function(){
-    		 $("#lblAddTitle").text("修改计划结算");   
+    		 $("#lblAddTitle").html("修改采购计划");    
     		 $("#saveUser").text("修改") ; 
     		 formNull();
     		 //校验选了一条数据 
@@ -107,6 +107,24 @@
 	  		           	          $("#addForm #uploadAddress").val(operateEvent.uploadAddress);
 	  		           	          //运输性质 
 	  		                      $("#addForm #transportProperties").find("option[value="+transportProperties+"]").attr("selected",true);
+	  		           	          
+	  		                      //供货单价
+	  		               		  var factoryPrice = operateEvent.factoryPrice ;
+		  		               	  if(factoryPrice != '' && factoryPrice != null){
+		  		           	   		  $("#addForm #factoryPrice").val(factoryPrice/100);
+	  		           	   		  }else{
+	  		           	   			  $("#addForm #factoryPrice").val(""); 
+	  		           	   		  }
+	  		               		  //接收单价
+	  		               		  var customerPrice = operateEvent.customerPrice ;
+	  		               		  if(customerPrice != null && customerPrice != ""){
+  		           	   			      $("#addForm #customerPrice").val(customerPrice/100);
+  		           	   		  	  }else{
+  		           	   		 		  $("#addForm #customerPrice").val("");
+  		           	   		      }
+	  		               		  //接收单价是否含税 
+	  		               		  var isOrNotTax = operateEvent.isOrNotTax ;
+	  		               		  $("#addForm #isOrNotTax").find("option[value="+isOrNotTax+"]").attr("selected",true);
 	  		           	   		
 	  		           	   		  $('.selectpicker').selectpicker({
 	  		           	             'selectedText': 'cat'
@@ -210,6 +228,31 @@
 			 	//行车证荷载量进行校验
 			 	var reg = /^[0-9]+(.[0-9]{1,2})?$/;
 			 	
+			 	 //供货单价
+				  var factoryPrice= $("#addForm #factoryPrice").val(); 
+				  if(factoryPrice != null  && factoryPrice != ''){
+				        if(!reg.test(factoryPrice)){
+				        	bootbox.alert("供货单价必须是数字且保留2位小数");   
+				        	return  ;
+				        }else{
+				        	factoryPrice = Number(factoryPrice*100) ;
+				        }
+				 	}
+         		  
+         		  //接收单价
+				  var customerPrice= $("#addForm #customerPrice").val(); 
+				  if(customerPrice != null  && customerPrice != ''){
+				        if(!reg.test(customerPrice)){
+				        	bootbox.alert("接收单价必须是数字且保留2位小数");   
+				        	return  ;
+				        }else{
+				        	customerPrice = Number(customerPrice*100) ;
+				        }
+				 	}
+         		  
+         		  //接收单价是否含税 
+			 	  var isOrNotTax = $("#addForm #isOrNotTax").find("option:selected").val();
+			 	
 			 	if(poundsDiff != null && poundsDiff != ""){
 			 		if(poundsDiff != 100 && poundsDiff != 200){
 			 			bootbox.alert("磅差必须是100或者是200 或者无");    
@@ -231,7 +274,8 @@
 			      		        data:{"customerId":customerId,"poundsDiff":poundsDiff,"strLoadDate":loadDate
 			      		        		,"carId":carId,"companyId":companyId,"factoryId":factoryId
 			      		        		, "eventRemark":eventRemark,"loadAddress":loadAddress,"uploadAddress":uploadAddress
-			      		        		,"transportProperties":transportProperties},
+			      		        		,"transportProperties":transportProperties,"factoryPrice":factoryPrice
+			      		        		,"customerPrice":customerPrice,"isOrNotTax":isOrNotTax},
 			      		        dataType : "json",
 			      		        success: function(result){
 		     		                     if(result.status == 0){
@@ -254,7 +298,8 @@
 	      		        data:{"id":id,"customerId":customerId,"poundsDiff":poundsDiff,"strLoadDate":loadDate
       		        				,"carId":carId,"companyId":companyId,"factoryId":factoryId
       		        				, "eventRemark":eventRemark,"loadAddress":loadAddress,"uploadAddress":uploadAddress
-      		        				,"transportProperties":transportProperties},
+      		        				,"transportProperties":transportProperties,"factoryPrice":factoryPrice
+		      		        		,"customerPrice":customerPrice,"isOrNotTax":isOrNotTax},
 	      		        dataType : "json",
 	      		        success: function(result){
 	 		                     if(result.status == 0){
@@ -355,10 +400,22 @@
 	                    }
           	 },{
 	          	    field: 'factoryShortName',
-	           	    title: '供货方',   
+	           	    title: '供应商',    
 	           	    align: "center",//水平
 	                valign: "middle"//垂直
            	},{
+        	    field: 'factoryPrice',
+           	    title: '供货单价', 
+           	    align: "center",//水平
+                valign: "middle",//垂直
+               	formatter:function(value,row,index){
+                  		if(value != null && value != ''){
+                  			return (value/100).toFixed(2) ;
+                  		}else{
+                  			return '-' ;
+                  		}
+                     }
+        	},{
 	        	    field: 'loadAddress',
 	        	    title: '装车地点',    
 	        	    align: "center",//水平
@@ -382,12 +439,36 @@
                         }
             },{
 	    	    field: 'customerShortName',
-	    	    title: '接收方', 
+	    	    title: '采购商',  
 	    	    align: "center",//水平
 	            valign: "middle"//垂直
     	     },{
+           	    field: 'customerPrice',
+         	    title: '接收单价(税)',   
+         	    align: "center",//水平
+               valign: "middle",//垂直
+             	formatter:function(value,row,index){
+             		var isOrNotTax = row.isOrNotTax ;	
+             		 if(isOrNotTax == 0 || isOrNotTax == null){
+             			if(value != null && value != ''){
+               				return (value/100).toFixed(2);
+               			}else{
+                			return "";
+                		}
+            		}else{
+            			isOrNotTax = '否' ;
+            			if(value != null && value != ''){
+               				return (value/100).toFixed(2)+"("+isOrNotTax+")" ;
+               			}else{
+                			return "("+isOrNotTax+")";
+                		}
+            		}
+             		 
+               		
+                   }
+         	 }, {
 	    	    field: 'uploadAddress',
-	    	    title: '接收地点',   
+	    	    title: '卸车地点',   
 	    	    align: "center",//水平
     	   },{
           	    field: 'strUploadDate',
@@ -395,17 +476,17 @@
           	    align: "center",//水平
                valign: "middle"//垂直
          },{
-       	    field: 'uploadEmpty',
-      	    title: '卸车净重',   
-      	    align: "center",//水平
-            valign: "middle",//垂直
-          	formatter:function(value,row,index){
-             		if(value != null && value != ''){
-             			return (value/100).toFixed(2) ;
-             		}else{
-              			return '-' ;
-              		}
-                }
+	       	    field: 'uploadEmpty',
+	      	    title: '卸车净重',   
+	      	    align: "center",//水平
+	            valign: "middle",//垂直
+	          	formatter:function(value,row,index){
+	             		if(value != null && value != ''){
+	             			return (value/100).toFixed(2) ;
+	             		}else{
+	              			return '-' ;
+	              		}
+	                }
       	      },{
              	    field: 'poundsDiff',
              	    title: '磅差', 
@@ -415,7 +496,7 @@
                      		if(value != null && value != ''){
                      			return (value/100).toFixed(2) ;
                      		}else{
-                      			return '' ;
+                      			return '-' ;
                       		}
                         }
              	   },{
@@ -425,7 +506,7 @@
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
                     		if(row.uploadEmpty != null && row.uploadEmpty != ''){
-                    			return  (row.gasDiff).toFixed(2);
+                    			return  (row.gasDiff/1000).toFixed(2);
                     		}else{
 	                    		return '-' ;
                     		}
@@ -500,6 +581,10 @@
 		 	$("#addForm #customerPrice").val(""); 
 		 	$("#addForm #carFee").val("");
  	 		$("#addForm #eventRemark").val("");
+ 	 	    //装车地点
+ 	 	    $("#addForm #loadAddress").val("");
+   	   	    //卸车地点
+   	        $("#addForm #uploadAddress").val("");
     	} 
     	
     </script>
@@ -509,11 +594,11 @@
     <div class="container-fluid all" style="margin-right:20px;">
         <%@ include file="/common/left.jsp"%>
         <div class="panel panel-default" style="margin-left:20px;">
-   <div class="panel-heading">计划结算</div> 
+   <div class="panel-heading">采购计划</div> 
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/planSettle/index.do">
 		     <div class="form-group" style="margin-top:10px">
-			      <label class="control-label col-sm-1" for="txt_search_departmentname">接收方</label>
+			      <label class="control-label col-sm-1" for="txt_search_departmentname">采购商</label>
 			      <div class="col-sm-3">
 			      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
 			      		 				   <option value=''>----请选择----</option>
@@ -524,7 +609,7 @@
 	                               	</c:forEach> 
 						 	 </select>
 			      </div>
-			      <label class="control-label col-sm-1" for="txt_search_statu">供货方</label>
+			      <label class="control-label col-sm-1" for="txt_search_statu">供应商</label> 
 			      <div class="col-sm-3">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="factoryId" name="factoryId"> 
 			       								 <option value=''>----请选择----</option>
@@ -550,7 +635,7 @@
 				      <div class="col-sm-3">
 				       	  <input type="text" class="form-control" id="loadAddress" name="loadAddress" value="${operateEvent.loadAddress}">
 				      </div>
-				       <label class="control-label col-sm-1" for="txt_search_departmentname">接收地点</label>
+				       <label class="control-label col-sm-1" for="txt_search_departmentname">卸车地点</label>
 				      <div class="col-sm-3">
 				       	  <input type="text" class="form-control" id="uploadAddress" name="uploadAddress" value="${operateEvent.uploadAddress}">
 				      </div>
@@ -618,7 +703,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title">
                     <i class="icon-pencil"></i>
-                    <span id="lblAddTitle" style="font-weight:bold">添加计划结算</span>
+                    <span id="lblAddTitle" style="font-weight:bold">添加采购计划</span>
                 </h4>
             </div>
             <form class="form-horizontal form-bordered form-row-strippe"  id="addForm" data-toggle="validator" enctype="multipart/form-data">
@@ -657,7 +742,7 @@
                         
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">供货方</label> 
+                                <label class="control-label col-md-2" style="margin-left:40px">供应商</label> 
                                 <div class="col-md-10" style="width:50%"> 
                                     <select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId">
                                     			  <option  value=''>--请选择--</option> 
@@ -667,6 +752,15 @@
                                     		  </c:if>
                                     	  </c:forEach>
 					      			</select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">供货单价</label>
+                                <div class="col-md-10" style="width:50%">
+                                    <input id="factoryPrice" name="factoryPrice"  type="text" class="form-control" placeholder="供货单价" />
                                 </div>
                             </div>
                         </div>
@@ -691,7 +785,7 @@
                         
                     	<div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">接收方</label> 
+                                <label class="control-label col-md-2" style="margin-left:40px">采购商</label> 
                                 <div class="col-md-10" style="width:50%"> 
                                     <select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">
                                     			<option  value=''>--请选择--</option>
@@ -704,10 +798,30 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">接收单价</label>
+                                <div class="col-md-10" style="width:50%">
+                                    <input id="customerPrice" name="customerPrice" type="text" class="form-control" placeholder="接收单价" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" style="margin-left:40px">是否含税</label> 
+                                <div class="col-md-10" style="width:50%"> 
+                                    <select class="form-control" id="isOrNotTax" name="isOrNotTax"> 
+									      <option value="0" >是</option> 
+									      <option  value="1">否</option>
+					      			</select>
+                                </div>
+                            </div>
+                        </div>
                     	
                     	<div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">接收地点</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">卸车地点</label>
                                 <div class="col-md-10" style="width:50%">
                                     <input id="uploadAddress"  name="uploadAddress" type="text" class="form-control" placeholder="接收地点" />
                                 </div>

@@ -230,9 +230,9 @@
             valign: "middle",//垂直
             formatter:function(value,row,index){
                 if(value == 0){
-                	return '发货方';
+                	return '供应商';
                 }else if(value == 1){
-                	return '收货方'; 
+                	return '采购商'; 
                 }else if(value == 2){
                 	return '承运方'; 
                 }
@@ -321,8 +321,8 @@
 		       		<div class="form-group">
 					    <select class="form-control" id="flag" name="flag"> 
 						      <option value="">全部</option> 
-						      <option value="0"  <c:if test="${company.flag eq 0 }"> selected </c:if>>发货方</option> 
-						      <option value="1"  <c:if test="${company.flag eq 1 }"> selected </c:if>>收货方</option>
+						      <option value="0"  <c:if test="${company.flag eq 0 }"> selected </c:if>>供应商</option> 
+						      <option value="1"  <c:if test="${company.flag eq 1 }"> selected </c:if>>采购商</option>
 						      <option value="2"  <c:if test="${company.flag eq 2 }"> selected </c:if>>承运方</option> <!-- <c:if test="${user.status eq 1 }"> selected </c:if> -->
 					      </select>
 					  </div>
@@ -376,8 +376,8 @@
                                 <label class="control-label col-md-2" style="margin-left:40px">公司类型</label>
                                 <div class="col-md-10" style="width:50%"> 
                                     <select class="form-control" id="flag" name="flag"> 
-									      <option value="0" >发货方</option> 
-									      <option  value="1">收货方</option>
+									      <option value="0" >供应商</option> 
+									      <option  value="1">采购商</option>
 									      <option  value="2">承运方</option>
 					      			</select>
                                 </div>

@@ -46,23 +46,6 @@
 		  		               		  //运单编号 
 		  		               		  var operateNum = operateEvent.operateNum ;
 		  		               		  $("#addForm #operateNum").val(operateNum);
-		  		               		  //供货单价
-		  		               		  var factoryPrice = operateEvent.factoryPrice ;
-			  		               	  if(factoryPrice != '' && factoryPrice != null){
-			  		           	   		  $("#addForm #factoryPrice").val(factoryPrice/100);
-		  		           	   		  }else{
-		  		           	   			  $("#addForm #factoryPrice").val(""); 
-		  		           	   		  }
-		  		               		  //接收单价
-		  		               		  var customerPrice = operateEvent.customerPrice ;
-		  		               		  if(customerPrice != null && customerPrice != ""){
-	  		           	   			      $("#addForm #customerPrice").val(customerPrice/100);
-	  		           	   		  	  }else{
-	  		           	   		 		  $("#addForm #customerPrice").val("");
-	  		           	   		      }
-		  		               		  //接收单价是否含税 
-		  		               		  var isOrNotTax = operateEvent.isOrNotTax ;
-		  		               		  $("#addForm #isOrNotTax").find("option[value="+isOrNotTax+"]").attr("selected",true);
 		  		               		  // 运费单价 
 		  		               		  var carFee = operateEvent.carFee ;
 			  		               	  if(carFee != null && carFee != ""){
@@ -98,6 +81,10 @@
 		  		               		  //结算情况
 		  		               		  var settleRemark = operateEvent.settleRemark ;
 		  		               	 	  $("#addForm #settleRemark").val(settleRemark); 
+		  		               	 	  
+		  		               	 	  //承运车号 
+		  		               	 	  var carNum = operateEvent.carNum ;
+		  		               	      $("#addForm #carNum").val(carNum); 
 		  		               	      
 		  		           	   		  
 		  		           	   		  $('#add').modal();
@@ -119,30 +106,6 @@
 		 	   		 var saveUserValue = $("#saveUser").text() ;
 		 	   		 
 		 	   		  var reg = /^[0-9]+(.[0-9]{1,2})?$/;
-               		  //供货单价
-					  var factoryPrice= $("#addForm #factoryPrice").val(); 
-					  if(factoryPrice != null  && factoryPrice != ''){
-					        if(!reg.test(factoryPrice)){
-					        	bootbox.alert("供货单价必须是数字且保留2位小数");   
-					        	return  ;
-					        }else{
-					        	factoryPrice = Number(factoryPrice*100) ;
-					        }
-					 	}
-               		  
-               		  //接收单价
-					  var customerPrice= $("#addForm #customerPrice").val(); 
-					  if(customerPrice != null  && customerPrice != ''){
-					        if(!reg.test(customerPrice)){
-					        	bootbox.alert("接收单价必须是数字且保留2位小数");   
-					        	return  ;
-					        }else{
-					        	customerPrice = Number(customerPrice*100) ;
-					        }
-					 	}
-               		  
-               		  //接收单价是否含税 
-				 	  var isOrNotTax = $("#addForm #isOrNotTax").find("option:selected").val();
                		  // 运费单价 
                		  var carFee= $("#addForm #carFee").val();
                		  if(carFee != null  && carFee != ''){
@@ -159,8 +122,8 @@
                		  var tranFactWeight = $("#addForm #tranFactWeight").val();
                		  if(tranFactWeight != null  && tranFactWeight != ''){
 					        if(!reg.test(tranFactWeight)){
-					        	bootbox.alert("实际结算量必须是数字且保留2位小数");   
-					        	return  ;
+					        	bootbox.alert("实际吨位必须是数字且保留2位小数");   
+					        	return  ; 
 					        }else{
 					        	tranFactWeight = Number(tranFactWeight*100) ;
 					        }
@@ -194,8 +157,7 @@
 		      		        url : "${ctx}/operate/updateBySettle.do",
 		      		        type: "post",
 		      		        data:{"id":id,"stockFee":stockFee,"manageFee":manageFee,"tranFactWeight":tranFactWeight
-	      		        		,"carIsOrNotTax":carIsOrNotTax,"factoryPrice":factoryPrice
-	      		        		,"customerPrice":customerPrice,"carFee":carFee,"isOrNotTax":isOrNotTax, "settleRemark":settleRemark},
+	      		        		,"carIsOrNotTax":carIsOrNotTax,"carFee":carFee, "settleRemark":settleRemark},
 		      		        dataType : "json",
 		      		        success: function(result){
 		 		                     if(result.status == 0){
@@ -289,7 +251,7 @@
                 valign: "middle"//垂直
             },{
            	    field: 'factoryShortName',
-           	    title: '供货单位',   
+           	    title: '供应商',    
            	    align: "center",//水平
                 valign: "middle"//垂直
            	},{
@@ -316,9 +278,9 @@
                       			return '-' ;
                       		}
                          }
-               	    },{
+            },{
 	    	    field: 'customerShortName',
-	    	    title: '接收单位', 
+	    	    title: '采购商', 
 	    	    align: "center",//水平
 	            valign: "middle"//垂直
     	   },{
@@ -352,19 +314,19 @@
 		               }
     	   	},{
                 	    field: 'uploadEmpty',
-                	    title: '气差',   
+                	    title: '装卸亏损',   
                 	    align: "center",//水平
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
                     		if(row.uploadEmpty != null && row.uploadEmpty != ''){
-                    			return  (row.gasDiff).toFixed(2);
+                    			return  (row.gasDiff/1000).toFixed(2);
                     		}else{
 	                    		return '-' ;
                     		}
                     	}
                 	 },{
                 	    field: 'tranFactWeight',
-                	    title: '实际结算量',     
+                	    title: '实际吨位',      
                 	    align: "center",//水平
                         valign: "middle",//垂直
                     	formatter:function(value,row,index){
@@ -393,7 +355,7 @@
                             }
                   	 },{
                  	    field: 'uploadEmpty',
-                 	    title: '气损',    
+                 	    title: '气损金额',     
                  	    align: "center",//水平
                         valign: "middle",//垂直
                      	formatter:function(value,row,index){
@@ -530,7 +492,7 @@
 		          </div>
 		     </div>
 		     <div class="form-group" style="margin-top:25px">		
-			      <label class="control-label col-sm-1" for="txt_search_departmentname">接收单位</label>
+			      <label class="control-label col-sm-1" for="txt_search_departmentname">采购商</label>
 			      <div class="col-sm-3">
 			      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
 			      		 				   <option value=''>----请选择----</option>
@@ -541,7 +503,7 @@
 	                               	</c:forEach> 
 						 	 </select>
 			      </div>
-			      <label class="control-label col-sm-1" for="txt_search_statu">供货单位</label>
+			      <label class="control-label col-sm-1" for="txt_search_statu">供应商</label>
 			      <div class="col-sm-3">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="factoryId" name="factoryId"> 
 			       								 <option value=''>----请选择----</option>
@@ -552,10 +514,7 @@
 	                                  </c:forEach>
 						    </select>
 			      </div>
-			      <!-- <label class="control-label col-sm-1" for="txt_search_statu"></label> -->
-		      </div>
-		      <div class="form-group" style="margin-top:30px">
-			      <label class="control-label col-sm-1" for="txt_search_statu">承运单位</label>
+			      <label class="control-label col-sm-1" for="txt_search_statu">承运方</label>
 			      <div class="col-sm-3">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="companyId" name="companyId"> 
 			       								 <option value=''>----请选择----</option>
@@ -566,6 +525,7 @@
 	                                  </c:forEach>
 						    </select>
 			      </div>
+			      <!-- <label class="control-label col-sm-1" for="txt_search_statu"></label> -->
 		      </div>
     </form>
    </div>
@@ -604,37 +564,17 @@
                                 </div>
                             </div>
                         </div>
-                    
-                        
                         
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">供货单价</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <input id="factoryPrice" name="factoryPrice"  type="text" class="form-control" placeholder="供货单价" />
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">接收单价</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <input id="customerPrice" name="customerPrice" type="text" class="form-control" placeholder="接收单价" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">是否含税</label> 
+                                <label class="control-label col-md-2" style="margin-left:40px">承运车号</label> 
                                 <div class="col-md-10" style="width:50%"> 
-                                    <select class="form-control" id="isOrNotTax" name="isOrNotTax"> 
-									      <option value="0" >是</option> 
-									      <option  value="1">否</option>
-					      			</select>
+                                     <input id="carNum"  name="carNum" type="text" class="form-control" readonly placeholder="承运车号" />
                                 </div>
                             </div>
                         </div>
+                    
+                       
                          <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label col-md-2" style="margin-left:40px">运费单价</label>
@@ -657,9 +597,9 @@
                         
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">实际结算量</label>
+                                <label class="control-label col-md-2" style="margin-left:40px">实际吨位</label>
                                 <div class="col-md-10" style="width:50%">
-                                    <input id="tranFactWeight" name="tranFactWeight" type="text" class="form-control" placeholder="实际结算量" />
+                                    <input id="tranFactWeight" name="tranFactWeight" type="text" class="form-control" placeholder="实际吨位" />
                                 </div>
                             </div>
                         </div>

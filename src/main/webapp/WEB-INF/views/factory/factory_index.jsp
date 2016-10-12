@@ -190,7 +190,13 @@
                     			factoryPrice = factoryPrice/100 ;
                        		}
                     		
-                    		return Number(loadEmpty*factoryPrice).toFixed(2) ;
+                    		var reg = /^[0-9]+(.[0-9]{1,2})?$/;
+            			 	
+          				    if(!reg.test(factoryPrice) || !reg.test(loadEmpty) || factoryPrice == 0 || loadEmpty == 0){
+          				    	return "0.00" ;
+          				     }else{
+	                    		return Number(loadEmpty*factoryPrice).toFixed(2);
+                    		}
                        		
                     		
                           }
@@ -249,7 +255,7 @@
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/factory/index.do">
 	     <div class="form-group" style="margin-top:15px">
-		      <label class="control-label col-sm-1" for="txt_search_statu">发货方</label> 
+		      <label class="control-label col-sm-1" for="txt_search_statu">供应商</label> 
 		      <div class="col-sm-2">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="factoryId" name="factoryId"> 
 		       								  <option value=''>----请选择----</option>

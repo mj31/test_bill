@@ -202,7 +202,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	         	event_remark = #{eventRemark} ,
 	         	load_address = #{loadAddress} ,
 	         	upload_address = #{uploadAddress} ,
-	         	transport_properties = #{transportProperties}
+	         	transport_properties = #{transportProperties},
+	         	factory_price = #{factoryPrice} ,
+	         	customer_price = #{customerPrice} ,
+	         	isOrNotTax = #{isOrNotTax} 
+	         	
        </set>
        
     </sql>
@@ -226,10 +230,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	         	manage_fee = #{manageFee} ,
 	         	tran_fact_weight = #{tranFactWeight} ,
 	         	carIsOrNotTax = #{carIsOrNotTax} ,
-	         	factory_price = #{factoryPrice} ,
-	         	customer_price = #{customerPrice} ,
 	         	car_fee = #{carFee} ,
-	         	isOrNotTax = #{isOrNotTax} ,
 	         	settle_remark = #{settleRemark} 
        </set>
     </sql>
@@ -266,11 +267,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </delete>
     
     <select id="getById" resultMap="RM_OperateEventVo">
-		SELECT <include refid="columns" />
+		SELECT <include refid="columns_new" />,c.header_number carNum
 	    <![CDATA[
-		    FROM operate_event 
+		    FROM operate_event ev
+		    left join car_info c on c.id = ev.car_id
 	        WHERE 
-		        id = #{id} 
+		        ev.id = #{id} 
 	    ]]>
 	</select>
 	

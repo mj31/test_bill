@@ -91,7 +91,7 @@ public class FeeSettleController {
 		 Integer total = this.operateService.queryOperateByConditionTotal(operateEvent);
 		 
 		 if(!CollectionUtils.isEmpty(operateList)){
-			 SimpleDateFormat format = new SimpleDateFormat("yyMMdd");
+			 SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
 			 Calendar c = Calendar.getInstance();
 			 OperateEventVo newOperateEvent = null ;
 			 for(int i = 0 ; i < operateList.size() ; i++){
