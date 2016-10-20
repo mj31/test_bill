@@ -205,7 +205,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	         	transport_properties = #{transportProperties},
 	         	factory_price = #{factoryPrice} ,
 	         	customer_price = #{customerPrice} ,
-	         	isOrNotTax = #{isOrNotTax} 
+	         	isOrNotTax = #{isOrNotTax} ,
+	         	carIsOrNotTax = #{carIsOrNotTax} ,
+	         	car_fee = #{carFee}
 	         	
        </set>
        
@@ -229,8 +231,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	         	stock_fee = #{stockFee} ,
 	         	manage_fee = #{manageFee} ,
 	         	tran_fact_weight = #{tranFactWeight} ,
-	         	carIsOrNotTax = #{carIsOrNotTax} ,
-	         	car_fee = #{carFee} ,
 	         	settle_remark = #{settleRemark} 
        </set>
     </sql>

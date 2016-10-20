@@ -46,16 +46,6 @@
 		  		               		  //运单编号 
 		  		               		  var operateNum = operateEvent.operateNum ;
 		  		               		  $("#addForm #operateNum").val(operateNum);
-		  		               		  // 运费单价 
-		  		               		  var carFee = operateEvent.carFee ;
-			  		               	  if(carFee != null && carFee != ""){
-			  		           	   			$("#addForm #carFee").val(carFee/100);
-				           	   		  }else{
-				           	   				$("#addForm #carFee").val("");
-				           	   		  }
-		  		               		  //运费单价是否含税
-		  		               		  var carIsOrNotTax = operateEvent.carIsOrNotTax ;
-		  		               		  $("#addForm #carIsOrNotTax").find("option[value="+carIsOrNotTax+"]").attr("selected",true);
 		  		               		  //实际结算量
 		  		               		  var tranFactWeight = operateEvent.tranFactWeight ;
 		  		               		  if(tranFactWeight != null && tranFactWeight != ""){
@@ -106,18 +96,7 @@
 		 	   		 var saveUserValue = $("#saveUser").text() ;
 		 	   		 
 		 	   		  var reg = /^[0-9]+(.[0-9]{1,2})?$/;
-               		  // 运费单价 
-               		  var carFee= $("#addForm #carFee").val();
-               		  if(carFee != null  && carFee != ''){
-				         if(!reg.test(carFee)){
-				        	 bootbox.alert("运费单价必须是数字且保留2位小数");   
-				        	 return  ;
-				         }else{
-				        	 carFee = Number(carFee*100) ;
-				         }
-				 	 }
-               		  //运费单价是否含税
-               		  var carIsOrNotTax = $("#addForm #carIsOrNotTax").find("option:selected").val(); ;
+               		  
                		  //实际结算量
                		  var tranFactWeight = $("#addForm #tranFactWeight").val();
                		  if(tranFactWeight != null  && tranFactWeight != ''){
@@ -157,7 +136,7 @@
 		      		        url : "${ctx}/operate/updateBySettle.do",
 		      		        type: "post",
 		      		        data:{"id":id,"stockFee":stockFee,"manageFee":manageFee,"tranFactWeight":tranFactWeight
-	      		        		,"carIsOrNotTax":carIsOrNotTax,"carFee":carFee, "settleRemark":settleRemark},
+	      		        		, "settleRemark":settleRemark},
 		      		        dataType : "json",
 		      		        success: function(result){
 		 		                     if(result.status == 0){
@@ -574,26 +553,6 @@
                             </div>
                         </div>
                     
-                       
-                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">运费单价</label>
-                                <div class="col-md-10" style="width:50%">
-                                    <input id="carFee" name="carFee" type="text" class="form-control" placeholder="运费单价" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-2" style="margin-left:40px">是否含税</label> 
-                                <div class="col-md-10" style="width:50%"> 
-                                    <select class="form-control" id="carIsOrNotTax" name="carIsOrNotTax"> 
-									      <option value="0" >是</option> 
-									      <option  value="1">否</option>
-					      			</select>
-                                </div>
-                            </div>
-                        </div>
                         
                         <div class="col-md-12">
                             <div class="form-group">
