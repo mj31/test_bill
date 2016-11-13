@@ -21,6 +21,8 @@ public interface ICompanyDao {
     Company queryCompanyByLoginName(String loginName);
 
 	List<Company> queryCompanyByCondition(Company company);
+	
+	List<Company> queryCompanyByConditionNew(Company company);
 
 	Integer queryCompanyByConditionTotal(Company company);
 

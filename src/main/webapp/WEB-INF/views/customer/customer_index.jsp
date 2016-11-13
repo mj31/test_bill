@@ -107,7 +107,7 @@
     	 
     	 //查询 
     	 $("#btn_query").click(function(){
-    		 $("#formSearch").submit();
+    		 $("#table").bootstrapTable('refresh', TableInit);
     	 });
     	 
     	 //============保存开始====================================
@@ -166,7 +166,8 @@
 	      		        dataType : "json",
 	      		        success: function(result){
 	 		                     if(result.status == 0){
-	 		                    	 $("#formSearch").submit();
+	 		                    	$("#table").bootstrapTable('refresh', TableInit);
+	 		                    	$("#add").modal("hide");
 	 		                     }else{
 	 		                    	 bootbox.alert("保存失败 "); 
 	 		                     }
@@ -194,8 +195,21 @@
     	   pagination: true,     //是否显示分页（*）
     	   sortable: false,      //是否启用排序
     	   sortOrder: "asc",     //排序方式
-    	   queryParams: oTableInit.queryParams,//传递参数（*）
-    	   sidePagination: "client",   //分页方式：client客户端分页，server服务端分页（*）
+    	   queryParams : function(params) {
+    		     var formSearchCustomerId = $("#formSearch #customerId").find("option:selected").val() ;
+    	    	 var formSearchFactoryId = $("#formSearch #factoryId").find("option:selected").val() ;
+    	    	 var formSearchCarId = $("#formSearch #carId").find("option:selected").val() ;
+    	    	 var operateNum = $("#formSearch #operateNum").val() ;
+                 return {
+            	   limit: params.limit, //页面大小
+		    	   offset: params.offset, //页码
+		    	   customerId: formSearchCustomerId ,
+		    	   factoryId: formSearchFactoryId ,
+		    	   carId: formSearchCarId ,
+		    	   operateNum:operateNum
+                 };
+         	},
+    	   sidePagination: "server",   //分页方式：client客户端分页，server服务端分页（*）
     	   pageNumber:1,      //初始化加载第一页，默认第一页
     	   pageSize: 20,      //每页的记录行数（*）
     	   pageList: [10, 25, 50, 100],  //可供选择的每页的行数（*）
@@ -222,7 +236,8 @@
                 //通过formatter可以自定义列显示的内容
                 //value：当前field的值，即id
                 //row：当前行的数据
-                return index+1+'<input type="hidden" class="ids"  value='+value+'>';
+                var page = $('#table').bootstrapTable("getPage");  
+                return page.pageSize * (page.pageNumber - 1) + index + 1+'<input type="hidden" class="ids"  value='+value+'>';
               
             }
     	   },{
@@ -380,22 +395,6 @@
     	   ]
     	  });
     	 };
-    	 var formSearchCustomerId = $("#formSearch #customerId").find("option:selected").val() ;
-    	 var formSearchFactoryId = $("#formSearch #factoryId").find("option:selected").val() ;
-    	 var formSearchCarId = $("#formSearch #carId").find("option:selected").val() ;
-    	 var operateNum = $("#formSearch #operateNum").val() ;
-    	  //得到查询的参数  Number(capacity*100) 
-    	 oTableInit.queryParams = function (params) {
-	    	  var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-		    	   limit: params.limit, //页面大小
-		    	   offset: params.offset, //页码
-		    	   customerId: formSearchCustomerId ,
-		    	   factoryId: formSearchFactoryId ,
-		    	   carId: formSearchCarId ,
-		    	   operateNum:operateNum
-	    	     };
-    	  	  return temp;
-    	 }; 
     	 return oTableInit;
     	};
     	 
@@ -440,11 +439,11 @@
 	     <div class="form-group" style="margin-top:15px">
 	     
 	     	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
-		      <div class="col-sm-3">
+		      <div class="col-sm-2">
 		       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
 		      </div>
 	     	 <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
-		      <div class="col-sm-3">
+		      <div class="col-sm-2">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="carId" name="carId"> 
 		       								  <option value=''>----请选择----</option>
                                     	<c:forEach items="${carInfoList}" var="carInfo">
@@ -460,7 +459,7 @@
 	     	</div>
 	     	<div class="form-group" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">采购商</label>
-		      <div class="col-sm-3">
+		      <div class="col-sm-2">
 		      		 	<select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">
 		      		 				   <option value=''>----请选择----</option>
                                	<c:forEach items="${companyList}" var="customer">
@@ -472,7 +471,7 @@
 		       		<%-- <input type="text" class="form-control" id="headerNumber" name="headerNumber" value="${carInfo.headerNumber}"> --%>
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_statu">供应商</label>
-		      <div class="col-sm-3">
+		      <div class="col-sm-2">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true" id="factoryId" name="factoryId"> 
 		       								 <option value=''>----请选择----</option>
 							      <c:forEach items="${companyList}" var="factory">

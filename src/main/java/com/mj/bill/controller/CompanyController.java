@@ -44,13 +44,26 @@ public class CompanyController {
 	
 	@RequestMapping("/search")
 	@ResponseBody
-	public void search(HttpServletRequest request,HttpServletResponse response,Company company){
-		 List<Company> companyList = this.companyService.queryCompanyByCondition(company);
+	public void search(HttpServletRequest request,HttpServletResponse response,Company company,Integer limit ,Integer offset){
+		
+		//页面大小
+        Integer pageSize = 20 ;
+        if(limit != 0){
+            pageSize = limit ;
+        }
+
+        //开始记录数
+        Integer beginRow = 0;
+           if(offset != 0){
+            beginRow = offset ;
+         }
+         company.setBeginRow(beginRow);
+         company.setPageSize(pageSize);
+		 List<Company> companyList = this.companyService.queryCompanyByConditionNew(company);
 		 Integer total = this.companyService.queryCompanyByConditionTotal(company);
 		 JSONObject json = new JSONObject();
-		 json.put("data",companyList);
+		 json.put("rows",companyList);
 		 json.put("total",total);
-		 json.put("page",1);
 	     ResponseUtils.responseJson(response, json.toString());
 	}
 	

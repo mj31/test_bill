@@ -195,6 +195,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    order by status 
      </select>
      
+     <select id="queryCarInfoByConditionNew" resultMap="RM_CarInfo">
+    	SELECT <include refid="columns" />
+	    FROM car_info 
+	    <include refid="findPage_where"/>
+	    order by status 
+	    limit #{beginRow},#{pageSize}
+     </select>
+     
      <select id="queryCarInfoByConditionTotal" resultType="int">
     	SELECT count(1)
 	    FROM car_info 

@@ -441,8 +441,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	           <if test="loadEndDate != null">
 		           <![CDATA[   AND ev.load_date < #{loadEndDate} ]]>
 	           </if>
-	           
-	           order by ev.operate_num desc
+	           order by ev.load_date desc,ev.operate_num desc
+	           limit #{beginRow},#{pageSize}
      </select>
      
      <select id="queryOperateByConditionTotal" resultType="int">

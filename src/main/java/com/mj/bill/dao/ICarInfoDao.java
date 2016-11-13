@@ -21,6 +21,9 @@ public interface ICarInfoDao {
     CarInfo queryCarInfoByLoginName(String loginName);
 
 	List<CarInfo> queryCarInfoByCondition(CarInfo carInfo);
+	
+	List<CarInfo> queryCarInfoByConditionNew(CarInfo carInfo);
+	
 
 	Integer queryCarInfoByConditionTotal(CarInfo carInfo);
 

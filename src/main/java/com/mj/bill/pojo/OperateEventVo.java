@@ -85,6 +85,9 @@ public class OperateEventVo extends OperateEvent {
 	
 	private Long loadEndDate ;
 	
+	private Integer  pageSize ;
+	
+	private Integer beginRow ;
 	
 	
 
@@ -234,5 +237,22 @@ public class OperateEventVo extends OperateEvent {
 	public void setSettlePrice(Float settlePrice) {
 		this.settlePrice = settlePrice;
 	}
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public Integer getBeginRow() {
+		return beginRow;
+	}
+
+	public void setBeginRow(Integer beginRow) {
+		this.beginRow = beginRow;
+	}
+	
 	
 }

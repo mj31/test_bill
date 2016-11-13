@@ -138,6 +138,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    order by status 
      </select>
      
+     <select id="queryCompanyByConditionNew" resultMap="RM_Company">
+    	SELECT <include refid="columns" />
+	    FROM company 
+	    <include refid="findPage_where"/>
+	    order by status 
+	    limit #{beginRow},#{pageSize}
+     </select>
+     
      <select id="queryCompanyByConditionTotal" resultType="int">
     	SELECT count(1)
 	    FROM company 

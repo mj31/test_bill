@@ -23,6 +23,9 @@ public interface ICarInfoService {
 	 * @return
 	 */
 	List<CarInfo> queryCarInfoByCondition(CarInfo carInfo);
+	
+	List<CarInfo> queryCarInfoByConditionNew(CarInfo carInfo);
+	
 
 	/**
 	 * 查询总行数

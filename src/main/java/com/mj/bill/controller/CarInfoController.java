@@ -40,15 +40,29 @@ public class CarInfoController {
 	 * @return
 	 */
 	@RequestMapping("/list")
-	public String toIndex(HttpServletRequest request,Model model,CarInfo carInfo){
+	public String toIndex(HttpServletRequest request,HttpServletResponse response,Model model,CarInfo carInfo){
 		model.addAttribute("carInfo", carInfo);
 		return "car/car_index";
 	}
 	
 	@RequestMapping("/search")
 	@ResponseBody
-	public void search(HttpServletRequest request,HttpServletResponse response,CarInfo carInfo){
-		 List<CarInfo> carInfoList = this.carInfoService.queryCarInfoByCondition(carInfo);
+	public void search(HttpServletRequest request,HttpServletResponse response,CarInfo carInfo,Integer limit ,Integer offset){
+		//页面大小
+        Integer pageSize = 20 ;
+        if(limit != 0){
+            pageSize = limit ;
+        }
+
+        //开始记录数
+        Integer beginRow = 0;
+           if(offset != 0){
+            beginRow = offset ;
+         }
+         carInfo.setBeginRow(beginRow);
+         carInfo.setPageSize(pageSize);
+		 List<CarInfo> carInfoList = this.carInfoService.queryCarInfoByConditionNew(carInfo);
+		 
 		 Integer total = this.carInfoService.queryCarInfoByConditionTotal(carInfo);
 		 
 		 if(!CollectionUtils.isEmpty(carInfoList)){
@@ -60,16 +74,15 @@ public class CarInfoController {
 					 c.setTimeInMillis(expiredDate);
 					 carInfoList.get(i).setStrExpiredDate(format.format(c.getTime()));
 				 }else{
-					 carInfoList.get(i).setStrExpiredDate("-");
+					 carInfoList.get(i).setStrExpiredDate("");
 				 }
 			 }
 			 
 		 }
 		 
 		 JSONObject json = new JSONObject();
-		 json.put("data",carInfoList);
+		 json.put("rows",carInfoList);
 		 json.put("total",total);
-		 json.put("page",1);
 	     ResponseUtils.responseJson(response, json.toString());
 	}
 	

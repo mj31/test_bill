@@ -63,7 +63,7 @@ public class FactoryController {
 		}
 		
 		@RequestMapping(value="/search")
-		public void search(HttpServletRequest request,HttpServletResponse response,OperateEventVo operateEvent)throws Exception{
+		public void search(HttpServletRequest request,HttpServletResponse response,OperateEventVo operateEvent,Integer limit ,Integer offset )throws Exception{
 			
 			JSONObject json = new JSONObject();
 			
@@ -82,6 +82,20 @@ public class FactoryController {
 						Date newDate = format.parse(strLoadEndDate) ;
 						operateEvent.setLoadEndDate(newDate.getTime());
 				}
+				
+				//页面大小
+		        Integer pageSize = 20 ;
+		        if(limit != 0){
+		            pageSize = limit ;
+		        }
+
+		        //开始记录数
+		        Integer beginRow = 0;
+		           if(offset != 0){
+		            beginRow = offset ;
+		         }
+		         operateEvent.setBeginRow(beginRow);
+		         operateEvent.setPageSize(pageSize);
 				
 				List<OperateEventVo> operateList = this.operateService.queryOperateByCondition(operateEvent);
 				Integer total = this.operateService.queryOperateByConditionTotal(operateEvent);
@@ -112,11 +126,11 @@ public class FactoryController {
 						}
 					}
 				}
-				json.put("data",operateList);
+				json.put("rows",operateList);
 				json.put("total",total);
 				json.put("page",1);
 			}else{
-				json.put("data",null);
+				json.put("rows",null);
 				json.put("total",0);
 				json.put("page",1);
 			}

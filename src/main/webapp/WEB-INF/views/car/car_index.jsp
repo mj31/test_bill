@@ -32,6 +32,7 @@
     	 var oButtonInit = new ButtonInit();
     	 oButtonInit.Init();
     	 
+    	 
     	 // 添加弹出层 
     	 $("#btn_add").click(function(){
     		 $("#lblAddTitle").text("添加公司信息");
@@ -135,7 +136,8 @@
     	 
     	 //查询 
     	 $("#btn_query").click(function(){
-    		 $("#formSearch").submit();
+    		 $("#table").bootstrapTable('refresh', TableInit);
+    		 //$("#formSearch").submit();
     	 });
     	 
     	 //============保存开始====================================
@@ -185,7 +187,8 @@
 			      		        dataType : "json",
 			      		        success: function(result){
 		     		                     if(result.status == 0){
-		     		                    	 $("#formSearch").submit();
+		     		                    	 $("#table").bootstrapTable('refresh', TableInit);
+		 	 		                    	 $("#add").modal("hide");
 		     		                     }else{
 		     		                    	 bootbox.alert("保存失败 "); 
 		     		                     }
@@ -203,9 +206,8 @@
 	      		        dataType : "json",
 	      		        success: function(result){
 	 		                     if(result.status == 0){
-	 		                    	/*  bootbox.alert("保存成功 ");
-	 		                    	 setInterval(5000); */
-	 		                    	 $("#formSearch").submit();
+	 		                        $("#table").bootstrapTable('refresh', TableInit);
+	 		                    	$("#add").modal("hide");
 	 		                     }else{
 	 		                    	 bootbox.alert("保存失败 "); 
 	 		                     }
@@ -231,10 +233,20 @@
     	   pagination: true,     //是否显示分页（*）
     	   sortable: false,      //是否启用排序
     	   sortOrder: "asc",     //排序方式
-    	   queryParams: oTableInit.queryParams,//传递参数（*）
-    	   sidePagination: "client",   //分页方式：client客户端分页，server服务端分页（*）
+    	/*    queryParams: queryParams, *///传递参数（*）
+    	   queryParams : function(params) {
+               return {
+            	   limit: params.limit, //页面大小
+		    	   offset: params.offset, //页码
+		    	   headerNumber: $("#formSearch #headerNumber").val(), 
+		    	   driverPhone: $("#formSearch #driverPhone").val(), 
+		    	   status: $("#formSearch #status").val()
+                   };
+           },
+    	   queryParamsType: "limit", //参数格式,发送标准的RESTFul类型的参数请求  
+    	   sidePagination: "server",   //分页方式：client客户端分页，server服务端分页（*）
     	   pageNumber:1,      //初始化加载第一页，默认第一页
-    	   pageSize: 9,      //每页的记录行数（*）
+    	   pageSize: 10,      //每页的记录行数（*）
     	   pageList: [10, 25, 50, 100],  //可供选择的每页的行数（*）
     	   search: true,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
     	   strictSearch: true,
@@ -259,7 +271,8 @@
                 //通过formatter可以自定义列显示的内容
                 //value：当前field的值，即id
                 //row：当前行的数据
-                return index+1+'<input type="hidden" class="ids"  value='+value+' carType = '+row.carType+'>';
+                var page = $('#table').bootstrapTable("getPage");  
+                return page.pageSize * (page.pageNumber - 1) + index + 1+'<input type="hidden" class="ids"  value='+value+' carType = '+row.carType+'>';
               
             }
     	   },{
@@ -367,17 +380,7 @@
     	  });
     	 };
     	 
-    	  //得到查询的参数
-    	 oTableInit.queryParams = function (params) {
-	    	  var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-		    	   limit: params.limit, //页面大小
-		    	   offset: params.offset, //页码
-		    	   headerNumber: $("#formSearch #headerNumber").val(), 
-		    	   driverPhone: $("#formSearch #driverPhone").val(), 
-		    	   status: $("#formSearch #status").val()
-	    	     };
-    	  	  return temp;
-    	 }; 
+    	 
     	 return oTableInit;
     	};
     	 
@@ -415,7 +418,6 @@
             var isMoneyFormatRight = reg.test(val);
             return isMoneyFormatRight;
         }
-    	
     </script>
 </head>
 <body>

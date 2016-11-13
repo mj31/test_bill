@@ -86,7 +86,22 @@ public class FeeSettleController {
 	}
 	
 	@RequestMapping(value="/search")
-	public void search(HttpServletRequest request,HttpServletResponse response,OperateEventVo operateEvent){
+	public void search(HttpServletRequest request,HttpServletResponse response,Integer limit ,Integer offset , OperateEventVo operateEvent){
+		
+		//页面大小
+        Integer pageSize = 20 ;
+        if(limit != 0){
+            pageSize = limit ;
+        }
+
+        //开始记录数
+        Integer beginRow = 0;
+           if(offset != 0){
+            beginRow = offset ;
+         }
+         operateEvent.setBeginRow(beginRow);
+         operateEvent.setPageSize(pageSize);
+         
 		 List<OperateEventVo> operateList = this.operateService.queryOperateByCondition(operateEvent);
 		 Integer total = this.operateService.queryOperateByConditionTotal(operateEvent);
 		 
@@ -188,7 +203,7 @@ public class FeeSettleController {
 		 }
 		 
 		 JSONObject json = new JSONObject();
-		 json.put("data",operateList);
+		 json.put("rows",operateList);
 		 json.put("total",total);
 		 json.put("page",1);
 	     ResponseUtils.responseJson(response, json.toString());

@@ -55,7 +55,7 @@
     	 
 	    	 //查询 
 	    	 $("#btn_query").click(function(){
-	    		 $("#formSearch").submit();
+	    		 $("#table").bootstrapTable('refresh', TableInit);
 	    	 });
     	 
     	    
@@ -75,8 +75,19 @@
     	   pagination: true,     //是否显示分页（*）
     	   sortable: false,      //是否启用排序
     	   sortOrder: "asc",     //排序方式
-    	   queryParams: oTableInit.queryParams,//传递参数（*）
-    	   sidePagination: "client",   //分页方式：client客户端分页，server服务端分页（*）
+    	   queryParams : function(params) {
+    		     var factoryId = $("#formSearch #factoryId").find("option:selected").val() ;
+    	    	 var loadBeginDate = $("#formSearch #strLoadBeginDate").val() ;
+    	    	 var loadEndDate = $("#formSearch #strLoadEndDate").val() ;
+                 return {
+            	   limit: params.limit, //页面大小
+		    	   offset: params.offset, //页码
+		    	   factoryId: factoryId,
+		    	   strLoadBeginDate :loadBeginDate,
+		    	   strLoadEndDate : loadEndDate
+                 };
+         },
+    	   sidePagination: "server",   //分页方式：client客户端分页，server服务端分页（*）
     	   pageNumber:1,      //初始化加载第一页，默认第一页
     	   pageSize: 20,      //每页的记录行数（*）
     	   pageList: [10, 25, 50, 100],  //可供选择的每页的行数（*）
@@ -103,7 +114,8 @@
                 //通过formatter可以自定义列显示的内容
                 //value：当前field的值，即id
                 //row：当前行的数据
-                return index+1+'<input type="hidden" class="ids"  value='+value+'>';
+                var page = $('#table').bootstrapTable("getPage");  
+                return page.pageSize * (page.pageNumber - 1) + index + 1+'<input type="hidden" class="ids"  value='+value+'>';
               
             }
     	   },{
@@ -213,22 +225,6 @@
     	  });
     	 };
     	 
-    	 var factoryId = $("#formSearch #factoryId").find("option:selected").val() ;
-    	 var loadBeginDate = $("#formSearch #strLoadBeginDate").val() ;
-    	 var loadEndDate = $("#formSearch #strLoadEndDate").val() ;
-    	  //得到查询的参数  Number(capacity*100) 
-    	 oTableInit.queryParams = function (params) {
-	    	  var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-		    	   limit: params.limit, //页面大小
-		    	   offset: params.offset, //页码
-		    	 /*   hisAccountName: $("#formSearch #hisAccountName").val(),  */
-		    	   factoryId: factoryId,
-		    	   strLoadBeginDate :loadBeginDate,
-		    	   strLoadEndDate : loadEndDate
-		    	   
-	    	     };
-    	  	  return temp;
-    	 }; 
     	 return oTableInit;
     	};
     	 

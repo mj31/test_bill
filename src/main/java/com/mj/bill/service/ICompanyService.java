@@ -14,6 +14,10 @@ public interface ICompanyService {
 	 * @return
 	 */
 	List<Company> queryCompanyByCondition(Company company);
+	
+	List<Company> queryCompanyByConditionNew(Company company);
+	
+	
 
 	/**
 	 * 查询总行数

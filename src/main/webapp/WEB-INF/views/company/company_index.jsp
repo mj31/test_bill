@@ -87,7 +87,8 @@
                  //然后发送异步请求的信息到后台删除数据
                  $.get("${ctx}/company/delete.do?ids="+arrayIds, function (json) {
                      if (json.status == 0) {
-                    	 $("#formSearch").submit();//刷新页面数据
+                    	   $("#table").bootstrapTable('refresh', TableInit);
+	                    	$("#add").modal("hide");//刷新页面数据
                      }else {
                     	 bootbox.alert({  
           		            buttons: {  
@@ -110,7 +111,7 @@
     	 
     	 //查询 
     	 $("#btn_query").click(function(){
-    		 $("#formSearch").submit();
+    		 $("#table").bootstrapTable('refresh', TableInit);
     	 });
     	 
     	 //============保存开始====================================
@@ -131,7 +132,8 @@
 			      		        dataType : "json",
 			      		        success: function(result){
 		     		                     if(result.status == 0){
-		     		                    	 $("#formSearch").submit();
+		     		                    	$("#table").bootstrapTable('refresh', TableInit);
+			 		                    	$("#add").modal("hide");
 		     		                     }else{
 		     		                    	 bootbox.alert("保存失败 "); 
 		     		                     }
@@ -150,7 +152,8 @@
 	 		                     if(result.status == 0){
 	 		                    	/*  bootbox.alert("保存成功 ");
 	 		                    	 setInterval(5000); */
-	 		                    	 $("#formSearch").submit();
+	 		                    	$("#table").bootstrapTable('refresh', TableInit);
+	 		                    	$("#add").modal("hide");
 	 		                     }else{
 	 		                    	 bootbox.alert("保存失败 "); 
 	 		                     }
@@ -177,8 +180,26 @@
     	   pagination: true,     //是否显示分页（*）
     	   sortable: false,      //是否启用排序
     	   sortOrder: "asc",     //排序方式
-    	   queryParams: oTableInit.queryParams,//传递参数（*）
-    	   sidePagination: "client",   //分页方式：client客户端分页，server服务端分页（*）
+    	   queryParams : function(params) {
+	  		   	 var formSearchCustomerId = $("#formSearch #customerId").find("option:selected").val() ;
+	  	    	 var formSearchFactoryId = $("#formSearch #factoryId").find("option:selected").val() ;
+	  	    	 var formSearchCarId = $("#formSearch #carId").find("option:selected").val() ;
+	  	    	 var formSearchCompanyId = $("#formSearch #companyId").find("option:selected").val() ;
+	  	    	 var loadAddress = $("#formSearch #loadAddress").val() ;
+	  	    	 var uploadAddress = $("#formSearch #uploadAddress").val() ;
+	  	    	 var operateNum = $("#formSearch #operateNum").val() ;
+	  	    	 var transportProperties = $("#formSearch #transportProperties").find("option:selected").val() ;
+                 return {
+            	   limit: params.limit, //页面大小
+		    	   offset: params.offset, //页码
+		    	   companyAddress: $("#formSearch #companyAddress").val(), 
+		    	   /* companyName: $("#formSearch #companyName").val(),  */
+		    	   shortName: $("#formSearch #shortName").val(), 
+		    	   status: $("#formSearch #status").val(),
+		    	   flag: $("#formSearch #flag").val()
+                 };
+           },
+    	   sidePagination: "server",   //分页方式：client客户端分页，server服务端分页（*）
     	   pageNumber:1,      //初始化加载第一页，默认第一页
     	   pageSize: 20,      //每页的记录行数（*）
     	   pageList: [10, 25, 50, 100],  //可供选择的每页的行数（*）
@@ -205,7 +226,8 @@
                 //通过formatter可以自定义列显示的内容
                 //value：当前field的值，即id
                 //row：当前行的数据
-                return index+1+'<input type="hidden" class="ids"  value='+value+'><input type="hidden" class="flag"  value='+row.flag+'>';
+                var page = $('#table').bootstrapTable("getPage");  
+                return page.pageSize * (page.pageNumber - 1) + index + 1+'<input type="hidden" class="ids"  value='+value+'><input type="hidden" class="flag"  value='+row.flag+'>';
               
             }
     	   },{
@@ -254,21 +276,6 @@
     	   }]
     	  });
     	 };
-    	 
-    	  //得到查询的参数
-    	 oTableInit.queryParams = function (params) {
-	    	  var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-		    	   limit: params.limit, //页面大小
-		    	   offset: params.offset, //页码
-		    	   companyAddress: $("#formSearch #companyAddress").val(), 
-		    	   /* companyName: $("#formSearch #companyName").val(),  */
-		    	   shortName: $("#formSearch #shortName").val(), 
-		    	   status: $("#formSearch #status").val(),
-		    	   flag: $("#formSearch #flag").val()
-		    	   
-	    	     };
-    	  	  return temp;
-    	 }; 
     	 return oTableInit;
     	};
     	 
@@ -304,20 +311,20 @@
     <form id="formSearch" class="form-horizontal" action="${ctx}/company/list.do" method="post">
 	     <div class="form-group" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">地址</label>
-		      <div class="col-sm-3">
+		      <div class="col-sm-2">
 		       		<input type="text" class="form-control" id="companyAddress" name="companyAddress" value="${company.companyAddress}">
 		      </div>
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">简称</label>
-		      <div class="col-sm-3">
+		      <div class="col-sm-2">
 		       		<input type="text" class="form-control" id="shortName" name="shortName" value="${company.shortName}">
 		      </div>
 		      <div class="col-sm-2" style="text-align:left;">
 		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
 		      </div>
 		  </div>
-		  <div class="form-group" style="margin-top:25px">
+		  <div class="form-group" style="margin-top:25px;">
 		      <label class="control-label col-sm-1" for="txt_search_statu">公司类别</label>
-		      <div class="col-sm-3">
+		      <div class="col-sm-2" style="margin-left: 15px;">
 		       		<div class="form-group">
 					    <select class="form-control" id="flag" name="flag"> 
 						      <option value="">全部</option> 
@@ -329,7 +336,7 @@
 		      </div>
 		      
 		      <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-		      <div class="col-sm-3">
+		      <div class="col-sm-2">
 		       		<div class="form-group">
 					    <select class="form-control" id="status" name="status"> 
 						      <option value="">全部</option> 

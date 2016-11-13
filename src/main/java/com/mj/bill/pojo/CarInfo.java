@@ -90,6 +90,10 @@ public class CarInfo{
 	private java.lang.String remark;
 	
 	private Integer status ;
+	
+	private Integer  pageSize ;
+		
+	private Integer beginRow ;
  
 
 	public CarInfo(){
@@ -248,5 +252,22 @@ public class CarInfo{
 	public void setStrExpiredDate(String strExpiredDate) {
 		this.strExpiredDate = strExpiredDate;
 	}
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public Integer getBeginRow() {
+		return beginRow;
+	}
+
+	public void setBeginRow(Integer beginRow) {
+		this.beginRow = beginRow;
+	}
+	
 }
 

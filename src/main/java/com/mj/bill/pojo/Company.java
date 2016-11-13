@@ -37,6 +37,10 @@ public class Company{
 	 * 简称
 	 */
 	private String shortName ;
+	
+   private Integer  pageSize ;
+	
+	private Integer beginRow ;
  
 
 	public Company(){
@@ -103,6 +107,21 @@ public class Company{
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
 	}
-	
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public Integer getBeginRow() {
+		return beginRow;
+	}
+
+	public void setBeginRow(Integer beginRow) {
+		this.beginRow = beginRow;
+	}
 }
 

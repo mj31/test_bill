@@ -33,6 +33,12 @@ public class CarInfoServiceImpl implements ICarInfoService {
 	public List<CarInfo> queryCarInfoByCondition(CarInfo carInfo) {
 		return carInfoDao.queryCarInfoByCondition(carInfo);
 	}
+	
+	@Override
+	public List<CarInfo> queryCarInfoByConditionNew(CarInfo carInfo) {
+		return carInfoDao.queryCarInfoByConditionNew(carInfo);
+	}
+	
 
 	@Override
 	public Integer queryCarInfoByConditionTotal(CarInfo carInfo) {

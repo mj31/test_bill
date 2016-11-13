@@ -140,7 +140,8 @@
 		      		        dataType : "json",
 		      		        success: function(result){
 		 		                     if(result.status == 0){
-		 		                    	 $("#formSearch").submit();
+		 		                    	$("#table").bootstrapTable('refresh', TableInit);
+		 		                    	$("#add").modal("hide");
 		 		                     }else{
 		 		                    	 bootbox.alert("保存失败 "); 
 		 		                     }
@@ -164,7 +165,7 @@
 	    	 
 	    	 //查询 
 	    	 $("#btn_query").click(function(){
-	    		 $("#formSearch").submit();
+	    		 $("#table").bootstrapTable('refresh', TableInit);
 	    	 });
     	});
     	 
@@ -182,8 +183,23 @@
     	   pagination: true,     //是否显示分页（*）
     	   sortable: false,      //是否启用排序
     	   sortOrder: "asc",     //排序方式
-    	   queryParams: oTableInit.queryParams,//传递参数（*）
-    	   sidePagination: "client",   //分页方式：client客户端分页，server服务端分页（*）
+    	   queryParams : function(params) {
+    		   var formSearchCustomerId = $("#formSearch #customerId").find("option:selected").val() ;
+    	    	 var formSearchFactoryId = $("#formSearch #factoryId").find("option:selected").val() ;
+    	    	 var formSearchCarId = $("#formSearch #carId").find("option:selected").val() ;
+    	    	 var formSearchCompanyId = $("#formSearch #companyId").find("option:selected").val() ;
+    	    	 var operateNum = $("#formSearch #operateNum").val() ;
+                 return {
+            	   limit: params.limit, //页面大小
+		    	   offset: params.offset, //页码
+		    	   customerId: formSearchCustomerId ,
+		    	   factoryId: formSearchFactoryId ,
+		    	   carId: formSearchCarId ,
+		    	   operateNum: operateNum ,
+		    	   companyId: formSearchCompanyId
+               };
+       	},
+    	   sidePagination: "server",   //分页方式：client客户端分页，server服务端分页（*）
     	   pageNumber:1,      //初始化加载第一页，默认第一页
     	   pageSize: 20,      //每页的记录行数（*）
     	   pageList: [10, 25, 50, 100],  //可供选择的每页的行数（*）
@@ -210,7 +226,8 @@
                 //通过formatter可以自定义列显示的内容
                 //value：当前field的值，即id
                 //row：当前行的数据
-                return index+1+'<input type="hidden" class="ids" customerId='+row.customerId+' carId = '+row.carId+' companyId = '+row.companyId+' factoryId = '+row.factoryId+' isOrNotTax ='+row.isOrNotTax+' value='+value+'>';
+                var page = $('#table').bootstrapTable("getPage");  
+                return page.pageSize * (page.pageNumber - 1) + index + 1+'<input type="hidden" class="ids" customerId='+row.customerId+' carId = '+row.carId+' companyId = '+row.companyId+' factoryId = '+row.factoryId+' isOrNotTax ='+row.isOrNotTax+' value='+value+'>';
               
             }
     	   },{
@@ -452,12 +469,12 @@
     <form id="formSearch" class="form-horizontal" action="${ctx}/settle/index.do">
 		     <div class="form-group" style="margin-top:15px">
 		     	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
-			      <div class="col-sm-3">
+			      <div class="col-sm-2">
 			       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
 			      </div>
 			      
 			       <label class="control-label col-sm-1" for="txt_search_statu">承运车号</label>
-			      <div class="col-sm-3">
+			      <div class="col-sm-2">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true"  id="carId" name="carId"> 
 			       								  <option value=''>----请选择----</option>
 	                                    	<c:forEach items="${carInfoList}" var="carInfo">
@@ -472,7 +489,7 @@
 		     </div>
 		     <div class="form-group" style="margin-top:25px">		
 			      <label class="control-label col-sm-1" for="txt_search_departmentname">采购商</label>
-			      <div class="col-sm-3">
+			      <div class="col-sm-2">
 			      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
 			      		 				   <option value=''>----请选择----</option>
 	                               	<c:forEach items="${companyList}" var="customer">
@@ -483,7 +500,7 @@
 						 	 </select>
 			      </div>
 			      <label class="control-label col-sm-1" for="txt_search_statu">供应商</label>
-			      <div class="col-sm-3">
+			      <div class="col-sm-2">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="factoryId" name="factoryId"> 
 			       								 <option value=''>----请选择----</option>
 								      <c:forEach items="${companyList}" var="factory">
@@ -494,7 +511,7 @@
 						    </select>
 			      </div>
 			      <label class="control-label col-sm-1" for="txt_search_statu">承运方</label>
-			      <div class="col-sm-3">
+			      <div class="col-sm-2">
 			       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="companyId" name="companyId"> 
 			       								 <option value=''>----请选择----</option>
 								      <c:forEach items="${companyList}" var="company">

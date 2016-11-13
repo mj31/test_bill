@@ -54,6 +54,13 @@ public class CompanyServiceImpl implements ICompanyService {
 	public List<Company> queryCompanyByCondition(Company company) {
 		return companyDao.queryCompanyByCondition(company);
 	}
+	
+	@Override
+	public List<Company> queryCompanyByConditionNew(Company company) {
+		return companyDao.queryCompanyByConditionNew(company);
+	}
+	
+	
 
 	@Override
 	public Integer queryCompanyByConditionTotal(Company company) {
