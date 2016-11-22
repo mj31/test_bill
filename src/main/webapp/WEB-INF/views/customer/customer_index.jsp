@@ -436,7 +436,7 @@
    <div class="panel-heading">卸车对账单</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/customer/index.do">
-	     <div class="form-group" style="margin-top:15px">
+	     <div class="form-group  form-group-sm" style="margin-top:15px">
 	     
 	     	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
 		      <div class="col-sm-2">
@@ -457,7 +457,7 @@
 		      </div>
 	     	
 	     	</div>
-	     	<div class="form-group" style="margin-top:15px">
+	     	<div class="form-group  form-group-sm" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">采购商</label>
 		      <div class="col-sm-2">
 		      		 	<select class="selectpicker bla bla bli"   data-live-search="true"  id="customerId" name="customerId">

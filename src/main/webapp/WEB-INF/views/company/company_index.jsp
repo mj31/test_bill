@@ -309,7 +309,7 @@
    <div class="panel-heading">公司信息管理</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/company/list.do" method="post">
-	     <div class="form-group" style="margin-top:15px">
+	     <div class="form-group  form-group-sm" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">地址</label>
 		      <div class="col-sm-2">
 		       		<input type="text" class="form-control" id="companyAddress" name="companyAddress" value="${company.companyAddress}">
@@ -322,7 +322,7 @@
 		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
 		      </div>
 		  </div>
-		  <div class="form-group" style="margin-top:25px;">
+		  <div class="form-group  form-group-sm" style="margin-top:25px;">
 		      <label class="control-label col-sm-1" for="txt_search_statu">公司类别</label>
 		      <div class="col-sm-2" style="margin-left: 15px;">
 		       		<div class="form-group">

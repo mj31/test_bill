@@ -430,7 +430,7 @@
    <div class="panel-heading">付款信息</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/bank/index.do" method="post">
-	     <div class="form-group" style="margin-top:15px">
+	     <div class="form-group  form-group-sm" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_departmentname">客户名称</label>
 		      <div class="col-sm-3">
 		       		<input type="text" class="form-control" id="hisAccountName" name="hisAccountName" value="${bank.hisAccountName}">

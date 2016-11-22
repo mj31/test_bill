@@ -640,7 +640,7 @@
    <div class="panel-heading">采购计划</div> 
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/planSettle/index.do">
-		     <div class="form-group" style="margin-top:10px">
+		     <div class="form-group  form-group-sm" style="margin-top:10px">
 			      <label class="control-label col-sm-1" for="txt_search_departmentname">采购商</label>
 			      <div class="col-sm-2">
 			      		 	<select class="selectpicker bla bla bli querySelect"   data-live-search="true"  id="customerId" name="customerId">
@@ -668,7 +668,7 @@
 		          </div>
 		      </div>
 		      <div id="extentDivId">
-			      <div class="form-group" style="margin-top:20px">
+			      <div class="form-group  form-group-sm" style="margin-top:20px">
 			      	  <label class="control-label col-sm-1" for="txt_search_departmentname">运单编号</label>
 				      <div class="col-sm-2">
 				       	  <input type="text" class="form-control" id="operateNum" name="operateNum" value="${operateEvent.operateNum}">
@@ -684,7 +684,7 @@
 				      </div>
 			     		
 			      </div>
-			      <div class="form-group" style="margin-top:24px">
+			      <div class="form-group  form-group-sm" style="margin-top:24px">
 				      <label class="control-label col-sm-1" for="txt_search_statu">承运方</label>
 				      <div class="col-sm-2">
 				       			<select class="selectpicker bla bla bli querySelect"  data-live-search="true" id="companyId" name="companyId"> 

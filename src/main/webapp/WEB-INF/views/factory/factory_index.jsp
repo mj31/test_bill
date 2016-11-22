@@ -250,7 +250,7 @@
    <div class="panel-heading">装车对账单</div>
    <div class="panel-body">
     <form id="formSearch" class="form-horizontal" action="${ctx}/factory/index.do">
-	     <div class="form-group" style="margin-top:15px">
+	     <div class="form-group  form-group-sm" style="margin-top:15px">
 		      <label class="control-label col-sm-1" for="txt_search_statu">供应商</label> 
 		      <div class="col-sm-2">
 		       			<select class="selectpicker bla bla bli"  data-live-search="true"  id="factoryId" name="factoryId"> 
@@ -265,7 +265,7 @@
 		       		<button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
 		      </div>
 		   </div>
-		   <div class="form-group" style="margin-top:20px">
+		   <div class="form-group  form-group-sm" style="margin-top:20px">
 		      <label class="control-label col-sm-1" for="txt_search_statu" >装车时间</label> 
 		      <div class="col-sm-3">
 		       			<input id="strLoadBeginDate" name="strLoadBeginDate" type="text" class="form-control" value = "${operateEvent.strLoadBeginDate}" placeholder="装车开始时间" />
